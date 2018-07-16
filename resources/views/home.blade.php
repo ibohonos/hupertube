@@ -16,7 +16,7 @@
 						Please login or register
 					@else
 						You are logged in!
-						<test-api></test-api>
+						<test-api token="{{ Auth::user()->api_token  }}"></test-api>
 					@endguest
 				</div>
 			</div>

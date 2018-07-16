@@ -1,22 +1,40 @@
 <template>
 	<div class="alert-info">
-		<!--{{ // users }}-->
+		<table class="table">
+			<thead>
+				<td>Login</td>
+				<td>Token</td>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{ users.name }}</td>
+					<td>{{ users.api_token }}</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 </template>
 
 <script>
 	export default {
-		// name: "test-a-p-i",
+//		 name: "test-a-p-i",
+		props: {
+			token: {
+				type: String,
+				required: true
+			}
+		},
 
-		// data: {
-		// 	users: []
-		// },
+		 data: function() {
+		 	return  {
+		 		users: {}
+			 }
+		 },
 
 		mounted() {
-			axios.get('/api/user')
+			axios.get('/api/user?api_token=' + this.token)
 				.then(response => {
-					// this.users = response.data;
-					console.log(response.data);
+					this.users = response.data;
 				});
 		},
 	}

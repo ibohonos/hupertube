@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class BaseController extends Controller
+class APIController extends Controller
 {
 	/**
 	 * success response method.

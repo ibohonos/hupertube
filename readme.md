@@ -35,7 +35,8 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 
 `php artisan key:generate`
 
-Налаштувати з'єднання з БД в `.env` файлі
+Налаштувати з'єднання з БД в `.env` файлі а також, якщо ви скачуєте в юніті,
+то вам потрібно забрати `#` в налаштуванні `DB_SOCKET` і внести зміни відповідно до вашого МАМПу
 
 `npm install`
 

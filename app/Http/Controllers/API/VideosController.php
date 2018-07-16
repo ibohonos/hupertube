@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Videos;
 
-class VideosController extends Controller
+class VideosController extends APIController
 {
 	/**
 	 * Display a listing of the resource.
