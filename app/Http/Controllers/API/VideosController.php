@@ -14,7 +14,9 @@ class VideosController extends APIController
 	 */
 	public function index()
 	{
-		//
+		$videos = Videos::all();
+
+		return $this->sendResponse($videos, "OK");
 	}
 
 	/**

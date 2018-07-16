@@ -1,23 +1,33 @@
 <template>
 	<div class="alert-info">
+		<h1 class="text-center">User info</h1>
 		<table class="table">
 			<thead>
-				<td>Login</td>
-				<td>Token</td>
+				<tr>
+					<td>ID</td>
+					<td>Login</td>
+					<td>First name</td>
+					<td>Last name</td>
+					<td>Token</td>
+				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>{{ users.name }}</td>
-					<td>{{ users.api_token }}</td>
+					<td>{{ user.id }}</td>
+					<td>{{ user.name }}</td>
+					<td>{{ user.first_name }}</td>
+					<td>{{ user.last_name }}</td>
+					<td>{{ user.api_token }}</td>
 				</tr>
 			</tbody>
 		</table>
+		<h2 class="text-center">Videos info</h2>
+		{{ videos.data }}
 	</div>
 </template>
 
 <script>
 	export default {
-//		 name: "test-a-p-i",
 		props: {
 			token: {
 				type: String,
@@ -27,14 +37,20 @@
 
 		 data: function() {
 		 	return  {
-		 		users: {}
+				user: {},
+				videos: {}
 			 }
 		 },
 
 		mounted() {
-			axios.get('/api/user?api_token=' + this.token)
+			axios.get('/api/v2/user?api_token=' + this.token)
 				.then(response => {
-					this.users = response.data;
+					this.user = response.data;
+				});
+
+			axios.get('/api/v1/videos')
+				.then(response => {
+					this.videos = response.data;
 				});
 		},
 	}

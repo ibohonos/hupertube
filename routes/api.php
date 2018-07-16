@@ -14,15 +14,12 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::post('register', 'API\RegisterController@register');
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-	return $request->user();
-//	return $request;
+Route::prefix('v1')->namespace('API')->group(function () {
+	Route::get('/videos', 'VideosController@index');
 });
 
-//Route::get('/user', function (Request $request) {
-//	return $request;
-//});
-
-
+Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function () {
+	Route::get('/user', function (Request $request) {
+		return $request->user();
+	});
+});
