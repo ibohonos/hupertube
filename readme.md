@@ -41,3 +41,5 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 `npm install`
 
 `php artisan migrate`
+
+Якщо буде помилка `Prevents access to $this/self from included files.` при `php artisan route:list` тоді потрібно ввести ці команди: `composer clear-cache` та `composer dump-autoload`
