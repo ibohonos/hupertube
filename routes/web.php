@@ -21,3 +21,16 @@ Route::get('/home', [
 	'uses' => 'HomeController@index',
 	'as' => 'home'
 ]);
+
+Route::get('/mailable', function () {
+	$user = App\User::find(1);
+
+	return new App\Mail\RegisterUser($user);
+});
+
+Route::get('/user/activate/{id}/{token}', [
+	'uses' => 'HomeController@activateUser',
+	'as' => 'user.activate'
+]);
+
+Route::get('/activate', 'HomeController@activateView');

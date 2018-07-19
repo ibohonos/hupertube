@@ -26,4 +26,24 @@ class User extends Authenticatable
 	protected $hidden = [
 		'password', 'remember_token',
 	];
+
+	public static function getUserByEmail($email)
+	{
+		return self::email($email)->first();
+	}
+
+	public function activatedUser($id)
+	{
+		return $this->id($id)->first();
+	}
+
+	public function scopeId($query, $id)
+	{
+		$query->where(['id' => $id]);
+	}
+
+	public static function scopeEmail($query, $email)
+	{
+		$query->where(['email' => $email]);
+	}
 }

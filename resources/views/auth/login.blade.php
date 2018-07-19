@@ -7,6 +7,14 @@
 			<div class="card">
 				<div class="card-header">{{ __('Login') }}</div>
 
+				@if (\Illuminate\Support\Facades\Session::has('not_activate'))
+					<span class="alert-danger text-center" role="alert">
+						<strong>{{ \Illuminate\Support\Facades\Session::get('not_activate') }}</strong>
+						@php
+							\Illuminate\Support\Facades\Session::remove('not_activate');
+						@endphp
+					</span>
+				@endif
 				<div class="card-body">
 					<form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
 						@csrf
