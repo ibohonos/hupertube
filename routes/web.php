@@ -17,16 +17,11 @@ Route::get('/', [
 	'uses' => 'HomeController@index',
 	'as' => 'index'
 ]);
+
 Route::get('/home', [
 	'uses' => 'HomeController@index',
 	'as' => 'home'
 ]);
-
-Route::get('/mailable', function () {
-	$user = App\User::find(1);
-
-	return new App\Mail\RegisterUser($user);
-});
 
 Route::get('/user/activate/{id}/{token}', [
 	'uses' => 'HomeController@activateUser',
@@ -34,3 +29,15 @@ Route::get('/user/activate/{id}/{token}', [
 ]);
 
 Route::get('/activate', 'HomeController@activateView');
+
+Route::middleware('auth')->group(function () {
+	Route::get('/videos', [
+		'uses' => 'VideosController@index',
+		'as' => 'videos.index'
+	]);
+
+	Route::get('/videos/add', [
+		'uses' => 'VideosController@add',
+		'as' => 'videos.add'
+	]);
+});

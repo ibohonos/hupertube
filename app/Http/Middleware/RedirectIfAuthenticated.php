@@ -22,7 +22,7 @@ class RedirectIfAuthenticated
 		if ($request->getPathInfo() == '/login' && $request->getMethod() == "POST") {
 			$email = $request->request->get('email');
 			if (User::getUserByEmail($email) && User::getUserByEmail($email)->active == 0) {
-				Session::put('not_activate', 'Ваш аккаунт не активен!');
+				Session::put('not_activate', 'Please activate your account!');
 
 				return redirect('/login');
 			}

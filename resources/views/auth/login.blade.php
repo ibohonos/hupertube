@@ -7,12 +7,10 @@
 			<div class="card">
 				<div class="card-header">{{ __('Login') }}</div>
 
-				@if (\Illuminate\Support\Facades\Session::has('not_activate'))
-					<span class="alert-danger text-center" role="alert">
-						<strong>{{ \Illuminate\Support\Facades\Session::get('not_activate') }}</strong>
-						@php
-							\Illuminate\Support\Facades\Session::remove('not_activate');
-						@endphp
+				@if (session('not_activate'))
+					<span class="alert alert-danger text-center" role="alert">
+						<strong>{{ session('not_activate') }}</strong>
+						@php (session()->remove('not_activate'))
 					</span>
 				@endif
 				<div class="card-body">
