@@ -13,6 +13,10 @@
 
 Auth::routes();
 
+Route::get('/login/{social}', 'Auth\LoginController@redirectToProvider')->where('social','facebook|linkedin|google|github');
+
+Route::get('/login/{social}/callback', 'Auth\LoginController@handleProviderCallback')->where('social','facebook|linkedin|google|github');
+
 Route::get('/', [
 	'uses' => 'HomeController@index',
 	'as' => 'index'

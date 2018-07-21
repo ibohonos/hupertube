@@ -69,15 +69,26 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
-		$user = User::create([
-			'name' => $data['name'],
-			'first_name' => $data['first_name'],
-			'last_name' => $data['last_name'],
-			'email' => $data['email'],
-			'password' => Hash::make($data['password']),
-			'api_token' => str_random(60)
-		]);
-
+		if ($data['social']) :
+			$user = User::create([
+				'name' => $data['name'],
+				'first_name' => $data['first_name'],
+				'last_name' => $data['last_name'],
+				'email' => $data['email'],
+				'password' => Hash::make($data['password']),
+				'api_token' => str_random(60),
+				$data['social'] .'_token' => $data['token']
+			]);
+		else:
+			$user = User::create([
+				'name' => $data['name'],
+				'first_name' => $data['first_name'],
+				'last_name' => $data['last_name'],
+				'email' => $data['email'],
+				'password' => Hash::make($data['password']),
+				'api_token' => str_random(60)
+			]);
+		endif;
 		Mail::to($data['email'])->send(new RegisterUser($user));
 
 		return $user;

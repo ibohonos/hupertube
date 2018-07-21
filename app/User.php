@@ -15,7 +15,7 @@ class User extends Authenticatable
 	 * @var array
 	 */
 	protected $fillable = [
-		'name', 'first_name', 'last_name', 'email', 'password', 'api_token'
+		'name', 'first_name', 'last_name', 'email', 'password', 'api_token', 'github_token', 'facebook_token', 'linkedin_token', 'google_token', '42_token'
 	];
 
 	/**
@@ -26,6 +26,16 @@ class User extends Authenticatable
 	protected $hidden = [
 		'password', 'remember_token',
 	];
+
+	/**
+	 * User has many videos
+	 *
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function videos()
+	{
+		return $this->hasMany(Videos::class);
+	}
 
 	public static function getUserByEmail($email)
 	{

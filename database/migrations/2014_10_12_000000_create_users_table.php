@@ -23,6 +23,11 @@ class CreateUsersTable extends Migration
 			$table->string('avatar')->default('storage/avatars/default.jpg');
 			$table->boolean('active')->default('0');
 			$table->string('api_token', 60)->unique();
+			$table->string('github_token')->unique()->nullable();
+			$table->string('facebook_token')->unique()->nullable();
+			$table->string('linkedin_token')->unique()->nullable();
+			$table->string('google_token')->unique()->nullable();
+			$table->string('42_token')->unique()->nullable();
 			$table->rememberToken();
 			$table->timestamps();
 		});

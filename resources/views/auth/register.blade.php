@@ -15,7 +15,11 @@
 							<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Login') }}</label>
 
 							<div class="col-md-6">
-								<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+								@if(!empty($name))
+									<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $name }}" required autofocus>
+								@else
+									<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+								@endif
 
 								@if ($errors->has('name'))
 									<span class="invalid-feedback" role="alert">
@@ -57,7 +61,11 @@
 							<label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
 							<div class="col-md-6">
-								<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+								@if(!empty($email))
+									<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $email }}" required>
+								@else
+									<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+								@endif
 
 								@if ($errors->has('email'))
 									<span class="invalid-feedback" role="alert">
@@ -91,12 +99,30 @@
 
 						<div class="form-group row mb-0">
 							<div class="col-md-6 offset-md-4">
+								@if (isset($social) && $social)
+									<input type="hidden" name="social" value="{{ $social }}">
+								@endif
+								@if (isset($token) && $token)
+									<input type="hidden" name="token" value="{{ $token }}">
+								@endif
 								<button type="submit" class="btn btn-primary">
 									{{ __('Register') }}
 								</button>
 							</div>
 						</div>
 					</form>
+					<div class="form-group">
+						<label for="name" class="col-md-4 control-label">Register With</label>
+						<div class="col-md-6">
+							<a href="{{ url('login/facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i>Facebook</a>
+{{--							<a href="{{ url('login/twitter') }}" class="btn btn-social-icon btn-twitter"><i class="fa fa-twitter"></i></a>--}}
+{{--							<a href="{{ url('login/google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i></a>--}}
+{{--							<a href="{{ url('login/linkedin') }}" class="btn btn-social-icon btn-linkedin"><i class="fa fa-linkedin"></i></a>--}}
+							<a href="{{ url('login/github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i>Github</a>
+{{--							<a href="{{ url('login/bitbucket') }}" class="btn btn-social-icon btn-bitbucket"><i class="fa fa-bitbucket"></i></a>--}}
+						</div>
+					</div>
+				</div>
 				</div>
 			</div>
 		</div>
