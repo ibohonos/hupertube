@@ -69,7 +69,7 @@ class RegisterController extends Controller
 	 */
 	protected function create(array $data)
 	{
-		if ($data['social']) :
+		if (isset($data['social']) && $data['social']) :
 			$user = User::create([
 				'name' => $data['name'],
 				'first_name' => $data['first_name'],

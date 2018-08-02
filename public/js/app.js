@@ -49281,7 +49281,7 @@ var __vue_template_functional__ = false
 /* styles */
 var __vue_styles__ = injectStyle
 /* scopeId */
-var __vue_scopeId__ = "data-v-7c673f7e"
+var __vue_scopeId__ = "data-v-ce43e9fe"
 /* moduleIdentifier (server only) */
 var __vue_module_identifier__ = null
 var Component = normalizeComponent(
@@ -49292,7 +49292,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/TestAPI.vue"
+Component.options.__file = "resources\\assets\\js\\components\\TestAPI.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -49301,9 +49301,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7c673f7e", Component.options)
+    hotAPI.createRecord("data-v-ce43e9fe", Component.options)
   } else {
-    hotAPI.reload("data-v-7c673f7e", Component.options)
+    hotAPI.reload("data-v-ce43e9fe", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -49324,13 +49324,13 @@ var content = __webpack_require__(43);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(45)("22dd09a8", content, false, {});
+var update = __webpack_require__(45)("b17522bc", content, false, {});
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c673f7e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TestAPI.vue", function() {
-     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-7c673f7e\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TestAPI.vue");
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-ce43e9fe\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TestAPI.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-ce43e9fe\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./TestAPI.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -49817,7 +49817,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7c673f7e", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-ce43e9fe", module.exports)
   }
 }
 
@@ -49847,7 +49847,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/js/components/Videos.vue"
+Component.options.__file = "resources\\assets\\js\\components\\Videos.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -49856,9 +49856,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-47d0a44f", Component.options)
+    hotAPI.createRecord("data-v-467ea18f", Component.options)
   } else {
-    hotAPI.reload("data-v-47d0a44f", Component.options)
+    hotAPI.reload("data-v-467ea18f", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -49874,6 +49874,10 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
 //
 //
 //
@@ -49905,7 +49909,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n\t" + _vm._s(_vm.videos.data) + "\n")])
+  return _c(
+    "div",
+    { staticClass: "row" },
+    _vm._l(_vm.videos.data, function(video) {
+      return _c("div", { staticClass: "col-md-12" }, [
+        _c("a", { attrs: { href: "/video/" + video.id } }, [
+          _vm._v(_vm._s(video.title))
+        ]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(video.description))]),
+        _vm._v(" "),
+        _c("p", [_vm._v(_vm._s(video.created_at))])
+      ])
+    })
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -49913,7 +49931,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-47d0a44f", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-467ea18f", module.exports)
   }
 }
 

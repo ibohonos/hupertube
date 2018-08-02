@@ -44,4 +44,18 @@ Route::middleware('auth')->group(function () {
 		'uses' => 'VideosController@add',
 		'as' => 'videos.add'
 	]);
+
+	Route::post('/videos/store', [
+		'uses' => 'VideosController@store',
+		'as' => 'videos.store'
+	]);
+
+	Route::get('/video/{id}', [
+		'uses' => 'VideosController@show',
+		'as' => 'videos.show'
+	]);
+
+	Route::get('/play/videos/{file}', [
+		'uses' => 'VideosController@fileShow'
+	]);
 });
