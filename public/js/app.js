@@ -14002,8 +14002,9 @@ window.Vue = __webpack_require__(38);
  */
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('test-api', __webpack_require__(41));
 Vue.component('videos', __webpack_require__(49));
+Vue.component('test-api', __webpack_require__(41));
+Vue.component('video-details', __webpack_require__(62));
 
 var app = new Vue({
   el: '#app'
@@ -14052,6 +14053,11 @@ if (token) {
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+
+window.axios.defaults.headers.common = {
+  'Accept': 'application/json',
+  'Content-Type': 'application/json'
+};
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -49348,7 +49354,7 @@ exports = module.exports = __webpack_require__(44)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -49741,8 +49747,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 	data: function data() {
 		return {
-			user: {},
-			videos: {}
+			user: {}
 		};
 	},
 
@@ -49751,10 +49756,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 		axios.get('/api/v2/user?api_token=' + this.token).then(function (response) {
 			_this.user = response.data;
-		});
-
-		axios.get('/api/v1/videos').then(function (response) {
-			_this.videos = response.data;
 		});
 	}
 });
@@ -49767,30 +49768,36 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "alert-info" }, [
-    _c("h1", { staticClass: "text-center" }, [_vm._v("User info")]),
-    _vm._v(" "),
-    _c("table", { staticClass: "table" }, [
-      _vm._m(0),
+  return _c(
+    "div",
+    { staticClass: "alert-info" },
+    [
+      _c("h1", { staticClass: "text-center" }, [_vm._v("User info")]),
       _vm._v(" "),
-      _c("tbody", [
-        _c("tr", [
-          _c("td", [_vm._v(_vm._s(_vm.user.id))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.user.name))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.user.first_name))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.user.last_name))]),
-          _vm._v(" "),
-          _c("td", [_vm._v(_vm._s(_vm.user.api_token))])
+      _c("table", { staticClass: "table" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("tbody", [
+          _c("tr", [
+            _c("td", [_vm._v(_vm._s(_vm.user.id))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.user.name))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.user.first_name))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.user.last_name))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.user.api_token))])
+          ])
         ])
-      ])
-    ]),
-    _vm._v(" "),
-    _c("h2", { staticClass: "text-center" }, [_vm._v("Videos info")]),
-    _vm._v("\n\t" + _vm._s(_vm.videos.data) + "\n")
-  ])
+      ]),
+      _vm._v(" "),
+      _c("videos"),
+      _vm._v(" "),
+      _c("h2", { staticClass: "text-center" }, [_vm._v("Videos info")])
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -49895,9 +49902,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	mounted: function mounted() {
 		var _this = this;
 
-		axios.get('/api/v1/videos').then(function (response) {
-			_this.videos = response.data;
+		axios.get('https://yts.am/api/v2/list_movies.json?limit=20&page=2').then(function (response) {
+			_this.videos = response.data.data;
+			console.log(response.data);
 		});
+		// axios.get('https://eztv.ag/api/get-torrents?limit=30&page=2')
+		// 	.then(response => {
+		// 		this.videos = response.data;
+		// 		console.log(response.data);
+		// 	});
 	}
 });
 
@@ -49912,15 +49925,17 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "row" },
-    _vm._l(_vm.videos.data, function(video) {
-      return _c("div", { staticClass: "col-md-12" }, [
+    _vm._l(_vm.videos.movies, function(video) {
+      return _c("div", { staticClass: "col-md-3" }, [
         _c("a", { attrs: { href: "/video/" + video.id } }, [
-          _vm._v(_vm._s(video.title))
+          _c("img", { attrs: { src: video.large_cover_image, width: "100%" } })
         ]),
         _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(video.description))]),
-        _vm._v(" "),
-        _c("p", [_vm._v(_vm._s(video.created_at))])
+        _c("h3", [
+          _c("a", { attrs: { href: "/video/" + video.id } }, [
+            _vm._v(_vm._s(video.title))
+          ])
+        ])
       ])
     })
   )
@@ -49940,6 +49955,248 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(63)
+}
+var normalizeComponent = __webpack_require__(11)
+/* script */
+var __vue_script__ = __webpack_require__(65)
+/* template */
+var __vue_template__ = __webpack_require__(66)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = "data-v-8c52ae84"
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\VideoDetails.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-8c52ae84", Component.options)
+  } else {
+    hotAPI.reload("data-v-8c52ae84", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(64);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(45)("036fc492", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8c52ae84\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VideoDetails.vue", function() {
+     var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-8c52ae84\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./VideoDetails.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(44)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 65 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		all: {
+			type: Object,
+			required: true
+		}
+	},
+
+	data: function data() {
+		return {
+			video: {},
+			api_key: 'e4649c026a8d8a3c93ed840286816339'
+		};
+	},
+
+	mounted: function mounted() {
+		var _this = this;
+
+		axios.get('https://api.themoviedb.org/3/find/' + this.all.imdb_code + '?api_key=' + this.api_key + '&external_source=imdb_id&language=ru_RU').then(function (response) {
+			_this.video = response.data.movie_results[0];
+			console.log(_this.video);
+		});
+	}
+});
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "row" }, [
+    _c("div", { staticClass: "col-md-12" }, [
+      _c("h1", { staticClass: "text-center" }, [
+        _vm._v(_vm._s(_vm.video.title))
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-md-4" }, [
+      _c("img", {
+        attrs: {
+          src: "https://image.tmdb.org/t/p/w1280" + _vm.video.poster_path,
+          width: "100%"
+        }
+      })
+    ]),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "col-md-8" },
+      [
+        _c("p", [_vm._v(_vm._s(_vm.video.overview))]),
+        _vm._v(" "),
+        _c("p", [_vm._v("IMDb: " + _vm._s(_vm.all.rating))]),
+        _vm._v(" "),
+        _c("p", [_vm._v("Дата релізу: " + _vm._s(_vm.video.release_date))]),
+        _vm._v(" "),
+        _c("span", [_vm._v("Жанр:")]),
+        _vm._v(" "),
+        _vm._l(_vm.all.genres, function(janr) {
+          return _c("div", [_c("span", [_vm._v(_vm._s(janr))])])
+        }),
+        _vm._v(" "),
+        _c("span", [_vm._v("Якість:")]),
+        _vm._v(" "),
+        _vm._l(_vm.all.torrents, function(torrent) {
+          return _c("div", [
+            _c("a", { attrs: { href: torrent.url } }, [
+              _vm._v(_vm._s(torrent.quality))
+            ])
+          ])
+        }),
+        _vm._v(" "),
+        _vm.all.yt_trailer_code
+          ? _c("div", [
+              _c("p", [_vm._v("Трейлер:")]),
+              _vm._v(" "),
+              _c("iframe", {
+                attrs: {
+                  width: "560",
+                  height: "315",
+                  src:
+                    "https://www.youtube.com/embed/" + _vm.all.yt_trailer_code,
+                  frameborder: "0",
+                  allow: "autoplay; encrypted-media",
+                  allowfullscreen: ""
+                }
+              })
+            ])
+          : _vm._e()
+      ],
+      2
+    )
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-8c52ae84", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

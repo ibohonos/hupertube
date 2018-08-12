@@ -42,8 +42,19 @@ class VideosController extends Controller
 
 	public function show($id)
 	{
-		$this->data['video'] = Videos::findOrFail($id);
+//		$this->data['video'] = Videos::findOrFail($id);
 
+		$url = "https://yts.am/api/v2/movie_details.json?movie_id=" . $id;
+		$options = array(
+			'https' => array(
+//				'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+				'method'  => 'GET'
+			)
+		);
+//		$context  = stream_context_create($options);
+		$result = json_decode(file_get_contents($url), TRUE);
+//		dd($result['data']['movie']);
+		$this->data['video'] = $result['data']['movie'];
 		return view('videos.show', $this->data);
 	}
 

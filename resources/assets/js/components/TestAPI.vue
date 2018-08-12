@@ -21,8 +21,8 @@
 				</tr>
 			</tbody>
 		</table>
+		<videos></videos>
 		<h2 class="text-center">Videos info</h2>
-		{{ videos.data }}
 	</div>
 </template>
 
@@ -38,7 +38,6 @@
 		 data: function() {
 		 	return  {
 				user: {},
-				videos: {}
 			 }
 		 },
 
@@ -46,11 +45,6 @@
 			axios.get('/api/v2/user?api_token=' + this.token)
 				.then(response => {
 					this.user = response.data;
-				});
-
-			axios.get('/api/v1/videos')
-				.then(response => {
-					this.videos = response.data;
 				});
 		},
 	}
