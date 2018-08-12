@@ -47,4 +47,16 @@ return [
 		'redirect' => env('FACEBOOK_REDIRECT'),
 	],
 
+	'intra' => [
+		'client_id' => env('INTRA_CLIENT_ID'),         // Your intra 42 Client ID
+		'client_secret' => env('INTRA_CLIENT_SECRET'), // Your intra 42 Client Secret
+		'redirect' => env('INTRA_REDIRECT'),
+	],
+
+	'google' => [
+		'client_id' => env('GOOGLE_CLIENT_ID'),         // Your intra 42 Client ID
+		'client_secret' => env('GOOGLE_CLIENT_SECRET'), // Your intra 42 Client Secret
+		'redirect' => env('GOOGLE_REDIRECT'),
+	],
+
 ];

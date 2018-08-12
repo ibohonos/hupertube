@@ -32,16 +32,6 @@ class LoginController extends Controller
 	protected $redirectTo = '/';
 
 	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-		$this->middleware('guest')->except('logout');
-	}
-
-	/**
 	 * Redirect the user to the social authentication page.
 	 *
 	 * @return \Illuminate\Http\Response
@@ -59,13 +49,28 @@ class LoginController extends Controller
 	 */
 	public function handleProviderCallback($social)
 	{
-		$userSocial = Socialite::driver($social)->user(); // Fetch authenticated user
-		$user = User::where(['email' => $userSocial->getEmail()])->first();
-		if ($user) :
-			Auth::login($user, true);
+		if (Auth::user()) :
+			$userSocial = Socialite::driver($social)->user();
+			User::where(['email' => Auth::user()->email])->update([$social . '_id' => $userSocial->getId()]);
 			return redirect('/');
+		else :
+			$userSocial = Socialite::driver($social)->user();
+			$user = User::where([$social . '_id' => $userSocial->getId()])->first();
+			if ($user) :
+				Auth::login($user, true);
+				return redirect('/');
+			endif;
+			$user = User::where(['email' => $userSocial->getEmail()])->first();
+			if ($user) :
+				User::where(['email' => $userSocial->getEmail()])->update([$social . '_id' => $userSocial->getId()]);
+				Auth::login($user, true);
+				return redirect('/');
+			endif;
+			$res = explode(' ', $userSocial->getName());
+			if (!isset($res[1]))
+				$res[1] = null;
+			return view('auth.register',['name' => $userSocial->getNickname(), 'first_name' => $res[0], 'last_name' => $res[1], 'email' => $userSocial->getEmail(), 'social_id' => $userSocial->getId(), 'social' => $social]);
 		endif;
-		return view('auth.register',['name' => $userSocial->getName(), 'email' => $userSocial->getEmail(), 'token' => $userSocial->token, 'social' => $social]);
 	}
 
 }
