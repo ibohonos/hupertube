@@ -17,16 +17,21 @@
 		},
 
 		mounted() {
-			axios.get('https://yts.am/api/v2/list_movies.json?limit=20&page=2')
-				.then(response => {
-					this.videos = response.data.data;
-					console.log(response.data);
-				});
+//			axios.get('https://yts.am/api/v2/list_movies.json?limit=20&page=2')
+//				.then(response => {
+//					this.videos = response.data.data;
+//					console.log(response.data);
+//				});
 			// axios.get('https://eztv.ag/api/get-torrents?limit=30&page=2')
 			// 	.then(response => {
 			// 		this.videos = response.data;
 			// 		console.log(response.data);
 			// 	});
+			axios.get('http://www.omdbapi.com/?apikey=54349d34')
+				.then(resp => {
+					this.videos = resp.data;
+					console.log(this.videos);
+				});
 		}
 	}
 </script>

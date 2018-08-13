@@ -49652,15 +49652,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	mounted: function mounted() {
 		var _this = this;
 
-		axios.get('https://yts.am/api/v2/list_movies.json?limit=20&page=2').then(function (response) {
-			_this.videos = response.data.data;
-			console.log(response.data);
-		});
+		//			axios.get('https://yts.am/api/v2/list_movies.json?limit=20&page=2')
+		//				.then(response => {
+		//					this.videos = response.data.data;
+		//					console.log(response.data);
+		//				});
 		// axios.get('https://eztv.ag/api/get-torrents?limit=30&page=2')
 		// 	.then(response => {
 		// 		this.videos = response.data;
 		// 		console.log(response.data);
 		// 	});
+		axios.get('http://www.omdbapi.com/?apikey=54349d34').then(function (resp) {
+			_this.videos = resp.data;
+			console.log(_this.videos);
+		});
 	}
 });
 
@@ -50036,7 +50041,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -50047,6 +50052,8 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -50087,16 +50094,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	data: function data() {
 		return {
 			video: {},
-			api_key: 'e4649c026a8d8a3c93ed840286816339'
+			api_key: 'e4649c026a8d8a3c93ed840286816339',
+			trailers: {},
+			tr_length: ''
 		};
 	},
 
 	mounted: function mounted() {
 		var _this = this;
 
-		axios.get('https://api.themoviedb.org/3/find/' + this.all.imdb_code + '?api_key=' + this.api_key + '&external_source=imdb_id&language=ru_RU').then(function (response) {
-			_this.video = response.data.movie_results[0];
-			console.log(_this.video);
+		axios.get('https://api.themoviedb.org/3/movie/' + this.all.imdb_code + '?api_key=' + this.api_key + '&language=uk_UA').then(function (response) {
+			_this.video = response.data;
+		});
+		axios.get('https://api.themoviedb.org/3/movie/' + this.all.imdb_code + '/videos?api_key=' + this.api_key + '&language=uk_UA').then(function (resp) {
+			_this.trailers = resp.data;
+			_this.tr_length = _this.trailers.results.length;
 		});
 	}
 });
@@ -50119,7 +50131,9 @@ var render = function() {
     _c("div", { staticClass: "col-md-4" }, [
       _c("img", {
         attrs: {
-          src: "https://image.tmdb.org/t/p/w1280" + _vm.video.poster_path,
+          src:
+            "https://image.tmdb.org/t/p/w600_and_h900_bestv2" +
+            _vm.video.poster_path,
           width: "100%"
         }
       })
@@ -50151,22 +50165,29 @@ var render = function() {
           ])
         }),
         _vm._v(" "),
-        _vm.all.yt_trailer_code
-          ? _c("div", [
-              _c("p", [_vm._v("Трейлер:")]),
-              _vm._v(" "),
-              _c("iframe", {
-                attrs: {
-                  width: "560",
-                  height: "315",
-                  src:
-                    "https://www.youtube.com/embed/" + _vm.all.yt_trailer_code,
-                  frameborder: "0",
-                  allow: "autoplay; encrypted-media",
-                  allowfullscreen: ""
-                }
-              })
-            ])
+        _vm.tr_length
+          ? _c(
+              "div",
+              [
+                _c("p", [_vm._v("Trailers (" + _vm._s(_vm.tr_length) + "):")]),
+                _vm._v(" "),
+                _vm._l(_vm.trailers.results, function(trailer) {
+                  return _c("div", { staticClass: "trailers" }, [
+                    _c("iframe", {
+                      attrs: {
+                        width: "560",
+                        height: "315",
+                        src: "https://www.youtube.com/embed/" + trailer.key,
+                        frameborder: "0",
+                        allow: "autoplay; encrypted-media",
+                        allowfullscreen: ""
+                      }
+                    })
+                  ])
+                })
+              ],
+              2
+            )
           : _vm._e()
       ],
       2
