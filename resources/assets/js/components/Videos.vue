@@ -28,7 +28,6 @@
 			axios.get('/api/v1/videos?page=379')
 				.then(resp => {
 					this.videos = resp.data.data;
-//					console.log(this.videos);
 				});
 		}
 	}
