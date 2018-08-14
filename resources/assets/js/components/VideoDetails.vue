@@ -8,16 +8,23 @@
 		</div>
 		<div class="col-md-8">
 			<p>{{ video.overview }}</p>
-			<p>IMDb: {{ all.rating }}</p>
+			<p>
+				<span>Rating: </span>
+				<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'tt' + imdb_id" data-style="p4">
+					<a :href="'https://www.imdb.com/title/tt' + imdb_id + '/?ref_=plg_rt_1'">
+						<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />
+					</a>
+				</span>
+			</p>
 			<p>Дата релізу: {{ video.release_date }}</p>
-			<span>Жанр:</span>
-			<div v-for="janr in all.genres">
-				<span>{{ janr }}</span>
-			</div>
-			<span>Якість:</span>
-			<div v-for="torrent in all.torrents">
-				<a :href="torrent.url">{{ torrent.quality }}</a>
-			</div>
+			<!--<span>Жанр:</span>-->
+			<!--<div v-for="janr in all.genres">-->
+				<!--<span>{{ janr }}</span>-->
+			<!--</div>-->
+			<!--<span>Якість:</span>-->
+			<!--<div v-for="torrent in all.torrents">-->
+				<!--<a :href="torrent.url">{{ torrent.quality }}</a>-->
+			<!--</div>-->
 			<div v-if="tr_length">
 				<p>Trailers ({{ tr_length }}):</p>
 				<div class="trailers" v-for="trailer in trailers.results">
@@ -29,10 +36,20 @@
 </template>
 
 <script>
+	(function(d, s, id) {
+		var js, stags = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)){
+			return;
+		}
+		js = d.createElement(s);
+		js.id = id;
+		js.src = "https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
+		stags.parentNode.insertBefore(js,stags);
+	})(document, "script", "imdb-rating-api");
 	export default {
 		props: {
-			all: {
-				type: Object,
+			imdb_id: {
+				type: String,
 				required: true
 			}
 		},
@@ -47,11 +64,11 @@
 		},
 
 		mounted() {
-			axios.get('https://api.themoviedb.org/3/movie/' + this.all.imdb_code + '?api_key=' + this.api_key + '&language=uk_UA')
+			axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=ru_RU')
 				.then(response => {
 					this.video = response.data;
 				});
-			axios.get('https://api.themoviedb.org/3/movie/' + this.all.imdb_code + '/videos?api_key=' + this.api_key + '&language=uk_UA')
+			axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '/videos?api_key=' + this.api_key + '&language=ru_RU')
 				.then(resp => {
 					this.trailers = resp.data;
 					this.tr_length = this.trailers.results.length;

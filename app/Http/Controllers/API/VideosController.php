@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers\API;
 
+use App\AllMovieIds;
 use Illuminate\Http\Request;
-use App\Videos;
+use Illuminate\Support\Facades\Storage;
 
 class VideosController extends APIController
 {
@@ -14,7 +15,9 @@ class VideosController extends APIController
 	 */
 	public function index()
 	{
-		$videos = Videos::all();
+		$videos = AllMovieIds::paginate(20);
+//		$videos = Storage::disk('local')->get('public/db/title.basics.tsv');
+//		dd($videos);
 
 		return $this->sendResponse($videos, "OK");
 	}

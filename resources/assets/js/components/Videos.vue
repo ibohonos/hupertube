@@ -1,9 +1,7 @@
 <template>
 	<div class="row">
-		<div class="col-md-3" v-for="video in videos.movies">
-			<a :href="'/video/' + video.id"><img :src="video.large_cover_image" width="100%"></a>
-			<h3><a :href="'/video/' + video.id">{{ video.title }}</a></h3>
-			<!--<p>{{ video.synopsis }}</p>-->
+		<div class="col-md-3" v-for="video in videos.data">
+			<video-list :imdb_id="video.imdb_id"></video-list>
 		</div>
 	</div>
 </template>
@@ -27,10 +25,10 @@
 			// 		this.videos = response.data;
 			// 		console.log(response.data);
 			// 	});
-			axios.get('http://www.omdbapi.com/?apikey=54349d34')
+			axios.get('/api/v1/videos?page=379')
 				.then(resp => {
-					this.videos = resp.data;
-					console.log(this.videos);
+					this.videos = resp.data.data;
+//					console.log(this.videos);
 				});
 		}
 	}

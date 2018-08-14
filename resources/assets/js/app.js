@@ -17,6 +17,7 @@ window.Vue = require('vue');
  */
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('video-list', require('./components/VideoList.vue'));
 Vue.component('videos', require('./components/Videos.vue'));
 Vue.component('test-api', require('./components/TestAPI.vue'));
 Vue.component('video-details', require('./components/VideoDetails.vue'));
