@@ -23,7 +23,7 @@
 		},
 
 		mounted() {
-			axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=ru_RU')
+			axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=ru_RU')
 				.then(response => {
 					this.video = response.data;
 					console.log(this.video);

@@ -402,110 +402,6 @@ module.exports = g;
 
 /***/ }),
 /* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-var utils = __webpack_require__(0);
-var normalizeHeaderName = __webpack_require__(24);
-
-var DEFAULT_CONTENT_TYPE = {
-  'Content-Type': 'application/x-www-form-urlencoded'
-};
-
-function setContentTypeIfUnset(headers, value) {
-  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
-    headers['Content-Type'] = value;
-  }
-}
-
-function getDefaultAdapter() {
-  var adapter;
-  if (typeof XMLHttpRequest !== 'undefined') {
-    // For browsers use XHR adapter
-    adapter = __webpack_require__(8);
-  } else if (typeof process !== 'undefined') {
-    // For node use HTTP adapter
-    adapter = __webpack_require__(8);
-  }
-  return adapter;
-}
-
-var defaults = {
-  adapter: getDefaultAdapter(),
-
-  transformRequest: [function transformRequest(data, headers) {
-    normalizeHeaderName(headers, 'Content-Type');
-    if (utils.isFormData(data) ||
-      utils.isArrayBuffer(data) ||
-      utils.isBuffer(data) ||
-      utils.isStream(data) ||
-      utils.isFile(data) ||
-      utils.isBlob(data)
-    ) {
-      return data;
-    }
-    if (utils.isArrayBufferView(data)) {
-      return data.buffer;
-    }
-    if (utils.isURLSearchParams(data)) {
-      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
-      return data.toString();
-    }
-    if (utils.isObject(data)) {
-      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
-      return JSON.stringify(data);
-    }
-    return data;
-  }],
-
-  transformResponse: [function transformResponse(data) {
-    /*eslint no-param-reassign:0*/
-    if (typeof data === 'string') {
-      try {
-        data = JSON.parse(data);
-      } catch (e) { /* Ignore */ }
-    }
-    return data;
-  }],
-
-  /**
-   * A timeout in milliseconds to abort a request. If set to 0 (default) a
-   * timeout is not created.
-   */
-  timeout: 0,
-
-  xsrfCookieName: 'XSRF-TOKEN',
-  xsrfHeaderName: 'X-XSRF-TOKEN',
-
-  maxContentLength: -1,
-
-  validateStatus: function validateStatus(status) {
-    return status >= 200 && status < 300;
-  }
-};
-
-defaults.headers = {
-  common: {
-    'Accept': 'application/json, text/plain, */*'
-  }
-};
-
-utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
-  defaults.headers[method] = {};
-});
-
-utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
-  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
-});
-
-module.exports = defaults;
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
-
-/***/ }),
-/* 3 */
 /***/ (function(module, exports) {
 
 /* globals __VUE_SSR_CONTEXT__ */
@@ -612,6 +508,110 @@ module.exports = function normalizeComponent (
   }
 }
 
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+var utils = __webpack_require__(0);
+var normalizeHeaderName = __webpack_require__(24);
+
+var DEFAULT_CONTENT_TYPE = {
+  'Content-Type': 'application/x-www-form-urlencoded'
+};
+
+function setContentTypeIfUnset(headers, value) {
+  if (!utils.isUndefined(headers) && utils.isUndefined(headers['Content-Type'])) {
+    headers['Content-Type'] = value;
+  }
+}
+
+function getDefaultAdapter() {
+  var adapter;
+  if (typeof XMLHttpRequest !== 'undefined') {
+    // For browsers use XHR adapter
+    adapter = __webpack_require__(8);
+  } else if (typeof process !== 'undefined') {
+    // For node use HTTP adapter
+    adapter = __webpack_require__(8);
+  }
+  return adapter;
+}
+
+var defaults = {
+  adapter: getDefaultAdapter(),
+
+  transformRequest: [function transformRequest(data, headers) {
+    normalizeHeaderName(headers, 'Content-Type');
+    if (utils.isFormData(data) ||
+      utils.isArrayBuffer(data) ||
+      utils.isBuffer(data) ||
+      utils.isStream(data) ||
+      utils.isFile(data) ||
+      utils.isBlob(data)
+    ) {
+      return data;
+    }
+    if (utils.isArrayBufferView(data)) {
+      return data.buffer;
+    }
+    if (utils.isURLSearchParams(data)) {
+      setContentTypeIfUnset(headers, 'application/x-www-form-urlencoded;charset=utf-8');
+      return data.toString();
+    }
+    if (utils.isObject(data)) {
+      setContentTypeIfUnset(headers, 'application/json;charset=utf-8');
+      return JSON.stringify(data);
+    }
+    return data;
+  }],
+
+  transformResponse: [function transformResponse(data) {
+    /*eslint no-param-reassign:0*/
+    if (typeof data === 'string') {
+      try {
+        data = JSON.parse(data);
+      } catch (e) { /* Ignore */ }
+    }
+    return data;
+  }],
+
+  /**
+   * A timeout in milliseconds to abort a request. If set to 0 (default) a
+   * timeout is not created.
+   */
+  timeout: 0,
+
+  xsrfCookieName: 'XSRF-TOKEN',
+  xsrfHeaderName: 'X-XSRF-TOKEN',
+
+  maxContentLength: -1,
+
+  validateStatus: function validateStatus(status) {
+    return status >= 200 && status < 300;
+  }
+};
+
+defaults.headers = {
+  common: {
+    'Accept': 'application/json, text/plain, */*'
+  }
+};
+
+utils.forEach(['delete', 'get', 'head'], function forEachMethodNoData(method) {
+  defaults.headers[method] = {};
+});
+
+utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
+  defaults.headers[method] = utils.merge(DEFAULT_CONTENT_TYPE);
+});
+
+module.exports = defaults;
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
 /* 4 */
@@ -14073,7 +14073,7 @@ if (typeof DEBUG !== 'undefined' && DEBUG) {
   ) }
 }
 
-var listToStyles = __webpack_require__(49)
+var listToStyles = __webpack_require__(52)
 
 /*
 type StyleObject = {
@@ -14286,7 +14286,7 @@ function applyToTag (styleElement, obj) {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(15);
-module.exports = __webpack_require__(57);
+module.exports = __webpack_require__(60);
 
 
 /***/ }),
@@ -14312,9 +14312,10 @@ window.Vue = __webpack_require__(40);
  */
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
-Vue.component('videos', __webpack_require__(43));
-Vue.component('test-api', __webpack_require__(46));
-Vue.component('video-details', __webpack_require__(52));
+Vue.component('video-list', __webpack_require__(43));
+Vue.component('videos', __webpack_require__(46));
+Vue.component('test-api', __webpack_require__(49));
+Vue.component('video-details', __webpack_require__(55));
 
 var app = new Vue({
   el: '#app'
@@ -35493,7 +35494,7 @@ module.exports = __webpack_require__(21);
 var utils = __webpack_require__(0);
 var bind = __webpack_require__(6);
 var Axios = __webpack_require__(23);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 
 /**
  * Create an instance of Axios
@@ -35576,7 +35577,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(32);
 var dispatchRequest = __webpack_require__(33);
@@ -36115,7 +36116,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(34);
 var isCancel = __webpack_require__(10);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 var isAbsoluteURL = __webpack_require__(35);
 var combineURLs = __webpack_require__(36);
 
@@ -49583,11 +49584,132 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
 var __vue_script__ = __webpack_require__(44)
 /* template */
 var __vue_template__ = __webpack_require__(45)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/VideoList.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-ed4281dc", Component.options)
+  } else {
+    hotAPI.reload("data-v-ed4281dc", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 44 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+	props: {
+		imdb_id: {
+			type: String,
+			required: true
+		}
+	},
+
+	data: function data() {
+		return {
+			video: {},
+			api_key: 'e4649c026a8d8a3c93ed840286816339'
+		};
+	},
+
+	mounted: function mounted() {
+		var _this = this;
+
+		axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=ru_RU').then(function (response) {
+			_this.video = response.data;
+			console.log(_this.video);
+		});
+	}
+});
+
+/***/ }),
+/* 45 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("img", {
+      attrs: {
+        src:
+          "https://image.tmdb.org/t/p/w600_and_h900_bestv2" +
+          _vm.video.poster_path,
+        width: "100%"
+      }
+    }),
+    _vm._v(" "),
+    _c("a", { attrs: { href: "/video/" + _vm.imdb_id } }, [
+      _c("h2", [_vm._v(_vm._s(_vm.video.title))])
+    ]),
+    _vm._v("\n\t" + _vm._s(_vm.video) + "\n")
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-ed4281dc", module.exports)
+  }
+}
+
+/***/ }),
+/* 46 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(2)
+/* script */
+var __vue_script__ = __webpack_require__(47)
+/* template */
+var __vue_template__ = __webpack_require__(48)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49626,11 +49748,12 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 44 */
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -49652,25 +49775,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	mounted: function mounted() {
 		var _this = this;
 
-		//			axios.get('https://yts.am/api/v2/list_movies.json?limit=20&page=2')
-		//				.then(response => {
-		//					this.videos = response.data.data;
-		//					console.log(response.data);
-		//				});
+		axios.get('https://yts.am/api/v2/list_movies.json?limit=50&page=2').then(function (response) {
+			_this.videos = response.data.data;
+			console.log(response.data);
+		});
 		// axios.get('https://eztv.ag/api/get-torrents?limit=30&page=2')
 		// 	.then(response => {
 		// 		this.videos = response.data;
 		// 		console.log(response.data);
 		// 	});
-		axios.get('http://www.omdbapi.com/?apikey=54349d34').then(function (resp) {
-			_this.videos = resp.data;
-			console.log(_this.videos);
-		});
+		//			axios.get('/api/v1/videos?page=379')
+		//				.then(resp => {
+		//					this.videos = resp.data.data;
+		//				});
 	}
 });
 
 /***/ }),
-/* 45 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49681,17 +49803,12 @@ var render = function() {
     "div",
     { staticClass: "row" },
     _vm._l(_vm.videos.movies, function(video) {
-      return _c("div", { staticClass: "col-md-3" }, [
-        _c("a", { attrs: { href: "/video/" + video.id } }, [
-          _c("img", { attrs: { src: video.large_cover_image, width: "100%" } })
-        ]),
-        _vm._v(" "),
-        _c("h3", [
-          _c("a", { attrs: { href: "/video/" + video.id } }, [
-            _vm._v(_vm._s(video.title))
-          ])
-        ])
-      ])
+      return _c(
+        "div",
+        { staticClass: "col-md-3" },
+        [_c("video-list", { attrs: { imdb_id: video.imdb_code } })],
+        1
+      )
     })
   )
 }
@@ -49706,19 +49823,19 @@ if (false) {
 }
 
 /***/ }),
-/* 46 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(47)
+  __webpack_require__(50)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(50)
+var __vue_script__ = __webpack_require__(53)
 /* template */
-var __vue_template__ = __webpack_require__(51)
+var __vue_template__ = __webpack_require__(54)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -49757,13 +49874,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 47 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(48);
+var content = __webpack_require__(51);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -49783,7 +49900,7 @@ if(false) {
 }
 
 /***/ }),
-/* 48 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(12)(false);
@@ -49797,7 +49914,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 
 /***/ }),
-/* 49 */
+/* 52 */
 /***/ (function(module, exports) {
 
 /**
@@ -49830,7 +49947,7 @@ module.exports = function listToStyles (parentId, list) {
 
 
 /***/ }),
-/* 50 */
+/* 53 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -49888,7 +50005,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 51 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -49956,19 +50073,19 @@ if (false) {
 }
 
 /***/ }),
-/* 52 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(53)
+  __webpack_require__(56)
 }
-var normalizeComponent = __webpack_require__(3)
+var normalizeComponent = __webpack_require__(2)
 /* script */
-var __vue_script__ = __webpack_require__(55)
+var __vue_script__ = __webpack_require__(58)
 /* template */
-var __vue_template__ = __webpack_require__(56)
+var __vue_template__ = __webpack_require__(59)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -50007,13 +50124,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 53 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(54);
+var content = __webpack_require__(57);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -50033,7 +50150,7 @@ if(false) {
 }
 
 /***/ }),
-/* 54 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(12)(false);
@@ -50041,13 +50158,13 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 55 */
+/* 58 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50082,11 +50199,29 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
+(function (d, s, id) {
+	var js,
+	    stags = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) {
+		return;
+	}
+	js = d.createElement(s);
+	js.id = id;
+	js.src = "https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
+	stags.parentNode.insertBefore(js, stags);
+})(document, "script", "imdb-rating-api");
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
-		all: {
-			type: Object,
+		imdb_id: {
+			type: String,
 			required: true
 		}
 	},
@@ -50103,10 +50238,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	mounted: function mounted() {
 		var _this = this;
 
-		axios.get('https://api.themoviedb.org/3/movie/' + this.all.imdb_code + '?api_key=' + this.api_key + '&language=uk_UA').then(function (response) {
+		axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=ru_RU').then(function (response) {
 			_this.video = response.data;
 		});
-		axios.get('https://api.themoviedb.org/3/movie/' + this.all.imdb_code + '/videos?api_key=' + this.api_key + '&language=uk_UA').then(function (resp) {
+		axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '/videos?api_key=' + this.api_key + '&language=ru_RU').then(function (resp) {
 			_this.trailers = resp.data;
 			_this.tr_length = _this.trailers.results.length;
 		});
@@ -50114,7 +50249,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 56 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -50139,59 +50274,74 @@ var render = function() {
       })
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "col-md-8" },
-      [
-        _c("p", [_vm._v(_vm._s(_vm.video.overview))]),
+    _c("div", { staticClass: "col-md-8" }, [
+      _c("p", [_vm._v(_vm._s(_vm.video.overview))]),
+      _vm._v(" "),
+      _c("p", [
+        _c("span", [_vm._v("Rating: ")]),
         _vm._v(" "),
-        _c("p", [_vm._v("IMDb: " + _vm._s(_vm.all.rating))]),
-        _vm._v(" "),
-        _c("p", [_vm._v("Дата релізу: " + _vm._s(_vm.video.release_date))]),
-        _vm._v(" "),
-        _c("span", [_vm._v("Жанр:")]),
-        _vm._v(" "),
-        _vm._l(_vm.all.genres, function(janr) {
-          return _c("div", [_c("span", [_vm._v(_vm._s(janr))])])
-        }),
-        _vm._v(" "),
-        _c("span", [_vm._v("Якість:")]),
-        _vm._v(" "),
-        _vm._l(_vm.all.torrents, function(torrent) {
-          return _c("div", [
-            _c("a", { attrs: { href: torrent.url } }, [
-              _vm._v(_vm._s(torrent.quality))
-            ])
-          ])
-        }),
-        _vm._v(" "),
-        _vm.tr_length
-          ? _c(
-              "div",
+        _c(
+          "span",
+          {
+            staticClass: "imdbRatingPlugin",
+            attrs: {
+              "data-user": "ur91229543",
+              "data-title": "tt" + _vm.imdb_id,
+              "data-style": "p4"
+            }
+          },
+          [
+            _c(
+              "a",
+              {
+                attrs: {
+                  href:
+                    "https://www.imdb.com/title/tt" +
+                    _vm.imdb_id +
+                    "/?ref_=plg_rt_1"
+                }
+              },
               [
-                _c("p", [_vm._v("Trailers (" + _vm._s(_vm.tr_length) + "):")]),
-                _vm._v(" "),
-                _vm._l(_vm.trailers.results, function(trailer) {
-                  return _c("div", { staticClass: "trailers" }, [
-                    _c("iframe", {
-                      attrs: {
-                        width: "560",
-                        height: "315",
-                        src: "https://www.youtube.com/embed/" + trailer.key,
-                        frameborder: "0",
-                        allow: "autoplay; encrypted-media",
-                        allowfullscreen: ""
-                      }
-                    })
-                  ])
+                _c("img", {
+                  attrs: {
+                    src:
+                      "https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png",
+                    alt: "video.title"
+                  }
                 })
-              ],
-              2
+              ]
             )
-          : _vm._e()
-      ],
-      2
-    )
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _c("p", [_vm._v("Дата релізу: " + _vm._s(_vm.video.release_date))]),
+      _vm._v(" "),
+      _vm.tr_length
+        ? _c(
+            "div",
+            [
+              _c("p", [_vm._v("Trailers (" + _vm._s(_vm.tr_length) + "):")]),
+              _vm._v(" "),
+              _vm._l(_vm.trailers.results, function(trailer) {
+                return _c("div", { staticClass: "trailers" }, [
+                  _c("iframe", {
+                    attrs: {
+                      width: "560",
+                      height: "315",
+                      src: "https://www.youtube.com/embed/" + trailer.key,
+                      frameborder: "0",
+                      allow: "autoplay; encrypted-media",
+                      allowfullscreen: ""
+                    }
+                  })
+                ])
+              })
+            ],
+            2
+          )
+        : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = []
@@ -50205,7 +50355,7 @@ if (false) {
 }
 
 /***/ }),
-/* 57 */
+/* 60 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
