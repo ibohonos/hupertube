@@ -1,6 +1,4 @@
 *
 !avatars/default.jpg
 !db/all_movie_ids.sql
-!db/getAllMovieIds.json
-!db/getAllMovies.json
 !.gitignore

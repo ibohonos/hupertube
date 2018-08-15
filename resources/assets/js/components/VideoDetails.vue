@@ -11,7 +11,7 @@
 			<p>
 				<span>Rating: </span>
 				<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'tt' + imdb_id" data-style="p4">
-					<a :href="'https://www.imdb.com/title/tt' + imdb_id + '/?ref_=plg_rt_1'">
+					<a :href="'https://www.imdb.com/title/tt' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">
 						<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />
 					</a>
 				</span>

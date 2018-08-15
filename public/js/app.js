@@ -49640,6 +49640,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
 	props: {
@@ -49659,7 +49661,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	mounted: function mounted() {
 		var _this = this;
 
-		axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=ru_RU').then(function (response) {
+		axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=ru_RU').then(function (response) {
 			_this.video = response.data;
 			console.log(_this.video);
 		});
@@ -49675,16 +49677,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("img", {
-      attrs: {
-        src:
-          "https://image.tmdb.org/t/p/w600_and_h900_bestv2" +
-          _vm.video.poster_path,
-        width: "100%"
-      }
-    }),
-    _vm._v(" "),
     _c("a", { attrs: { href: "/video/" + _vm.imdb_id } }, [
+      _c("img", {
+        attrs: {
+          src:
+            "https://image.tmdb.org/t/p/w600_and_h900_bestv2" +
+            _vm.video.poster_path,
+          width: "100%"
+        }
+      }),
+      _vm._v(" "),
       _c("h2", [_vm._v(_vm._s(_vm.video.title))])
     ]),
     _vm._v("\n\t" + _vm._s(_vm.video) + "\n")
@@ -49775,19 +49777,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 	mounted: function mounted() {
 		var _this = this;
 
-		axios.get('https://yts.am/api/v2/list_movies.json?limit=50&page=2').then(function (response) {
-			_this.videos = response.data.data;
-			console.log(response.data);
-		});
+		//			axios.get('https://yts.am/api/v2/list_movies.json?limit=50&page=2')
+		//				.then(response => {
+		//					this.videos = response.data.data;
+		//					console.log(response.data);
+		//
+		//				});
 		// axios.get('https://eztv.ag/api/get-torrents?limit=30&page=2')
 		// 	.then(response => {
 		// 		this.videos = response.data;
 		// 		console.log(response.data);
 		// 	});
-		//			axios.get('/api/v1/videos?page=379')
-		//				.then(resp => {
-		//					this.videos = resp.data.data;
-		//				});
+		axios.get('/api/v1/videos?page=379').then(function (resp) {
+			_this.videos = resp.data.data;
+		});
 	}
 });
 
@@ -49802,11 +49805,11 @@ var render = function() {
   return _c(
     "div",
     { staticClass: "row" },
-    _vm._l(_vm.videos.movies, function(video) {
+    _vm._l(_vm.videos.data, function(video) {
       return _c(
         "div",
         { staticClass: "col-md-3" },
-        [_c("video-list", { attrs: { imdb_id: video.imdb_code } })],
+        [_c("video-list", { attrs: { imdb_id: video.imdb_id } })],
         1
       )
     })
@@ -50298,7 +50301,8 @@ var render = function() {
                   href:
                     "https://www.imdb.com/title/tt" +
                     _vm.imdb_id +
-                    "/?ref_=plg_rt_1"
+                    "/?ref_=plg_rt_1",
+                  target: "_blank"
                 }
               },
               [
