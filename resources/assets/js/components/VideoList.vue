@@ -21,7 +21,7 @@
 			return  {
 				video: {},
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
-				// lang: 'en_US',
+//				 lang: 'en_US',
 				lang: 'ru_RU',
 				// lang: 'uk_UA',
 			}
