@@ -10,7 +10,8 @@
 					{{--</div>--}}
 					<div class="card-body">
 						{{--{{ dd($video) }}--}}
-						<video-details imdb_id="{{ $video->imdb_id }}"></video-details>
+						{{--<video-details imdb_id="{{ $video->imdb_id }}"></video-details>--}}
+						<video-details imdb_id="{{ $video['imdb_id'] }}"></video-details>
 						{{--<div>--}}
 							{{--<img src="{{ $video['large_cover_image'] }}">--}}
 							{{--<video controls>--}}

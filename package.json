@@ -20,6 +20,8 @@
         "vue": "^2.5.7"
     },
     "dependencies": {
-        "@fortawesome/fontawesome-free": "^5.1.1"
+        "@fortawesome/fontawesome-free": "^5.1.1",
+        "plyr": "^3.4.3",
+        "vue-plyr": "^4.0.0"
     }
 }

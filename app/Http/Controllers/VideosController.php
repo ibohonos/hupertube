@@ -43,7 +43,8 @@ class VideosController extends Controller
 
 	public function show($id)
 	{
-		$this->data['video'] = AllMovieIds::where('imdb_id', $id)->first();
+//		$this->data['video'] = AllMovieIds::where('imdb_id', $id)->first();
+		$this->data['video'] = ['imdb_id' => $id];
 
 //		$url = "https://yts.am/api/v2/movie_details.json?movie_id=" . $id;
 //		$options = array(
