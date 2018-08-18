@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('@fortawesome/fontawesome-free/js/fontawesome');
 
 window.Vue = require('vue');
 
@@ -15,7 +16,12 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Vue.component('example-component', require('./components/ExampleComponent.vue'));
+// Vue.component('plyr-video', require('vue-plyr/dist/vue-plyr'));
+Vue.component('video-list', require('./components/VideoList.vue'));
+Vue.component('videos', require('./components/Videos.vue'));
+Vue.component('test-api', require('./components/TestAPI.vue'));
+Vue.component('video-details', require('./components/VideoDetails.vue'));
 
 const app = new Vue({
     el: '#app'

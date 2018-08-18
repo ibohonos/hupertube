@@ -18,5 +18,10 @@
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
         "vue": "^2.5.7"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.1.1",
+        "plyr": "^3.4.3",
+        "vue-plyr": "^4.0.0"
     }
 }

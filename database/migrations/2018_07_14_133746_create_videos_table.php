@@ -6,26 +6,32 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateVideosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('videos', function (Blueprint $table) {
-            $table->increments('id');
-            $table->timestamps();
-        });
-    }
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('videos', function (Blueprint $table) {
+			$table->increments('id');
+			$table->integer('user_id');
+			$table->integer('category_id');
+			$table->string('title');
+			$table->text('description');
+			$table->string('image');
+			$table->string('video');
+			$table->timestamps();
+		});
+	}
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('videos');
-    }
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::dropIfExists('videos');
+	}
 }
