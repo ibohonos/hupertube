@@ -21,6 +21,7 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.1.1",
+        "epic-spinners": "^1.0.3",
         "plyr": "^3.4.3",
         "vue-plyr": "^4.0.0"
     }

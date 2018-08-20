@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 		'as' => 'videos.store'
 	]);
 
-	Route::get('/video/{id}', [
+	Route::get('/video/{id}/{video_id}', [
 		'uses' => 'VideosController@show',
 		'as' => 'videos.show'
 	]);

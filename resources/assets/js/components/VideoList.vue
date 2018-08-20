@@ -1,11 +1,11 @@
 <template>
-	<div>
-		<a :href="'/video/' + imdb_id">
-			<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%" v-if="video.poster_path">
+	<div v-if="!loader">
+		<a :href="'/video/' + imdb_id + '/' + video_id">
+			<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
 			<h2>{{ video.title }}</h2>
 		</a>
-		<!--{{ video }}-->
 	</div>
+	<div class="loader" v-else></div>
 </template>
 
 <script>
@@ -14,29 +14,65 @@
 			imdb_id: {
 				type: String,
 				required: true
+			},
+			video_id: {
+				type: Number,
+				required: true
 			}
 		},
 
-		data: function() {
+		data() {
 			return  {
 				video: {},
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
-//				 lang: 'en_US',
+				loader: true,
+//				lang: 'en_US',
 				lang: 'ru_RU',
-				// lang: 'uk_UA',
+//				lang: 'uk_UA',
 			}
 		},
 
+		methods: {
+			getVideoInfo() {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
+					.then(response => {
+						this.video = response.data;
+						this.loader = false;
+					});
+			}
+		},
+
+//		mounted() {
+//			// axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
+//			// 	.then(response => {
+//			// 		this.video = response.data;
+//			// 		console.log(this.video);
+//			// 	});
+//			axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
+//				.then(response => {
+//					this.video = response.data;
+//				});
+//		}
 		mounted() {
-			// axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-			// 	.then(response => {
-			// 		this.video = response.data;
-			// 		console.log(this.video);
-			// 	});
-			axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-				.then(response => {
-					this.video = response.data;
-				});
+			this.getVideoInfo();
 		}
 	}
 </script>
+
+<style scoped>
+	.loader {
+		border-top: 16px solid blue;
+		border-right: 16px solid green;
+		border-bottom: 16px solid red;
+		border-left: 16px solid pink;
+		border-radius: 50%;
+		width: 100px;
+		height: 100px;
+		animation: spin 2s linear infinite;
+	}
+
+	@keyframes spin {
+		0% { transform: rotate(0deg); }
+		100% { transform: rotate(360deg); }
+	}
+</style>
