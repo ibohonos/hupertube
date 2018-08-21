@@ -106,12 +106,15 @@
 						</div>
 
 						<div class="form-group row mb-0">
-							<div class="col-md-6 offset-md-4">
+							<div class="col-md-8 offset-md-2">
 								@if (isset($social) && $social)
 									<input type="hidden" name="social" value="{{ $social }}">
 								@endif
 								@if (isset($social_id) && $social_id)
 									<input type="hidden" name="social_id" value="{{ $social_id }}">
+								@endif
+								@if (isset($avatar) && $avatar)
+									<input type="hidden" name="avatar" value="{{ $avatar }}">
 								@endif
 								<button type="submit" class="btn btn-primary">
 									{{ __('Register') }}

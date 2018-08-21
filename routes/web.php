@@ -68,4 +68,14 @@ Route::middleware('auth')->group(function () {
 	Route::get('/play/videos/{file}', [
 		'uses' => 'VideosController@fileShow'
 	]);
+
+	Route::get('/profile/edit/unlink/{social}', [
+		'uses' => 'ProfileController@unlink',
+		'as' => 'unlink'
+	]);
+
+	Route::post('/profile/edit/save/', [
+		'uses' => 'ProfileController@save',
+		'as' => 'edit.save'
+	]);
 });

@@ -69,7 +69,7 @@ class LoginController extends Controller
 			$res = explode(' ', $userSocial->getName());
 			if (!isset($res[1]))
 				$res[1] = null;
-			return view('auth.register',['name' => $userSocial->getNickname(), 'first_name' => $res[0], 'last_name' => $res[1], 'email' => $userSocial->getEmail(), 'social_id' => $userSocial->getId(), 'social' => $social]);
+			return view('auth.register',['name' => $userSocial->getNickname(), 'first_name' => $res[0], 'last_name' => $res[1], 'email' => $userSocial->getEmail(), 'social_id' => $userSocial->getId(), 'social' => $social, 'avatar' => $userSocial->getAvatar()]);
 		endif;
 	}
 
