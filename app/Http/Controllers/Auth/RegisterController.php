@@ -77,7 +77,8 @@ class RegisterController extends Controller
 				'email' => $data['email'],
 				'password' => Hash::make($data['password']),
 				'api_token' => str_random(60),
-				$data['social'] .'_id' => $data['social_id']
+				$data['social'] .'_id' => $data['social_id'],
+				'avatar' => $data['avatar']
 			]);
 		else:
 			$user = User::create([

@@ -57,6 +57,9 @@ class LoginController extends Controller
 			$userSocial = Socialite::driver($social)->user();
 			$user = User::where([$social . '_id' => $userSocial->getId()])->first();
 			if ($user) :
+				if (!$user->active) :
+					return redirect(route('user.activate'));
+				endif;
 				Auth::login($user, true);
 				return redirect('/');
 			endif;
@@ -69,7 +72,7 @@ class LoginController extends Controller
 			$res = explode(' ', $userSocial->getName());
 			if (!isset($res[1]))
 				$res[1] = null;
-			return view('auth.register',['name' => $userSocial->getNickname(), 'first_name' => $res[0], 'last_name' => $res[1], 'email' => $userSocial->getEmail(), 'social_id' => $userSocial->getId(), 'social' => $social]);
+			return view('auth.register',['name' => $userSocial->getNickname(), 'first_name' => $res[0], 'last_name' => $res[1], 'email' => $userSocial->getEmail(), 'social_id' => $userSocial->getId(), 'social' => $social, 'avatar' => $userSocial->getAvatar()]);
 		endif;
 	}
 
