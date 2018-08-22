@@ -57,6 +57,9 @@ class LoginController extends Controller
 			$userSocial = Socialite::driver($social)->user();
 			$user = User::where([$social . '_id' => $userSocial->getId()])->first();
 			if ($user) :
+				if (!$user->active) :
+					return redirect(route('user.activate'));
+				endif;
 				Auth::login($user, true);
 				return redirect('/');
 			endif;
