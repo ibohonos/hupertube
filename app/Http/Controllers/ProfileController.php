@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RegisterUser;
+use Faker\Provider\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -22,6 +23,7 @@ class ProfileController extends Controller
 
 	public function index()
 	{
+//		dd(storage_path('app/public/avatars/'));
 		return view('user.index');
 	}
 
@@ -101,6 +103,18 @@ class ProfileController extends Controller
 		Auth::login($user);
 
 		return redirect()->back();
+	}
+
+	public function viewAvatar(Request $request)
+	{
+		return $request;
+	}
+
+	public function saveAvatar(Request $request)
+	{
+		dd($request);
+//		$res = json_decode($request);
+//		return $res['config']['data']['img'];
 	}
 
 }

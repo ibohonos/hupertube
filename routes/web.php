@@ -78,4 +78,14 @@ Route::middleware('auth')->group(function () {
 		'uses' => 'ProfileController@save',
 		'as' => 'edit.save'
 	]);
+
+	Route::get('/profile/avatar/view/', [
+		'uses' => 'ProfileController@viewAvatar',
+		'as' => 'avatar.view'
+	]);
+
+	Route::get('/profile/avatar/save/', [
+		'uses' => 'ProfileController@saveAvatar',
+		'as' => 'avatar.save'
+	]);
 });

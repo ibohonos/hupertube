@@ -22,6 +22,7 @@ Vue.component('video-list', require('./components/VideoList.vue'));
 Vue.component('videos', require('./components/Videos.vue'));
 Vue.component('test-api', require('./components/TestAPI.vue'));
 Vue.component('video-details', require('./components/VideoDetails.vue'));
+Vue.component('avatar-crope', require('./components/AvatarCrope.vue'));
 
 const app = new Vue({
     el: '#app'
