@@ -66,6 +66,9 @@ class LoginController extends Controller
 			$user = User::where(['email' => $userSocial->getEmail()])->first();
 			if ($user) :
 				User::where(['email' => $userSocial->getEmail()])->update([$social . '_id' => $userSocial->getId()]);
+				if (!$user->active) :
+					return redirect(route('user.activate'));
+				endif;
 				Auth::login($user, true);
 				return redirect('/');
 			endif;
