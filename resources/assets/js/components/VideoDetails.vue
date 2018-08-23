@@ -27,13 +27,28 @@
 			</p>
 			<p>Release date: {{ video.release_date }}</p>
 			<span>Genres:</span>
-			<!--<div v-for="janr in genres">-->
-				<!--<span>{{ janr }}</span>-->
-			<!--</div>-->
-			<!--<div v-for="janr in video.genres">-->
-				<span v-for="janr in video.genres">{{ janr.name }} </span>
-			<!--</div>-->
+			<span v-for="janr in video.genres">{{ janr.name }} </span>
 			<br/>
+			<div class="row">
+				<div class="col-md-12">
+					<h2 class="text-center">Actors</h2>
+				</div>
+				<div class="col-md-2" v-for="actor in credits.cast.slice(0, 6)" v-if="actor.profile_path">
+					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%">
+					<p>{{ actor.name }}</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">
+					<h2 class="text-center">Cast</h2>
+				</div>
+				<div class="col-md-2" v-for="actor in credits.crew.slice(0, 6)">
+					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
+					<img src="/storage/avatars/default.jpg" width="100%" v-else>
+					<h5>{{ actor.job }}</h5>
+					<p>{{ actor.name }}</p>
+				</div>
+			</div>
 			<span>Quality:</span>
 			<!--<div v-for="torrent in torrents">-->
 				<a v-for="torrent in torrents" :href="torrent.url" class="torrent_quality">{{ torrent.quality }}</a>
@@ -77,6 +92,7 @@
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				trailers: {},
 				tr_length: '',
+				credits: {},
 				torrents: {},
 //				lang: 'en_US',
 //				lang: 'uk_UA',
@@ -112,6 +128,12 @@
 					.then(resp => {
 						this.torrents = resp.data.data.movie.torrents;
 					});
+			},
+			getVideoCredits() {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/credits?api_key=' + this.api_key + '&language=' + this.lang)
+					.then(resp => {
+						this.credits = resp.data;
+					});
 			}
 		},
 
@@ -119,6 +141,7 @@
 			this.getVideoInfo();
 			this.getVideoTrailers();
 			this.getAllVideoDetails();
+			this.getVideoCredits();
 		},
 
 //		mounted() {
