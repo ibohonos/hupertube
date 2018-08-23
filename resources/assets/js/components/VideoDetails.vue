@@ -12,54 +12,53 @@
 		<div class="col-md-8">
 			<p v-if="video.overview">{{ video.overview }}</p>
 			<p v-else>{{ video_en.overview }}</p>
+			<h3>Rating: </h3>
 			<p>
-				<span>Rating: </span>
-				<!--<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'tt' + imdb_id" data-style="p4">-->
-					<!--<a :href="'https://www.imdb.com/title/tt' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">-->
-						<!--<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />-->
-					<!--</a>-->
-				<!--</span>-->
 				<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'' + imdb_id" data-style="p4">
 					<a :href="'https://www.imdb.com/title/' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">
 						<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />
 					</a>
 				</span>
 			</p>
-			<p>Release date: {{ video.release_date }}</p>
-			<p>Run time: {{ video.runtime }}</p>
-			<span>Genres:</span>
+			<h3>Release date:</h3>
+			<span>{{ video.release_date }}</span>
+			<h3>Run time:</h3>
+			<span>{{ video.runtime }}</span>
+			<h3>Genres:</h3>
 			<span v-for="janr in video.genres">{{ janr.name }} </span>
-			<br/>
 			<div class="row">
 				<div class="col-md-12">
-					<h2 class="text-center">Actors</h2>
+					<h3 class="text-center">Actors</h3>
 				</div>
-				<div class="col-md-2" v-for="actor in credits.cast.slice(0, 6)" v-if="actor.profile_path">
-					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%">
-					<p>{{ actor.name }}</p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<h2 class="text-center">Cast</h2>
-				</div>
-				<div class="col-md-2" v-for="actor in credits.crew.slice(0, 6)">
+				<div class="col-md-2" v-for="(actor, index) in credits.cast" v-if="index < 6">
 					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
 					<img src="/storage/avatars/default.jpg" width="100%" v-else>
-					<h5>{{ actor.job }}</h5>
 					<p>{{ actor.name }}</p>
 				</div>
 			</div>
-			<span>Quality:</span>
-			<!--<div v-for="torrent in torrents">-->
-				<a v-for="torrent in torrents" :href="torrent.url" class="torrent_quality">{{ torrent.quality }}</a>
-			<!--</div>-->
+			<div class="row">
+				<div class="col-md-12">
+					<h3 class="text-center">Cast</h3>
+				</div>
+				<div class="col-md-2" v-for="(cast, index) in credits.crew" v-if="index < 6">
+					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
+					<img src="/storage/avatars/default.jpg" width="100%" v-else>
+					<h5>{{ cast.job }}</h5>
+					<p>{{ cast.name }}</p>
+				</div>
+			</div>
+			<h3>Quality:</h3>
+			<a v-for="torrent in torrents" :href="torrent.url" class="torrent_quality">{{ torrent.quality }}</a>
 			<div v-if="tr_length">
-				<p>Trailers ({{ tr_length }}):</p>
+				<h3>Trailers ({{ tr_length }}):</h3>
 				<div class="trailers" v-for="trailer in trailers.results">
 					<iframe width="560" height="315" :src="'https://www.youtube.com/embed/' + trailer.key" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 				</div>
 			</div>
+		</div>
+		<div class="col-md-12">
+			<h3 class="text-center">Comments:</h3>
+			<comments :imdb_id="imdb_id"></comments>
 		</div>
 	</div>
 </template>
