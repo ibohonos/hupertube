@@ -26,6 +26,7 @@
 				</span>
 			</p>
 			<p>Release date: {{ video.release_date }}</p>
+			<p>Run time: {{ video.runtime }}</p>
 			<span>Genres:</span>
 			<span v-for="janr in video.genres">{{ janr.name }} </span>
 			<br/>
