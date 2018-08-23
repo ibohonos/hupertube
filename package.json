@@ -9,7 +9,8 @@
         "prod": "npm run production",
         "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
     },
-    "devDependencies": {
+    "devDependencies": {},
+    "dependencies": {
         "axios": "^0.18",
         "bootstrap": "^4.0.0",
         "popper.js": "^1.12",
@@ -17,9 +18,7 @@
         "jquery": "^3.2",
         "laravel-mix": "^2.0",
         "lodash": "^4.17.4",
-        "vue": "^2.5.7"
-    },
-    "dependencies": {
+        "vue": "^2.5.7",
         "@fortawesome/fontawesome-free": "^5.1.1",
         "epic-spinners": "^1.0.3",
         "plyr": "^3.4.3",
