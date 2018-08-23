@@ -84,7 +84,7 @@ Route::middleware('auth')->group(function () {
 		'as' => 'avatar.view'
 	]);
 
-	Route::get('/profile/avatar/save/', [
+	Route::post('/avatar/save/', [
 		'uses' => 'ProfileController@saveAvatar',
 		'as' => 'avatar.save'
 	]);

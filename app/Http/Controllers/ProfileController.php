@@ -112,9 +112,16 @@ class ProfileController extends Controller
 
 	public function saveAvatar(Request $request)
 	{
-		dd($request);
-//		$res = json_decode($request);
-//		return $res['config']['data']['img'];
+		$avatar = $request->file('avatar');
+		$path = storage_path('app/public/avatars/');
+		$name = time() . '-' . Auth::user()->first_name . '-' . Auth::user()->last_name . '.' . $avatar->extension();
+		$user = Auth::user();
+
+		$avatar->move($path, $name);
+		$user->avatar = '/storage/avatars/' . $name;
+		$user->save();
+
+		return $name;
 	}
 
 }

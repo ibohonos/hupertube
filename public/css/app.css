@@ -1,5 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);/*!
- * Bootstrap v4.1.2 (https://getbootstrap.com/)
+ * Bootstrap v4.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -228,7 +228,7 @@ img {
   border-style: none;
 }
 
-svg:not(:root) {
+svg {
   overflow: hidden;
   vertical-align: middle;
 }
@@ -1921,7 +1921,6 @@ pre code {
 
 .table {
   width: 100%;
-  max-width: 100%;
   margin-bottom: 1rem;
   background-color: transparent;
 }
@@ -2221,6 +2220,7 @@ pre code {
 .form-control {
   display: block;
   width: 100%;
+  height: calc(2.19rem + 2px);
   padding: 0.375rem 0.75rem;
   font-size: 0.9rem;
   line-height: 1.6;
@@ -2282,10 +2282,6 @@ pre code {
   opacity: 1;
 }
 
-select.form-control:not([size]):not([multiple]) {
-  height: calc(2.19rem + 2px);
-}
-
 select.form-control:focus::-ms-value {
   color: #495057;
   background-color: #fff;
@@ -2333,61 +2329,34 @@ select.form-control:focus::-ms-value {
 }
 
 .form-control-plaintext.form-control-sm,
-.input-group-sm > .form-control-plaintext.form-control,
-.input-group-sm > .input-group-prepend > .form-control-plaintext.input-group-text,
-.input-group-sm > .input-group-append > .form-control-plaintext.input-group-text,
-.input-group-sm > .input-group-prepend > .form-control-plaintext.btn,
-.input-group-sm > .input-group-append > .form-control-plaintext.btn,
-.form-control-plaintext.form-control-lg,
-.input-group-lg > .form-control-plaintext.form-control,
-.input-group-lg > .input-group-prepend > .form-control-plaintext.input-group-text,
-.input-group-lg > .input-group-append > .form-control-plaintext.input-group-text,
-.input-group-lg > .input-group-prepend > .form-control-plaintext.btn,
-.input-group-lg > .input-group-append > .form-control-plaintext.btn {
+.form-control-plaintext.form-control-lg {
   padding-right: 0;
   padding-left: 0;
 }
 
-.form-control-sm,
-.input-group-sm > .form-control,
-.input-group-sm > .input-group-prepend > .input-group-text,
-.input-group-sm > .input-group-append > .input-group-text,
-.input-group-sm > .input-group-prepend > .btn,
-.input-group-sm > .input-group-append > .btn {
+.form-control-sm {
+  height: calc(1.68125rem + 2px);
   padding: 0.25rem 0.5rem;
   font-size: 0.7875rem;
   line-height: 1.5;
   border-radius: 0.2rem;
 }
 
-select.form-control-sm:not([size]):not([multiple]),
-.input-group-sm > select.form-control:not([size]):not([multiple]),
-.input-group-sm > .input-group-prepend > select.input-group-text:not([size]):not([multiple]),
-.input-group-sm > .input-group-append > select.input-group-text:not([size]):not([multiple]),
-.input-group-sm > .input-group-prepend > select.btn:not([size]):not([multiple]),
-.input-group-sm > .input-group-append > select.btn:not([size]):not([multiple]) {
-  height: calc(1.68125rem + 2px);
-}
-
-.form-control-lg,
-.input-group-lg > .form-control,
-.input-group-lg > .input-group-prepend > .input-group-text,
-.input-group-lg > .input-group-append > .input-group-text,
-.input-group-lg > .input-group-prepend > .btn,
-.input-group-lg > .input-group-append > .btn {
+.form-control-lg {
+  height: calc(2.6875rem + 2px);
   padding: 0.5rem 1rem;
   font-size: 1.125rem;
   line-height: 1.5;
   border-radius: 0.3rem;
 }
 
-select.form-control-lg:not([size]):not([multiple]),
-.input-group-lg > select.form-control:not([size]):not([multiple]),
-.input-group-lg > .input-group-prepend > select.input-group-text:not([size]):not([multiple]),
-.input-group-lg > .input-group-append > select.input-group-text:not([size]):not([multiple]),
-.input-group-lg > .input-group-prepend > select.btn:not([size]):not([multiple]),
-.input-group-lg > .input-group-append > select.btn:not([size]):not([multiple]) {
-  height: calc(2.6875rem + 2px);
+select.form-control[size],
+select.form-control[multiple] {
+  height: auto;
+}
+
+textarea.form-control {
+  height: auto;
 }
 
 .form-group {
@@ -2467,13 +2436,13 @@ select.form-control-lg:not([size]):not([multiple]),
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: .5rem;
+  padding: 0.25rem 0.5rem;
   margin-top: .1rem;
-  font-size: .875rem;
-  line-height: 1;
+  font-size: 0.7875rem;
+  line-height: 1.6;
   color: #fff;
-  background-color: rgba(40, 167, 69, 0.8);
-  border-radius: .2rem;
+  background-color: rgba(40, 167, 69, 0.9);
+  border-radius: 0.25rem;
 }
 
 .was-validated .form-control:valid,
@@ -2559,8 +2528,8 @@ select.form-control-lg:not([size]):not([multiple]),
   border-color: #28a745;
 }
 
-.was-validated .custom-file-input:valid ~ .custom-file-label::before,
-.custom-file-input.is-valid ~ .custom-file-label::before {
+.was-validated .custom-file-input:valid ~ .custom-file-label::after,
+.custom-file-input.is-valid ~ .custom-file-label::after {
   border-color: inherit;
 }
 
@@ -2591,13 +2560,13 @@ select.form-control-lg:not([size]):not([multiple]),
   z-index: 5;
   display: none;
   max-width: 100%;
-  padding: .5rem;
+  padding: 0.25rem 0.5rem;
   margin-top: .1rem;
-  font-size: .875rem;
-  line-height: 1;
+  font-size: 0.7875rem;
+  line-height: 1.6;
   color: #fff;
-  background-color: rgba(220, 53, 69, 0.8);
-  border-radius: .2rem;
+  background-color: rgba(220, 53, 69, 0.9);
+  border-radius: 0.25rem;
 }
 
 .was-validated .form-control:invalid,
@@ -2683,8 +2652,8 @@ select.form-control-lg:not([size]):not([multiple]),
   border-color: #dc3545;
 }
 
-.was-validated .custom-file-input:invalid ~ .custom-file-label::before,
-.custom-file-input.is-invalid ~ .custom-file-label::before {
+.was-validated .custom-file-input:invalid ~ .custom-file-label::after,
+.custom-file-input.is-invalid ~ .custom-file-label::after {
   border-color: inherit;
 }
 
@@ -2846,11 +2815,6 @@ select.form-control-lg:not([size]):not([multiple]),
 
 .btn:not(:disabled):not(.disabled) {
   cursor: pointer;
-}
-
-.btn:not(:disabled):not(.disabled):active,
-.btn:not(:disabled):not(.disabled).active {
-  background-image: none;
 }
 
 a.btn.disabled,
@@ -3995,6 +3959,10 @@ input[type="button"].btn-block {
   z-index: 3;
 }
 
+.input-group > .custom-file .custom-file-input:focus {
+  z-index: 4;
+}
+
 .input-group > .form-control:not(:last-child),
 .input-group > .custom-select:not(:last-child) {
   border-top-right-radius: 0;
@@ -4084,6 +4052,30 @@ input[type="button"].btn-block {
   margin-top: 0;
 }
 
+.input-group-lg > .form-control,
+.input-group-lg > .input-group-prepend > .input-group-text,
+.input-group-lg > .input-group-append > .input-group-text,
+.input-group-lg > .input-group-prepend > .btn,
+.input-group-lg > .input-group-append > .btn {
+  height: calc(2.6875rem + 2px);
+  padding: 0.5rem 1rem;
+  font-size: 1.125rem;
+  line-height: 1.5;
+  border-radius: 0.3rem;
+}
+
+.input-group-sm > .form-control,
+.input-group-sm > .input-group-prepend > .input-group-text,
+.input-group-sm > .input-group-append > .input-group-text,
+.input-group-sm > .input-group-prepend > .btn,
+.input-group-sm > .input-group-append > .btn {
+  height: calc(1.68125rem + 2px);
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7875rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
 .input-group > .input-group-prepend > .btn,
 .input-group > .input-group-prepend > .input-group-text,
 .input-group > .input-group-append:not(:last-child) > .btn,
@@ -4107,7 +4099,7 @@ input[type="button"].btn-block {
 .custom-control {
   position: relative;
   display: block;
-  min-height: 1.6rem;
+  min-height: 1.44rem;
   padding-left: 1.5rem;
 }
 
@@ -4154,7 +4146,7 @@ input[type="button"].btn-block {
 
 .custom-control-label::before {
   position: absolute;
-  top: 0.3rem;
+  top: 0.22rem;
   left: -1.5rem;
   display: block;
   width: 1rem;
@@ -4170,7 +4162,7 @@ input[type="button"].btn-block {
 
 .custom-control-label::after {
   position: absolute;
-  top: 0.3rem;
+  top: 0.22rem;
   left: -1.5rem;
   display: block;
   width: 1rem;
@@ -4364,6 +4356,19 @@ input[type="button"].btn-block {
   outline: none;
 }
 
+.custom-range:focus::-webkit-slider-thumb {
+  -webkit-box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+          box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-range:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.custom-range:focus::-ms-thumb {
+  box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
 .custom-range::-moz-focus-outer {
   border: 0;
 }
@@ -4388,12 +4393,6 @@ input[type="button"].btn-block {
     -webkit-transition: none;
     transition: none;
   }
-}
-
-.custom-range::-webkit-slider-thumb:focus {
-  outline: none;
-  -webkit-box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-          box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .custom-range::-webkit-slider-thumb:active {
@@ -4431,11 +4430,6 @@ input[type="button"].btn-block {
   }
 }
 
-.custom-range::-moz-range-thumb:focus {
-  outline: none;
-  box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
 .custom-range::-moz-range-thumb:active {
   background-color: #b3d7ff;
 }
@@ -4453,6 +4447,9 @@ input[type="button"].btn-block {
 .custom-range::-ms-thumb {
   width: 1rem;
   height: 1rem;
+  margin-top: 0;
+  margin-right: 0.2rem;
+  margin-left: 0.2rem;
   background-color: #007bff;
   border: 0;
   border-radius: 1rem;
@@ -4468,11 +4465,6 @@ input[type="button"].btn-block {
     -webkit-transition: none;
     transition: none;
   }
-}
-
-.custom-range::-ms-thumb:focus {
-  outline: none;
-  box-shadow: 0 0 0 1px #f5f8fa, 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
 }
 
 .custom-range::-ms-thumb:active {
@@ -6141,6 +6133,11 @@ button.close {
   overflow: hidden;
 }
 
+.modal-open .modal {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 .modal {
   position: fixed;
   top: 0;
@@ -6151,11 +6148,6 @@ button.close {
   display: none;
   overflow: hidden;
   outline: 0;
-}
-
-.modal-open .modal {
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 .modal-dialog {
@@ -6194,6 +6186,12 @@ button.close {
       -ms-flex-align: center;
           align-items: center;
   min-height: calc(100% - (0.5rem * 2));
+}
+
+.modal-dialog-centered::before {
+  display: block;
+  height: calc(100vh - (0.5rem * 2));
+  content: "";
 }
 
 .modal-content {
@@ -6304,6 +6302,10 @@ button.close {
 
   .modal-dialog-centered {
     min-height: calc(100% - (1.75rem * 2));
+  }
+
+  .modal-dialog-centered::before {
+    height: calc(100vh - (1.75rem * 2));
   }
 
   .modal-sm {
@@ -10470,7 +10472,7 @@ a.text-dark:focus {
 }
 
 /*!
- * Font Awesome Free 5.1.1 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 
@@ -10742,6 +10744,10 @@ readers do not read off random characters that represent icons */
   content: "\F36B";
 }
 
+.fa-air-freshener:before {
+  content: "\F5D0";
+}
+
 .fa-algolia:before {
   content: "\F36C";
 }
@@ -10858,6 +10864,10 @@ readers do not read off random characters that represent icons */
   content: "\F179";
 }
 
+.fa-apple-alt:before {
+  content: "\F5D1";
+}
+
 .fa-apple-pay:before {
   content: "\F415";
 }
@@ -10948,6 +10958,10 @@ readers do not read off random characters that represent icons */
 
 .fa-atlas:before {
   content: "\F558";
+}
+
+.fa-atom:before {
+  content: "\F5D2";
 }
 
 .fa-audible:before {
@@ -11142,6 +11156,10 @@ readers do not read off random characters that represent icons */
   content: "\F1E2";
 }
 
+.fa-bone:before {
+  content: "\F5D7";
+}
+
 .fa-bong:before {
   content: "\F55C";
 }
@@ -11152,6 +11170,10 @@ readers do not read off random characters that represent icons */
 
 .fa-book-open:before {
   content: "\F518";
+}
+
+.fa-book-reader:before {
+  content: "\F5DA";
 }
 
 .fa-bookmark:before {
@@ -11176,6 +11198,10 @@ readers do not read off random characters that represent icons */
 
 .fa-braille:before {
   content: "\F2A1";
+}
+
+.fa-brain:before {
+  content: "\F5DC";
 }
 
 .fa-briefcase:before {
@@ -11286,6 +11312,22 @@ readers do not read off random characters that represent icons */
   content: "\F1B9";
 }
 
+.fa-car-alt:before {
+  content: "\F5DE";
+}
+
+.fa-car-battery:before {
+  content: "\F5DF";
+}
+
+.fa-car-crash:before {
+  content: "\F5E1";
+}
+
+.fa-car-side:before {
+  content: "\F5E4";
+}
+
 .fa-caret-down:before {
   content: "\F0D7";
 }
@@ -11380,6 +11422,10 @@ readers do not read off random characters that represent icons */
 
 .fa-chalkboard-teacher:before {
   content: "\F51C";
+}
+
+.fa-charging-station:before {
+  content: "\F5E7";
 }
 
 .fa-chart-area:before {
@@ -11834,6 +11880,10 @@ readers do not read off random characters that represent icons */
   content: "\F566";
 }
 
+.fa-directions:before {
+  content: "\F5EB";
+}
+
 .fa-discord:before {
   content: "\F392";
 }
@@ -11906,6 +11956,10 @@ readers do not read off random characters that represent icons */
   content: "\F568";
 }
 
+.fa-draw-polygon:before {
+  content: "\F5EE";
+}
+
 .fa-dribbble:before {
   content: "\F17D";
 }
@@ -11968,6 +12022,10 @@ readers do not read off random characters that represent icons */
 
 .fa-ellipsis-v:before {
   content: "\F142";
+}
+
+.fa-ello:before {
+  content: "\F5F1";
 }
 
 .fa-ember:before {
@@ -12630,6 +12688,10 @@ readers do not read off random characters that represent icons */
   content: "\F3AF";
 }
 
+.fa-hackerrank:before {
+  content: "\F5F7";
+}
+
 .fa-hand-holding:before {
   content: "\F4BD";
 }
@@ -12930,6 +12992,10 @@ readers do not read off random characters that represent icons */
   content: "\F1CC";
 }
 
+.fa-kaggle:before {
+  content: "\F5FA";
+}
+
 .fa-key:before {
   content: "\F084";
 }
@@ -12982,6 +13048,10 @@ readers do not read off random characters that represent icons */
   content: "\F109";
 }
 
+.fa-laptop-code:before {
+  content: "\F5FC";
+}
+
 .fa-laravel:before {
   content: "\F3BD";
 }
@@ -13008,6 +13078,10 @@ readers do not read off random characters that represent icons */
 
 .fa-laugh-wink:before {
   content: "\F59C";
+}
+
+.fa-layer-group:before {
+  content: "\F5FD";
 }
 
 .fa-leaf:before {
@@ -13186,6 +13260,10 @@ readers do not read off random characters that represent icons */
   content: "\F277";
 }
 
+.fa-markdown:before {
+  content: "\F60F";
+}
+
 .fa-marker:before {
   content: "\F5A1";
 }
@@ -13290,6 +13368,10 @@ readers do not read off random characters that represent icons */
   content: "\F131";
 }
 
+.fa-microscope:before {
+  content: "\F610";
+}
+
 .fa-microsoft:before {
   content: "\F3CA";
 }
@@ -13386,6 +13468,10 @@ readers do not read off random characters that represent icons */
   content: "\F3D2";
 }
 
+.fa-neos:before {
+  content: "\F612";
+}
+
 .fa-neuter:before {
   content: "\F22C";
 }
@@ -13444,6 +13530,10 @@ readers do not read off random characters that represent icons */
 
 .fa-odnoklassniki-square:before {
   content: "\F264";
+}
+
+.fa-oil-can:before {
+  content: "\F613";
 }
 
 .fa-old-republic:before {
@@ -13710,6 +13800,10 @@ readers do not read off random characters that represent icons */
   content: "\F2FE";
 }
 
+.fa-poop:before {
+  content: "\F619";
+}
+
 .fa-portrait:before {
   content: "\F3E0";
 }
@@ -13918,6 +14012,10 @@ readers do not read off random characters that represent icons */
   content: "\F3E9";
 }
 
+.fa-route:before {
+  content: "\F4D7";
+}
+
 .fa-rss:before {
   content: "\F09E";
 }
@@ -14020,6 +14118,10 @@ readers do not read off random characters that represent icons */
 
 .fa-servicestack:before {
   content: "\F3EC";
+}
+
+.fa-shapes:before {
+  content: "\F61F";
 }
 
 .fa-share:before {
@@ -14298,6 +14400,10 @@ readers do not read off random characters that represent icons */
   content: "\F5C0";
 }
 
+.fa-star-of-life:before {
+  content: "\F621";
+}
+
 .fa-staylinked:before {
   content: "\F3F5";
 }
@@ -14502,6 +14608,14 @@ readers do not read off random characters that represent icons */
   content: "\F4F9";
 }
 
+.fa-teeth:before {
+  content: "\F62E";
+}
+
+.fa-teeth-open:before {
+  content: "\F62F";
+}
+
 .fa-telegram:before {
   content: "\F2C6";
 }
@@ -14536,6 +14650,10 @@ readers do not read off random characters that represent icons */
 
 .fa-th-list:before {
   content: "\F00B";
+}
+
+.fa-theater-masks:before {
+  content: "\F630";
 }
 
 .fa-themeco:before {
@@ -14630,6 +14748,10 @@ readers do not read off random characters that represent icons */
   content: "\F25C";
 }
 
+.fa-traffic-light:before {
+  content: "\F637";
+}
+
 .fa-train:before {
   content: "\F238";
 }
@@ -14674,8 +14796,16 @@ readers do not read off random characters that represent icons */
   content: "\F4DE";
 }
 
+.fa-truck-monster:before {
+  content: "\F63B";
+}
+
 .fa-truck-moving:before {
   content: "\F4DF";
+}
+
+.fa-truck-pickup:before {
+  content: "\F63C";
 }
 
 .fa-tshirt:before {
@@ -15154,6 +15284,10 @@ readers do not read off random characters that represent icons */
   content: "\F431";
 }
 
+.fa-zhihu:before {
+  content: "\F63F";
+}
+
 .sr-only {
   border: 0;
   clip: rect(0, 0, 0, 0);
@@ -15176,7 +15310,7 @@ readers do not read off random characters that represent icons */
 }
 
 /*!
- * Font Awesome Free 5.1.1 by @fontawesome - https://fontawesome.com
+ * Font Awesome Free 5.2.0 by @fontawesome - https://fontawesome.com
  * License - https://fontawesome.com/license (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  */
 
@@ -15184,8 +15318,8 @@ readers do not read off random characters that represent icons */
   font-family: 'Font Awesome 5 Free';
   font-style: normal;
   font-weight: 400;
-  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.eot?0b7928f6fbf544c473e51e6579da0bec);
-  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.eot?0b7928f6fbf544c473e51e6579da0bec) format("embedded-opentype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff2?930c12643983f664f026b6e65300f09d) format("woff2"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff?d9e29124cc610631509da59240e8fc95) format("woff"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.ttf?cdd8fa76f79bbe1cd789e8b78831b2b0) format("truetype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.svg?4e41caaf414b0335fc8219f0739a2adb) format("svg");
+  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.eot?e6c93cb47e716b579264a5fdfbf7e84d);
+  src: url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.eot?e6c93cb47e716b579264a5fdfbf7e84d) format("embedded-opentype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff2?8d9ab84bfe87a3f77112a6698cf639fb) format("woff2"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.woff?dad90637f797356bbc70d2664832e0b6) format("woff"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.ttf?8d220c793e2612bd131ed8522c54669f) format("truetype"), url(/fonts/vendor/@fortawesome/fontawesome-free/webfa-regular-400.svg?ba2a91dc95e6cfdc4b2a186a7ba83e29) format("svg");
 }
 
 .far {
