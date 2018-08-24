@@ -88,4 +88,9 @@ Route::middleware('auth')->group(function () {
 		'uses' => 'ProfileController@saveAvatar',
 		'as' => 'avatar.save'
 	]);
+
+	Route::post('/comment/save', [
+		'uses' => 'VideosController@saveComment',
+		'as' => 'comment.save'
+	]);
 });

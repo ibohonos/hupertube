@@ -18,10 +18,8 @@
         "laravel-mix": "^2.1.14",
         "lodash": "^4.17.4",
         "popper.js": "^1.14.4",
-    },
-    "dependencies": {
         "@fortawesome/fontawesome-free": "^5.2.0",
-        "vue-laravel-image-crop-upload": "^3.0.1"
-        "vue": "^2.5.7",
+        "vue-laravel-image-crop-upload": "^3.0.1",
+        "vue": "^2.5.7"
     }
 }

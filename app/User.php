@@ -37,6 +37,16 @@ class User extends Authenticatable
 		return $this->hasMany(Videos::class);
 	}
 
+	public function comments()
+	{
+		return $this->hasMany(Comments::class);
+	}
+
+	public function getUserById($id)
+	{
+		return $this->id($id)->first();
+	}
+
 	public static function getUserByEmail($email)
 	{
 		return self::email($email)->first();

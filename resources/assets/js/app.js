@@ -18,6 +18,8 @@ window.Vue = require('vue');
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 // Vue.component('plyr-video', require('vue-plyr/dist/vue-plyr'));
+Vue.component('user-info', require('./components/UserInfo.vue'));
+Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('video-list', require('./components/VideoList.vue'));
 Vue.component('videos', require('./components/Videos.vue'));
 Vue.component('test-api', require('./components/TestAPI.vue'));
