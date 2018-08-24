@@ -32,7 +32,15 @@ Route::get('/user/activate/{id}/{token}', [
 	'as' => 'user.activate'
 ]);
 
-Route::get('/activate', 'HomeController@activateView');
+Route::get('/activate', [
+	'uses' => 'HomeController@activateView',
+	'as' => 'activate.message'
+]);
+
+Route::get('/email/resend', [
+	'uses' => 'HomeController@reSendMail',
+	'as' => 'mail.resend'
+]);
 
 Route::middleware('auth')->group(function () {
 	Route::get('/profile', [

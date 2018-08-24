@@ -7,6 +7,7 @@ use App\Mail\RegisterUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Auth\Events\Registered;
@@ -90,6 +91,8 @@ class RegisterController extends Controller
 				'api_token' => str_random(60)
 			]);
 		endif;
+
+		Session::put('tmp_user_email', $data['email']);
 		Mail::to($data['email'])->send(new RegisterUser($user));
 
 		return $user;

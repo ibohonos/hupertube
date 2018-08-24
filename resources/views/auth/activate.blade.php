@@ -13,6 +13,11 @@
 							</div>
 						@endif
 						<p>Thank's for registration. Please activate your account for your e-mail.</p>
+						<div class="row">
+							<div class="col-md-12">
+								<a class="btn btn-info" href="{{ route('mail.resend') }}">Re-send E-mail</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
