@@ -3,45 +3,76 @@
 		<!--<div class="col-md-3" v-for="video in videos.data">-->
 			<!--<video-list :imdb_id="video.imdb_id"></video-list>-->
 		<!--</div>-->
-		<div class="col-md-3" v-for="video in videos.movies" v-if="video">
+		<div class="col-md-3" v-for="video in videos" v-if="video">
 			<video-list :imdb_id="video.imdb_code" :video_id="video.id"></video-list>
+		</div>
+		<div class="col-md-12">
+			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+				<span slot="no-more">
+					There is no more News :(
+				</span>
+			</infinite-loading>
 		</div>
 	</div>
 	<div class="loader mx-auto" v-else></div>
 </template>
 
 <script>
+	import InfiniteLoading from 'vue-infinite-loading';
+
 	export default {
+		components: {
+			InfiniteLoading,
+		},
+
 		data() {
 			return  {
 				videos: {},
 				loader: true,
+				page: 1,
+				limit: 20,
 			}
 		},
 
 		methods: {
 			getAllVideos() {
-				axios.get('https://yts.am/api/v2/list_movies.json?limit=30&page=1')
-					.then(response => {
-						this.videos = response.data.data;
+				axios.get('https://yts.am/api/v2/list_movies.json', {
+					params: {
+						page: this.page,
+						limit: this.limit,
+					},
+				}).then(response => {
+						this.videos = response.data.data.movies;
 						this.loader = false;
 					});
+			},
+
+			scrollVideos($state) {
+				axios.get('https://yts.am/api/v2/list_movies.json', {
+					params: {
+						page: this.page,
+						limit: this.limit,
+					},
+				}).then(response => {
+					if (response.data.data.movies.length) {
+						this.videos = this.videos.concat(response.data.data.movies);
+						$state.loaded();
+						if (this.videos.length / 20 === 10) {
+							$state.complete();
+						}
+					} else {
+						$state.complete();
+					}
+				});
+			},
+
+			infiniteHandler($state) {
+				this.page++;
+				this.scrollVideos($state);
 			}
 		},
 		mounted() {
 			this.getAllVideos();
-//			axios.get('https://yts.am/api/v2/list_movies.json?limit=50&page=1')
-//				.then(response => {
-//					this.videos = response.data.data;
-//				});
-			// axios.get('https://eztv.ag/api/get-torrents?limit=30&page=2')
-			// 	.then(response => {
-			// 		this.videos = response.data;
-			// 	});
-			// axios.get('/api/v1/videos?page=379')
-			// 	.then(resp => {
-			// 		this.videos = resp.data.data;
-			// 	});
 		}
 	}
 </script>
