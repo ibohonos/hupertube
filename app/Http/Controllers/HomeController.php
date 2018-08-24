@@ -2,20 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\RegisterUser;
 use Illuminate\Http\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-	/**
-	 * Create a new controller instance.
-	 *
-	 * @return void
-	 */
-	public function __construct()
-	{
-//		$this->middleware('auth');
-	}
+	private $data = [];
 
 	/**
 	 * Show the application dashboard.
@@ -42,8 +38,24 @@ class HomeController extends Controller
 		{
 			$user->active = 1;
 			$user->save();
+
+			Session::forget('tmp_user_email');
 		}
 		return redirect(url('/login'));
+	}
+
+	/**
+	 * Resend Email
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+	public function reSendMail()
+	{
+		$email = Session::get('tmp_user_email');
+		$user = User::getUserByEmail($email);
+
+		Mail::to($email)->send(new RegisterUser($user));
+		return redirect()->back();
 	}
 
 	/**
@@ -53,6 +65,10 @@ class HomeController extends Controller
 	 */
 	public function activateView()
 	{
-		return view('auth.activate');
+		if (Auth::guest()) :
+			return view('auth.activate');
+		else :
+			return redirect('/');
+		endif;
 	}
 }
