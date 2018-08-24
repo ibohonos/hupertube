@@ -1,4 +1,4 @@
-<template>
+<template v-if="video">
 	<div v-if="!loader">
 		<a :href="'/video/' + imdb_id + '/' + video_id">
 			<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
@@ -34,11 +34,15 @@
 
 		methods: {
 			getVideoInfo() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-					.then(response => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(response => {
 						this.video = response.data;
 						this.loader = false;
-					});
+					}).catch(error => {});
 			}
 		},
 

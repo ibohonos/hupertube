@@ -102,15 +102,23 @@
 
 		methods: {
 			getVideoTrailers() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/videos?api_key=' + this.api_key + '&language=' + this.lang)
-					.then(resp => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/videos', {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(resp => {
 						this.trailers = resp.data;
 						this.tr_length = this.trailers.results.length;
 					});
 			},
 			getVideoInfo() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-					.then(response => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(response => {
 						this.video = response.data;
 						if (!this.video.overview) {
 							this.getVideoEnInfo();
@@ -118,20 +126,32 @@
 					});
 			},
 			getVideoEnInfo() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=en_US')
-					.then(response => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+					params: {
+						api_key: this.api_key,
+						language: 'en_US',
+					},
+				}).then(response => {
 						this.video_en = response.data;
 					});
 			},
 			getAllVideoDetails() {
-				axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.video_id)
+				axios.get('https://yts.am/api/v2/movie_details.json', {
+					params: {
+						movie_id: this.video_id,
+					},
+				})
 					.then(resp => {
 						this.torrents = resp.data.data.movie.torrents;
 					});
 			},
 			getVideoCredits() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/credits?api_key=' + this.api_key + '&language=' + this.lang)
-					.then(resp => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/credits', {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(resp => {
 						this.credits = resp.data;
 					});
 			}
