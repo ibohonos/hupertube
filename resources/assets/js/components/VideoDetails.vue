@@ -32,7 +32,7 @@
 				</div>
 				<div class="col-md-2" v-for="(actor, index) in credits.cast" v-if="index < 6">
 					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
-					<img src="/storage/avatars/default.jpg" width="100%" v-else>
+					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
 					<p>{{ actor.name }}</p>
 				</div>
 			</div>
@@ -42,7 +42,7 @@
 				</div>
 				<div class="col-md-2" v-for="(cast, index) in credits.crew" v-if="index < 6">
 					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
-					<img src="/storage/avatars/default.jpg" width="100%" v-else>
+					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
 					<h5>{{ cast.job }}</h5>
 					<p>{{ cast.name }}</p>
 				</div>
