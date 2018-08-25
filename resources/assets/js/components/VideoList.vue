@@ -26,9 +26,7 @@
 				video: {},
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				loader: true,
-//				lang: 'en_US',
-				lang: 'ru_RU',
-//				lang: 'uk_UA',
+				lang: native_lang,
 			}
 		},
 
@@ -46,17 +44,6 @@
 			}
 		},
 
-//		mounted() {
-//			// axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-//			// 	.then(response => {
-//			// 		this.video = response.data;
-//			// 		console.log(this.video);
-//			// 	});
-//			axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-//				.then(response => {
-//					this.video = response.data;
-//				});
-//		}
 		mounted() {
 			this.getVideoInfo();
 		}

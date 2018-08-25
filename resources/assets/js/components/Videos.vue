@@ -9,7 +9,7 @@
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
 				<span slot="no-more">
-					There is no more News :(
+					{{ $lang.videos.no_news }}
 				</span>
 			</infinite-loading>
 		</div>
@@ -72,6 +72,7 @@
 			}
 		},
 		mounted() {
+			this.$lang.setLang(currentLang);
 			this.getAllVideos();
 		}
 	}

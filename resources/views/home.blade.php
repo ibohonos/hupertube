@@ -5,7 +5,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-12">
 				<div class="card">
-					<div class="card-header">Dashboard</div>
+					<div class="card-header">{{ __('Dashboard') }}</div>
 					<div class="card-body">
 						@if (session('status'))
 							<div class="alert alert-success" role="alert">
@@ -13,9 +13,9 @@
 							</div>
 						@endif
 						@guest
-							Please login or register
+							{{ __('Please login or register') }}
 						@else
-							You are logged in!
+							{{ __('You are logged in!') }}
 							<test-api token="{{ Auth::user()->api_token  }}"></test-api>
 						@endguest
 					</div>
