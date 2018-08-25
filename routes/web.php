@@ -43,6 +43,11 @@ Route::get('/email/resend', [
 ]);
 
 Route::middleware('auth')->group(function () {
+	Route::get('/user/{id}', [
+		'uses' => 'ProfileController@userProfile',
+		'as' => 'user.profile'
+	]);
+
 	Route::get('/profile', [
 		'uses' => 'ProfileController@index',
 		'as' => 'profile'
@@ -85,11 +90,6 @@ Route::middleware('auth')->group(function () {
 	Route::post('/profile/edit/save/', [
 		'uses' => 'ProfileController@save',
 		'as' => 'edit.save'
-	]);
-
-	Route::get('/profile/avatar/view/', [
-		'uses' => 'ProfileController@viewAvatar',
-		'as' => 'avatar.view'
 	]);
 
 	Route::post('/avatar/save/', [
