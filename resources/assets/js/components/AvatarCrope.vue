@@ -3,14 +3,14 @@
 		<img class="avatar" v-if="imgDataUrl" :src="imgDataUrl" v-show="true" style="display: none;">
 		<a class="btn btn-success" @click="toggleShow">Upload</a>
 		<my-upload url="/avatar/save"
-				   @crop-success="cropSuccess"
-				   :no-circle="true"
-				   field="avatar"
-				   ki="0"
-				   lang-type="ua"
-				   v-model="show"
-				   :headers="headers"
-				   :params="params"></my-upload>
+					@crop-success="cropSuccess"
+					:no-circle="true"
+					field="avatar"
+					ki="0"
+					:lang-type="c_lang"
+					v-model="show"
+					:headers="headers"
+					:params="params"></my-upload>
 	</div>
 </template>
 
@@ -36,8 +36,10 @@
 					smail: '*_~'
 				},
 				imgDataUrl: this.img, // the datebase64 url of created image
+				c_lang: currentLang,
 			}
 		},
+
 		methods: {
 			toggleShow() {
 				this.show = !this.show;
@@ -46,6 +48,12 @@
 			cropSuccess(imgDataUrl, field){
 				this.imgDataUrl = imgDataUrl;
 			},
+		},
+
+		created() {
+			if (this.c_lang === 'uk') {
+				this.c_lang = 'ua'
+			}
 		}
 	}
 </script>

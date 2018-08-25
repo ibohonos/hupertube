@@ -1,0 +1,50 @@
+{
+	"Toggle navigation"		: "Toggle navigation",
+	"Videos"			: "Videos",
+	"Login"				: "Login",
+	"Register"			: "Register",
+	"Profile"			: "Profile",
+	"Logout"			: "Logout",
+	"Language"			: "Language",
+
+	"Thank's."																	: "Thank's.",
+	"Thank's for registration. Please activate your account for your e-mail."	: "Thank's for registration. Please activate your account for your e-mail.",
+	"Re-send E-mail"															: "Re-send E-mail",
+
+	"E-Mail Address"		: "E-Mail Address",
+	"Password"				: "Password",
+	"Remember Me"			: "Remember Me",
+	"Forgot Your Password?"	: "Forgot Your Password?",
+	"Login With"			: "Login With",
+
+	"Name"				: "Name",
+	"First Name"		: "First Name",
+	"Last Name"			: "Last Name",
+	"Confirm Password"	: "Confirm Password",
+	"Register With"		: "Register With",
+
+	"Reset Password"			: "Reset Password",
+	"Send Password Reset Link"	: "Send Password Reset Link",
+
+	"Thank's for registration"		: "Thank's for registration",
+	"Please activate your account."	: "Please activate your account.",
+	"Activate account"				: "Activate account",
+	"Thanks,"						: "Thanks,",
+
+	"Edit :first_name :last_name"	: "Edit :first_name :last_name",
+	"Update"						: "Update",
+	"Connect to socials"			: "Connect to socials",
+	"Unlink :social"				: "Unlink :social",
+
+	"Hello :first_name :last_name"	: "Hello :first_name :last_name",
+	"Edit"							: "Edit",
+
+	"Profile :first_name :last_name"	: "Profile :first_name :last_name",
+	"Full name"							: "Full name",
+
+	"Add video"			: "Add video",
+
+	"Dashboard"					: "Dashboard",
+	"Please login or register"	: "Please login or register",
+	"You are logged in!"		: "You are logged in!"
+}

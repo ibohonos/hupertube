@@ -5,7 +5,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-12">
 				<div class="card">
-					<div class="card-header">Profile {{ $user->first_name }} {{ $user->last_name }}</div>
+					<div class="card-header">{{ __('Profile :first_name :last_name', ['first_name' => $user->first_name, 'last_name' => $user->last_name]) }}</div>
 					<div class="card-body">
 						@if (session('status'))
 							<div class="alert alert-success" role="alert">
@@ -27,7 +27,7 @@
 								<div class="info">
 									<div class="row">
 										<div class="col-md-3">
-											{{ __('Login:') }}
+											{{ __('Name') }}:
 										</div>
 										<div class="col-md-9">
 											{{ $user->name }}
@@ -35,7 +35,7 @@
 									</div>
 									<div class="row">
 										<div class="col-md-3">
-											{{ __('Name:') }}
+											{{ __('Full name') }}:
 										</div>
 										<div class="col-md-9">
 											{{ $user->first_name }} {{ $user->last_name }}

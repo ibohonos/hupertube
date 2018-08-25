@@ -3,10 +3,10 @@
 		<div class="col-md-12">
 			<!--<form method="post" action="/comment/save">-->
 				<div class="form-group">
-					<label for="comment">Please enter comment:</label>
+					<label for="comment">{{ $lang.comments.enter_comment }}:</label>
 					<textarea class="form-control" id="comment" name="comment" rows="3" v-model="comment"></textarea>
 				</div>
-				<button class="btn btn-primary" type="submit" @click="sendComment">Add comment</button>
+				<button class="btn btn-primary" type="submit" @click="sendComment">{{ $lang.comments.add_comment }}</button>
 			<!--</form>-->
 		</div>
 		<div class="col-md-12" v-for="item in comments" v-if="item">

@@ -10,95 +10,100 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group([
+	'prefix' => LaravelLocalization::setLocale(),
+	'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' ]
+], function () {
 
-Auth::routes();
+	Auth::routes();
 
-Route::get('/login/{social}', 'Auth\LoginController@redirectToProvider')->where('social', 'facebook|linkedin|google|github|intra')->name('social');
+	Route::get('/login/{social}', 'Auth\LoginController@redirectToProvider')->where('social', 'facebook|linkedin|google|github|intra')->name('social');
+	Route::get('/login/{social}/callback', 'Auth\LoginController@handleProviderCallback')->where('social', 'facebook|linkedin|google|github|intra')->name('social.callback');
 
-Route::get('/login/{social}/callback', 'Auth\LoginController@handleProviderCallback')->where('social', 'facebook|linkedin|google|github|intra')->name('social.callback');
-
-Route::get('/', [
-	'uses' => 'HomeController@index',
-	'as' => 'index'
-]);
-
-Route::get('/home', [
-	'uses' => 'HomeController@index',
-	'as' => 'home'
-]);
-
-Route::get('/user/activate/{id}/{token}', [
-	'uses' => 'HomeController@activateUser',
-	'as' => 'user.activate'
-]);
-
-Route::get('/activate', [
-	'uses' => 'HomeController@activateView',
-	'as' => 'activate.message'
-]);
-
-Route::get('/email/resend', [
-	'uses' => 'HomeController@reSendMail',
-	'as' => 'mail.resend'
-]);
-
-Route::middleware('auth')->group(function () {
-	Route::get('/user/{id}', [
-		'uses' => 'ProfileController@userProfile',
-		'as' => 'user.profile'
+	Route::get('/', [
+		'uses' => 'HomeController@index',
+		'as' => 'index'
 	]);
 
-	Route::get('/profile', [
-		'uses' => 'ProfileController@index',
-		'as' => 'profile'
+	Route::get('/home', [
+		'uses' => 'HomeController@index',
+		'as' => 'home'
 	]);
 
-	Route::get('/profile/edit', [
-		'uses' => 'ProfileController@edit',
-		'as' => 'profile.edit'
+	Route::get('/user/activate/{id}/{token}', [
+		'uses' => 'HomeController@activateUser',
+		'as' => 'user.activate'
 	]);
 
-	Route::get('/videos', [
-		'uses' => 'VideosController@index',
-		'as' => 'videos.index'
+	Route::get('/activate', [
+		'uses' => 'HomeController@activateView',
+		'as' => 'activate.message'
 	]);
 
-	Route::get('/videos/add', [
-		'uses' => 'VideosController@add',
-		'as' => 'videos.add'
+	Route::get('/email/resend', [
+		'uses' => 'HomeController@reSendMail',
+		'as' => 'mail.resend'
 	]);
 
-	Route::post('/videos/store', [
-		'uses' => 'VideosController@store',
-		'as' => 'videos.store'
-	]);
+	Route::middleware('auth')->group(function () {
+		Route::get('/user/{id}', [
+			'uses' => 'ProfileController@userProfile',
+			'as' => 'user.profile'
+		]);
 
-	Route::get('/video/{id}/{video_id}', [
-		'uses' => 'VideosController@show',
-		'as' => 'videos.show'
-	]);
+		Route::get('/profile', [
+			'uses' => 'ProfileController@index',
+			'as' => 'profile'
+		]);
 
-	Route::get('/play/videos/{file}', [
-		'uses' => 'VideosController@fileShow'
-	]);
+		Route::get('/profile/edit', [
+			'uses' => 'ProfileController@edit',
+			'as' => 'profile.edit'
+		]);
 
-	Route::get('/profile/edit/unlink/{social}', [
-		'uses' => 'ProfileController@unlink',
-		'as' => 'unlink'
-	]);
+		Route::get('/videos', [
+			'uses' => 'VideosController@index',
+			'as' => 'videos.index'
+		]);
 
-	Route::post('/profile/edit/save/', [
-		'uses' => 'ProfileController@save',
-		'as' => 'edit.save'
-	]);
+		Route::get('/videos/add', [
+			'uses' => 'VideosController@add',
+			'as' => 'videos.add'
+		]);
 
-	Route::post('/avatar/save/', [
-		'uses' => 'ProfileController@saveAvatar',
-		'as' => 'avatar.save'
-	]);
+		Route::post('/videos/store', [
+			'uses' => 'VideosController@store',
+			'as' => 'videos.store'
+		]);
 
-	Route::post('/comment/save', [
-		'uses' => 'VideosController@saveComment',
-		'as' => 'comment.save'
-	]);
+		Route::get('/video/{id}/{video_id}', [
+			'uses' => 'VideosController@show',
+			'as' => 'videos.show'
+		]);
+
+		Route::get('/play/videos/{file}', [
+			'uses' => 'VideosController@fileShow'
+		]);
+
+		Route::get('/profile/edit/unlink/{social}', [
+			'uses' => 'ProfileController@unlink',
+			'as' => 'unlink'
+		]);
+
+		Route::post('/profile/edit/save/', [
+			'uses' => 'ProfileController@save',
+			'as' => 'edit.save'
+		]);
+
+		Route::post('/avatar/save/', [
+			'uses' => 'ProfileController@saveAvatar',
+			'as' => 'avatar.save'
+		]);
+
+		Route::post('/comment/save', [
+			'uses' => 'VideosController@saveComment',
+			'as' => 'comment.save'
+		]);
+	});
 });
+
