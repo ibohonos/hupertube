@@ -37,14 +37,24 @@ class User extends Authenticatable
 		return $this->hasMany(Videos::class);
 	}
 
+	public function comments()
+	{
+		return $this->hasMany(Comments::class);
+	}
+
+	public function getUserById($id)
+	{
+		return $this->id($id)->firstOrFail();
+	}
+
 	public static function getUserByEmail($email)
 	{
-		return self::email($email)->first();
+		return self::email($email)->firstOrFail();
 	}
 
 	public function activatedUser($id)
 	{
-		return $this->id($id)->first();
+		return $this->id($id)->firstOrFail();
 	}
 
 	public function scopeId($query, $id)

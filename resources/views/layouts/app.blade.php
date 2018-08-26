@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="regional-name" content="{{ LaravelLocalization::getCurrentLocaleRegional() }}">
+	<meta name="lang" content="{{ app()->getLocale() }}">
 
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
@@ -76,11 +78,22 @@
 								</form>
 							</li>
 						@endguest
+						<li class="nav-item dropdown">
+							<a id="navbarDropdownLang" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+								{{ __('Language') }} <span class="caret"></span>
+							</a>
+							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownLang">
+								@foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+									<a class="dropdown-item" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+										{{ $properties['native'] }}
+									</a>
+								@endforeach
+							</div>
+						</li>
 					</ul>
 				</div>
 			</div>
 		</nav>
-
 		<main class="py-4">
 			@yield('content')
 		</main>

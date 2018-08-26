@@ -6,8 +6,8 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<span>Videos</span>
-						<a href="{{ route('videos.add') }}" class="btn btn-success float-right">Add video</a>
+						<span>{{ __('Videos') }}</span>
+						<a href="{{ route('videos.add') }}" class="btn btn-success float-right">{{ __('Add video') }}</a>
 					</div>
 					<div class="card-body">
 						@if (session('status'))

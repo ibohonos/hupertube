@@ -19,6 +19,16 @@ Route::prefix('v1')->namespace('API')->group(function () {
 		'uses' => 'VideosController@index',
 		'as' => 'allVideos'
 	]);
+
+	Route::get('/comments/{imdb_id}', [
+		'uses' => 'VideosController@allComments',
+		'as' => 'comments.all'
+	]);
+
+	Route::get('/comment/user/{id}', [
+		'uses' => 'VideosController@getCommentUser',
+		'as' => 'comments.all'
+	]);
 });
 
 Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function () {

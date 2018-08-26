@@ -12,54 +12,53 @@
 		<div class="col-md-8">
 			<p v-if="video.overview">{{ video.overview }}</p>
 			<p v-else>{{ video_en.overview }}</p>
+			<h3>{{ $lang.video_details.rating }}:</h3>
 			<p>
-				<span>Rating: </span>
-				<!--<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'tt' + imdb_id" data-style="p4">-->
-					<!--<a :href="'https://www.imdb.com/title/tt' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">-->
-						<!--<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />-->
-					<!--</a>-->
-				<!--</span>-->
 				<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'' + imdb_id" data-style="p4">
 					<a :href="'https://www.imdb.com/title/' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">
 						<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />
 					</a>
 				</span>
 			</p>
-			<p>Release date: {{ video.release_date }}</p>
-			<p>Run time: {{ video.runtime }}</p>
-			<span>Genres:</span>
+			<h3>{{ $lang.video_details.release }}:</h3>
+			<span>{{ video.release_date }}</span>
+			<h3>{{ $lang.video_details.run_time }}:</h3>
+			<span>{{ video.runtime }}</span>
+			<h3>{{ $lang.video_details.genres }}:</h3>
 			<span v-for="janr in video.genres">{{ janr.name }} </span>
-			<br/>
 			<div class="row">
 				<div class="col-md-12">
-					<h2 class="text-center">Actors</h2>
+					<h3 class="text-center">{{ $lang.video_details.actors }}</h3>
 				</div>
-				<div class="col-md-2" v-for="actor in credits.cast.slice(0, 6)" v-if="actor.profile_path">
-					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%">
-					<p>{{ actor.name }}</p>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<h2 class="text-center">Cast</h2>
-				</div>
-				<div class="col-md-2" v-for="actor in credits.crew.slice(0, 6)">
+				<div class="col-md-2" v-for="(actor, index) in credits.cast" v-if="index < 6">
 					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
-					<img src="/storage/avatars/default.jpg" width="100%" v-else>
-					<h5>{{ actor.job }}</h5>
+					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
 					<p>{{ actor.name }}</p>
 				</div>
 			</div>
-			<span>Quality:</span>
-			<!--<div v-for="torrent in torrents">-->
-				<a v-for="torrent in torrents" :href="torrent.url" class="torrent_quality">{{ torrent.quality }}</a>
-			<!--</div>-->
+			<div class="row">
+				<div class="col-md-12">
+					<h3 class="text-center">{{ $lang.video_details.cast }}</h3>
+				</div>
+				<div class="col-md-2" v-for="(cast, index) in credits.crew" v-if="index < 6">
+					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
+					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
+					<h5>{{ cast.job }}</h5>
+					<p>{{ cast.name }}</p>
+				</div>
+			</div>
+			<h3>{{ $lang.video_details.quality }}:</h3>
+			<a v-for="torrent in torrents" :href="torrent.url" class="torrent_quality">{{ torrent.quality }}</a>
 			<div v-if="tr_length">
-				<p>Trailers ({{ tr_length }}):</p>
+				<h3>{{ $lang.video_details.trailers }} ({{ tr_length }}):</h3>
 				<div class="trailers" v-for="trailer in trailers.results">
 					<iframe width="560" height="315" :src="'https://www.youtube.com/embed/' + trailer.key" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
 				</div>
 			</div>
+		</div>
+		<div class="col-md-12">
+			<h3 class="text-center">{{ $lang.video_details.comments }}:</h3>
+			<comments :imdb_id="imdb_id"></comments>
 		</div>
 	</div>
 </template>
@@ -95,23 +94,29 @@
 				tr_length: '',
 				credits: {},
 				torrents: {},
-//				lang: 'en_US',
-//				lang: 'uk_UA',
-				lang: 'ru_RU',
+				lang: native_lang,
 			}
 		},
 
 		methods: {
 			getVideoTrailers() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/videos?api_key=' + this.api_key + '&language=' + this.lang)
-					.then(resp => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/videos', {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(resp => {
 						this.trailers = resp.data;
 						this.tr_length = this.trailers.results.length;
 					});
 			},
 			getVideoInfo() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-					.then(response => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(response => {
 						this.video = response.data;
 						if (!this.video.overview) {
 							this.getVideoEnInfo();
@@ -119,52 +124,44 @@
 					});
 			},
 			getVideoEnInfo() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=en_US')
-					.then(response => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+					params: {
+						api_key: this.api_key,
+						language: 'en_US',
+					},
+				}).then(response => {
 						this.video_en = response.data;
 					});
 			},
 			getAllVideoDetails() {
-				axios.get('https://yts.am/api/v2/movie_details.json?movie_id=' + this.video_id)
+				axios.get('https://yts.am/api/v2/movie_details.json', {
+					params: {
+						movie_id: this.video_id,
+					},
+				})
 					.then(resp => {
 						this.torrents = resp.data.data.movie.torrents;
 					});
 			},
 			getVideoCredits() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/credits?api_key=' + this.api_key + '&language=' + this.lang)
-					.then(resp => {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/credits', {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(resp => {
 						this.credits = resp.data;
 					});
 			}
 		},
 
 		mounted() {
+			this.$lang.setLang(currentLang);
 			this.getVideoInfo();
 			this.getVideoTrailers();
 			this.getAllVideoDetails();
 			this.getVideoCredits();
 		},
-
-//		mounted() {
-//			// axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-//			// 	.then(response => {
-//			// 		this.video = response.data;
-//			// 	});
-//			// axios.get('https://api.themoviedb.org/3/movie/tt' + this.imdb_id + '/videos?api_key=' + this.api_key + '&language=' + this.lang)
-//			// 	.then(resp => {
-//			// 		this.trailers = resp.data;
-//			// 		this.tr_length = this.trailers.results.length;
-//			// 	});
-//			axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '?api_key=' + this.api_key + '&language=' + this.lang)
-//				.then(response => {
-//					this.video = response.data;
-//				});
-//			axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/videos?api_key=' + this.api_key + '&language=' + this.lang)
-//				.then(resp => {
-//					this.trailers = resp.data;
-//					this.tr_length = this.trailers.results.length;
-//				});
-//		}
 	}
 </script>
 

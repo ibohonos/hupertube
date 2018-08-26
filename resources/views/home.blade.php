@@ -5,7 +5,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-12">
 				<div class="card form-main">
-					<div class="card-header-main">Welcome to HYPERTUBE</div>
+					<div class="card-header-main">{{ __('Welcome to HYPERTUBE') }}</div>
 					<hr>
 					<div class="card-body-main">
 						@if (session('status'))
@@ -21,7 +21,7 @@
 							{{ __('Register for free') }}
 							</a>
 						@else
-							You are logged in!
+							{{ __('You are logged in!') }}
 							<test-api token="{{ Auth::user()->api_token  }}"></test-api>
 						@endguest
 					</div>

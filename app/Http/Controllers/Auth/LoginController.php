@@ -32,6 +32,20 @@ class LoginController extends Controller
 	protected $redirectTo = '/';
 
 	/**
+	 * Show the application's login form.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function showLoginForm()
+	{
+		if (Auth::guest()) :
+			return view('auth.login');
+		else :
+			return redirect($this->redirectTo);
+		endif;
+	}
+
+	/**
 	 * Redirect the user to the social authentication page.
 	 *
 	 * @return \Illuminate\Http\Response

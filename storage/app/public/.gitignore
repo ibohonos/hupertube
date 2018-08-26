@@ -1,6 +1,7 @@
 *
 !avatars/
-!avatars/default.jpg
 avatars/*
+!avatars/default.jpg
+!avatars/default_actors.jpg
 !db/all_movie_ids.sql
 !.gitignore

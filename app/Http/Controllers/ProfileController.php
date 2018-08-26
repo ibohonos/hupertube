@@ -3,35 +3,62 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RegisterUser;
-use Faker\Provider\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
-use Laravel\Socialite\Facades\Socialite;
 use App\User;
 
 class ProfileController extends Controller
 {
+	private $data = [];
+
+	/**
+	 * Create object
+	 *
+	 * ProfileController constructor.
+	 */
 	public function __construct()
 	{
 		$this->middleware('auth');
 	}
 
+	/**
+	 * View user dashboard
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function index()
 	{
-//		dd(storage_path('app/public/avatars/'));
 		return view('user.index');
 	}
 
+	/**
+	 * View edit form
+	 *
+	 * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+	 */
 	public function edit()
 	{
 		return view('user.edit');
 	}
 
+	public function userProfile($id)
+	{
+		$user = new User;
+
+		$this->data['user'] = $user->getUserById($id);
+
+		return view('user.profile', $this->data);
+	}
+
+	/**
+	 * Delete social link
+	 *
+	 * @param $social
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
 	public function unlink($social)
 	{
 		$user = Auth::user();
@@ -58,6 +85,12 @@ class ProfileController extends Controller
 		]);
 	}
 
+	/**
+	 * Update user info
+	 *
+	 * @param Request $request
+	 * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+	 */
 	public function save(Request $request)
 	{
 		$this->validator($request->all())->validate();
@@ -68,8 +101,8 @@ class ProfileController extends Controller
 			$user->name !== $request->name ||
 			$user->first_name !== $request->first_name ||
 			$user->last_name !== $request->last_name ||
-			$request->password ||
-			$user->email !== $request->email
+			$user->email !== $request->email ||
+			$request->password
 		) :
 			if ($user->name !== $request->name) :
 				$user->name = $request->name;
@@ -91,30 +124,37 @@ class ProfileController extends Controller
 			if ($user->email !== $request->email) :
 				$user->email = $request->email;
 				$user->active = 0;
+				$user->save();
 
 				Mail::to($user->email)->send(new RegisterUser($user));
 				Auth::logout();
 
-				return redirect('/activate');
+				return redirect(route('activate.message'));
 			endif;
 			$user->save();
 		endif;
 
-		Auth::login($user);
-
 		return redirect()->back();
 	}
 
-	public function viewAvatar(Request $request)
-	{
-		return $request;
-	}
-
+	/**
+	 * Save cropped avatar
+	 *
+	 * @param Request $request
+	 * @return string
+	 */
 	public function saveAvatar(Request $request)
 	{
-		dd($request);
-//		$res = json_decode($request);
-//		return $res['config']['data']['img'];
+		$avatar = $request->file('avatar');
+		$path = storage_path('app/public/avatars/');
+		$name = time() . '-' . Auth::user()->first_name . '-' . Auth::user()->last_name . '.' . $avatar->extension();
+		$user = Auth::user();
+
+		$avatar->move($path, $name);
+		$user->avatar = '/storage/avatars/' . $name;
+		$user->save();
+
+		return $name;
 	}
 
 }
