@@ -72,7 +72,7 @@ class LoginController extends Controller
 			$user = User::where([$social . '_id' => $userSocial->getId()])->first();
 			if ($user) :
 				if (!$user->active) :
-					return redirect(route('user.activate'));
+					return redirect(route('activate.message'));
 				endif;
 				Auth::login($user, true);
 				return redirect('/');
@@ -81,7 +81,7 @@ class LoginController extends Controller
 			if ($user) :
 				User::where(['email' => $userSocial->getEmail()])->update([$social . '_id' => $userSocial->getId()]);
 				if (!$user->active) :
-					return redirect(route('user.activate'));
+					return redirect(route('activate.message'));
 				endif;
 				Auth::login($user, true);
 				return redirect('/');

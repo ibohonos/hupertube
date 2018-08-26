@@ -1,4 +1,11 @@
-@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);/*!
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);@font-face {
+  font-family: "fontawesome";
+  src: url(/fonts/fontawesome-webfont.eot?674f50d287a8c48dc19ba404d20fe713) format("eot"), url(/fonts/fontawesome-webfont.woff2?af7ae505a9eed503f8b8e6982036873e) format("woff2"), url(/fonts/fontawesome-webfont.woff?fee66e712a8a08eef5805a46892932ad) format("woff"), url(/fonts/fontawesome-webfont.ttf?b06871f281fee6b241d60582ae9369b9) format("truetype"), url(/fonts/fontawesome-webfont.svg?912ec66d7572ff821749319396470bde) format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+/*!
  * Bootstrap v4.1.3 (https://getbootstrap.com/)
  * Copyright 2011-2018 The Bootstrap Authors
  * Copyright 2011-2018 Twitter, Inc.
@@ -15331,5 +15338,83 @@ readers do not read off random characters that represent icons */
   background-color: #fff;
   -webkit-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+@font-face {
+  font-family: "fontawesome";
+  src: url(/fonts/fontawesome-webfont.eot?674f50d287a8c48dc19ba404d20fe713) format("eot"), url(/fonts/fontawesome-webfont.woff2?af7ae505a9eed503f8b8e6982036873e) format("woff2"), url(/fonts/fontawesome-webfont.woff?fee66e712a8a08eef5805a46892932ad) format("woff"), url(/fonts/fontawesome-webfont.ttf?b06871f281fee6b241d60582ae9369b9) format("truetype"), url(/fonts/fontawesome-webfont.svg?912ec66d7572ff821749319396470bde) format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.form-login-register,
+.form-main {
+  margin-top: 4rem;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.py-4 {
+  background: url(/images/fo_film-cover.jpg?5ca9b6adaf80b62f6ca68fae151528da) center;
+  background-size: cover;
+  min-height: calc(100vh - 78px);
+}
+
+.form-main {
+  background-color: rgba(255, 255, 255, 0);
+  border: none;
+  color: white;
+  text-shadow: 1px 1px 2px #969696;
+  max-width: 800px;
+}
+
+.card-header-main {
+  font-size: 5em;
+  line-height: 130%;
+}
+
+.card-body-main p {
+  font-size: 3em;
+  margin-bottom: 5%;
+}
+
+.card-body form {
+  margin-top: 4em;
+}
+
+i {
+  font-family: "fontawesome" !important;
+  margin-right: 10px;
+}
+
+@media (min-width: 992px) and (max-width: 1400px) {
+  .card-header-main {
+    font-size: 4.5em;
+    line-height: 130%;
+  }
+
+  .card-body-main p {
+    font-size: 2.5em;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 991px) {
+  .card-header-main {
+    font-size: 4em;
+  }
+
+  .card-body-main p {
+    font-size: 2em;
+  }
+}
+
+@media all and (max-width: 480px) {
+  .card-header-main {
+    font-size: 3em;
+    line-height: 120%;
+  }
+
+  .card-body-main p {
+    font-size: 1.5em;
+  }
 }
 

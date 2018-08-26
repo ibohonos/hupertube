@@ -46,5 +46,8 @@
 
 	 "Dashboard"					: "Dashboard",
 	 "Please login or register"	: "Please login or register",
-	 "You are logged in!"		: "You are logged in!"
-}
+	 "You are logged in!"		: "You are logged in!",
+	 "Register for free"		: "Register for free",
+	 "Watch your favorite films in live! No need to spend time for download, just choose and watch in live!" : "Watch your favorite films in live! No need to spend time for download, just choose and watch in live!",
+	 "Welcome to"				: "Welcome to"
+ }
