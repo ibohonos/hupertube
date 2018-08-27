@@ -94,9 +94,15 @@
 				</div>
 			</div>
 		</nav>
-		<main class="py-4">
-			@yield('content')
-		</main>
+		@guest
+			<main class="py-4">
+				@yield('content')
+			</main>
+		@else
+			<main class="py-4-cover">
+				@yield('content')
+			</main>
+		@endguest
 	</div>
 </body>
 </html>
