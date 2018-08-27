@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<div class="card">
+			<div class="card  form-login-register">
 				<div class="card-header">{{ __('Register') }}</div>
 
 				<div class="card-body">
@@ -12,7 +12,7 @@
 						@csrf
 
 						<div class="form-group row">
-							<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Login') }}</label>
+							<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
 							<div class="col-md-6">
 								@if(!empty($name))
@@ -123,8 +123,8 @@
 						</div>
 					</form>
 					<div class="form-group">
-						<label for="name" class="col-md-4 control-label">Register With</label>
-						<div class="col-md-6">
+						<label for="name" class="col-md-4 control-label">{{ __('Register With') }}</label>
+						<div class="col-md-12">
 							<a href="{{ route('social', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i>Facebook</a>
 							<a href="{{ route('social', 'google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i>Google</a>
 							<a href="{{ route('social', 'github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i>Github</a>

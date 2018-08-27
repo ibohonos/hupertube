@@ -4,7 +4,7 @@
 <div class="container">
 	<div class="row justify-content-center">
 		<div class="col-md-8">
-			<div class="card">
+			<div class="card  form-login-register">
 				<div class="card-header">{{ __('Login') }}</div>
 
 				@if (session('not_activate'))
@@ -71,12 +71,12 @@
 					</form>
 
 					<div class="form-group">
-						<label for="name" class="col-md-4 control-label">Login With</label>
+						<label for="name" class="col-md-4 control-label">{{ __('Login With') }}</label>
 						<div class="col-md-8">
-							<a href="{{ route('social', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i>Facebook</a>
-							<a href="{{ route('social', 'google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i>Google</a>
-							<a href="{{ route('social', 'github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i>Github</a>
-							<a href="{{ route('social', 'intra') }}" class="btn btn-social-icon btn-intra"><i class="fab fa-intra"></i>Intra</a>
+							<a href="{{ route('social', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i> Facebook</a>
+							<a href="{{ route('social', 'google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i> Google</a>
+							<a href="{{ route('social', 'github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i> Github</a>
+							<a href="{{ route('social', 'intra') }}" class="btn btn-social-icon btn-intra"><i class="fab fa-intra"></i> Intra</a>
 						</div>
 					</div>
 				</div>

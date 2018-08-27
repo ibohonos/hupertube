@@ -9,6 +9,8 @@ require('./bootstrap');
 require('@fortawesome/fontawesome-free/js/fontawesome');
 
 window.Vue = require('vue');
+window.Lang = require('vuejs-localization');
+window.currentLang = document.head.querySelector('meta[name="lang"]').content;
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -18,11 +20,18 @@ window.Vue = require('vue');
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 // Vue.component('plyr-video', require('vue-plyr/dist/vue-plyr'));
+Vue.component('user-info', require('./components/UserInfo.vue'));
+Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('video-list', require('./components/VideoList.vue'));
 Vue.component('videos', require('./components/Videos.vue'));
 Vue.component('test-api', require('./components/TestAPI.vue'));
 Vue.component('video-details', require('./components/VideoDetails.vue'));
+Vue.component('avatar-crope', require('./components/AvatarCrope.vue'));
+
+
+Lang.requireAll(require.context('./lang', true, /\.js$/));
+Vue.use(Lang);
 
 const app = new Vue({
-    el: '#app'
+	el: '#app'
 });

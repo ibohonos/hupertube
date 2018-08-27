@@ -5,7 +5,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-12">
 				<div class="card">
-					<div class="card-header">Edit {{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</div>
+					<div class="card-header">{{ __('Edit :first_name :last_name', ['first_name' => Auth::user()->first_name, 'last_name' => Auth::user()->last_name]) }}</div>
 					<div class="card-body">
 						@if (session('status'))
 							<div class="alert alert-success" role="alert">
@@ -18,7 +18,7 @@
 								<form method="post" action="{{ route('edit.save') }}">
 									@csrf
 									<div class="form-group row">
-										<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Login') }}</label>
+										<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
 										<div class="col-md-6">
 											<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ Auth::user()->name }}" required>
@@ -106,27 +106,27 @@
 						<br>
 						<div class="row">
 							<div class="col-12">
-								<h2 class="text-center">Connect to socials</h2>
+								<h2 class="text-center">{{ __('Connect to socials') }}</h2>
 								<div class="card-group">
 									@if(!Auth::user()->facebook_id)
 										<a href="{{ route('social', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i> Facebook</a>
 									@else
-										<a href="{{ route('unlink', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i> Unlink Facebook</a>
+										<a href="{{ route('unlink', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i> {{ __('Unlink :social', ['social' => 'Facebook']) }}</a>
 									@endif
 									@if(!Auth::user()->google_id)
 										<a href="{{ route('social', 'google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i> Google</a>
 									@else
-										<a href="{{ route('unlink', 'google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i> Unlink Google</a>
+										<a href="{{ route('unlink', 'google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i> {{ __('Unlink :social', ['social' => 'Google']) }}</a>
 									@endif
 									@if(!Auth::user()->github_id)
 										<a href="{{ route('social', 'github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i> Github</a>
 									@else
-										<a href="{{ route('unlink', 'github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i> Unlink Github</a>
+										<a href="{{ route('unlink', 'github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i> {{ __('Unlink :social', ['social' => 'Github']) }}</a>
 									@endif
 									@if(!Auth::user()->intra_id)
 										<a href="{{ route('social', 'intra') }}" class="btn btn-social-icon btn-intra"><i class="fab fa-intra"></i> Intra</a>
 									@else
-										<a href="{{ route('unlink', 'intra') }}" class="btn btn-social-icon btn-intra"><i class="fab fa-intra"></i> Unlink Intra</a>
+										<a href="{{ route('unlink', 'intra') }}" class="btn btn-social-icon btn-intra"><i class="fab fa-intra"></i> {{ __('Unlink :social', ['social' => 'Intra']) }}</a>
 									@endif
 								</div>
 							</div>
