@@ -35,4 +35,12 @@ Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function ()
 	Route::get('/user', function (Request $request) {
 		return $request->user();
 	})->name('user');
+
+	Route::get('/is_viewed', [
+		'uses' => 'UserController@isViewed'
+	]);
+
+	Route::post('/viewed', [
+		'uses' => 'UserController@viewed'
+	]);
 });

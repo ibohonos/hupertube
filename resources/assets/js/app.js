@@ -22,6 +22,7 @@ window.currentLang = document.head.querySelector('meta[name="lang"]').content;
 // Vue.component('plyr-video', require('vue-plyr/dist/vue-plyr'));
 Vue.component('user-info', require('./components/UserInfo.vue'));
 Vue.component('comments', require('./components/Comments.vue'));
+Vue.component('viewed', require('./components/ViewedInfo.vue'));
 Vue.component('video-list', require('./components/VideoList.vue'));
 Vue.component('videos', require('./components/Videos.vue'));
 Vue.component('test-api', require('./components/TestAPI.vue'));

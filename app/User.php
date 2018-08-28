@@ -42,6 +42,16 @@ class User extends Authenticatable
 		return $this->hasMany(Comments::class);
 	}
 
+	public function viewed()
+	{
+		return $this->hasMany(Viewed::class);
+	}
+
+	public function viewLater()
+	{
+		return $this->hasMany(ViewLater::class);
+	}
+
 	public function getUserById($id)
 	{
 		return $this->id($id)->firstOrFail();

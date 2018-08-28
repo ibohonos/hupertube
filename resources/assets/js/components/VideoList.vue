@@ -34,7 +34,7 @@
 		},
 
 		data() {
-			return  {
+			return {
 				video: {},
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				loader: true,
