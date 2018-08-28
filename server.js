@@ -13,15 +13,14 @@ const	torrentStream = require('torrent-stream'),
 		magnetLink = require('magnet-link');
 
 
-var mysql = require('mysql');
-var con = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USERNAME,
-  password: process.env.DB_PASSWORD,
-  database : process.env.DB_DATABASE
-});
+// var mysql = require('mysql');
+// var con = mysql.createConnection({
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USERNAME,
+//   password: process.env.DB_PASSWORD,
+//   database : process.env.DB_DATABASE
+// });
 
-let torrentFile = process.argv[2];
 
 //load and save downloaded films
 // con.connect();
@@ -37,70 +36,58 @@ let torrentFile = process.argv[2];
 let id = '123';
 let quality = '720';
 
-magnetLink(torrentFile, (err, link) => {
-	var engine = torrentStream(link, { path: 'public/movies' });
+//if no film
+let torrentFile = process.argv[2];
 
-	engine.on('ready', () => {
-		engine.files.forEach((file) => {
-			let format = file.name.split('.').pop();
+magnetLink(torrentFile, (err, link) => {
+	let engine = torrentStream(link, { path: 'public/movies' });
+
+	engine.on('ready', function() {
+		engine.files.forEach(function (file) {
+			let extension = file.name.split('.').pop();
 
 			file.name = id + '_[' + quality + 'p]_' + file.name;
 			file.path = id + '/' + file.name;
 
 			console.log("\npath: " + file.path + "\nname: " + file.name);
 			console.log('length: ' + file.length);
-			console.log('format: ' + format);
+			console.log('format: ' + extension);
 			
-			// if (format === 'mp4' || format === 'webm' || format === 'ogg' || format === 'mkv') {
-				//let stream = file.createReadStream();
-				//moviePath = 'public/movies/' + file.path;
-				//moviesArr[requestId] = moviePath;
-				// request.post(
-				// 	{
-				// 		url:'http://localhost:8100/movie/add-film-to-db',
-				// 		form: {
-				// 			path: moviePath,
-				// 			timeToDelete: Math.floor(new Date / 1000) + 2592000
-				// 		}
-				// 	},
-				// 	function(err,httpResponse,body) {
+			if (extension == 'mp4' || 1) {
+				//file.select();	//скачує блоки рандомно
 
-				// 		// console.log(err);
-				// 		// console.log(body);
-				// 	}
-				// )
-				// moviesArr[requestId][deleteDate] = Math.floor(date / 1000) + 2592000;
-			// }
+				//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
+				//let stream = file.createReadStream({
+				// 	start: 10,
+				// 	end: 100
+				// });
+
+				/**
+				res.writeHead(status, headers);
+				var streamReadOpts = { start: start, end: end, autoClose: true };
+				var stream = fs.createReadStream(filePath, streamReadOpts)
+				    // previous 'open' & 'error' event handlers are still here
+				    .on('end', function () {
+				      console.log('stream end');
+				    })
+				    .on('close', function () {
+				      console.log('stream close');
+				    })
+				*/
+			}
 		})
 	})
 });
 
+app.post('/movie/:id', function(req, res) {
+	// check for file in public/downloaded_films
+	// if no file -> get torrent file in storage/torrents
+	// return stream
+});
 
 
-// app.get('/', function (req, res) {
-// 	res.send("hello mazafaka");
-// });
 
 
-
-// app.post('/stream', function (req, res) {
-// 	let engine = torrentStream('magnet:my-magnet-link');
-
-// 	engine.on('ready', function() {
-// 		engine.files.forEach(function(file) {
-// 			console.log('filename:', file.name);
-// 			var stream = file.createReadStream();
-// 			// stream is readable stream to containing the file content
-// 		});
-// 	});
-
-// 	// get a stream containing bytes 10-100 inclusive.
-// 	let stream = file.createReadStream({
-// 		start: 10,
-// 		end: 100
-// 	});
-
-// });
 
 app.listen(port, function(){
 	console.log('Server startet at port:' + port)
