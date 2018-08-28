@@ -1,10 +1,7 @@
 <template>
 	<div class="row" v-if="!loader">
-		<!--<div class="col-md-3" v-for="video in videos.data">-->
-			<!--<video-list :imdb_id="video.imdb_id"></video-list>-->
-		<!--</div>-->
-		<div class="col-md-3" v-for="video in videos" v-if="video">
-			<video-list :imdb_id="video.imdb_code" :video_id="video.id"></video-list>
+		<div class="col-md-4" v-for="video in videos" v-if="video">
+			<video-list :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year"></video-list>
 		</div>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
@@ -30,7 +27,7 @@
 				videos: {},
 				loader: true,
 				page: 1,
-				limit: 20,
+				limit: 12,
 			}
 		},
 
@@ -57,9 +54,9 @@
 					if (response.data.data.movies.length) {
 						this.videos = this.videos.concat(response.data.data.movies);
 						$state.loaded();
-						if (this.videos.length / 20 === 10) {
-							$state.complete();
-						}
+//						if (this.videos.length / 20 === 10) {
+//							$state.complete();
+//						}
 					} else {
 						$state.complete();
 					}

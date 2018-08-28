@@ -2,6 +2,10 @@
 	<div v-if="!loader">
 		<a :href="'/video/' + imdb_id + '/' + video_id">
 			<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
+			<p class="info">
+				<span class="year">{{ year }}</span>
+				<span class="rating">{{ rating }}</span>
+			</p>
 			<h2>{{ video.title }}</h2>
 		</a>
 	</div>
@@ -16,6 +20,14 @@
 				required: true
 			},
 			video_id: {
+				type: Number,
+				required: true
+			},
+			year: {
+				type: Number,
+				required: true
+			},
+			rating: {
 				type: Number,
 				required: true
 			}
