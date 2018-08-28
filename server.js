@@ -13,6 +13,14 @@ const	torrentStream = require('torrent-stream'),
 		magnetLink = require('magnet-link');
 
 
+process.on('uncaughtException', function (exception) {
+	let date = new Date();
+	
+	console.log("\nWas error at " + date.toString());
+	console.log(exception);
+	console.log();
+  });
+
 // var mysql = require('mysql');
 // var con = mysql.createConnection({
 //   host: process.env.DB_HOST,
@@ -39,7 +47,12 @@ let quality = '720';
 //if no film
 let torrentFile = process.argv[2];
 
-magnetLink(torrentFile, (err, link) => {
+magnetLink(torrentFile, function(err, link) {
+	if (err) {
+		console.log(err);
+		return;
+	}
+	console.log(link);
 	let engine = torrentStream(link, { path: 'public/movies' });
 
 	engine.on('ready', function() {
@@ -79,7 +92,9 @@ magnetLink(torrentFile, (err, link) => {
 	})
 });
 
-app.post('/movie/:id', function(req, res) {
+//change to post
+app.get('/movie/:id/:quality/:lng', function(req, res) {
+	console.log(req.params);
 	// check for file in public/downloaded_films
 	// if no file -> get torrent file in storage/torrents
 	// return stream
