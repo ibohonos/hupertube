@@ -7,9 +7,6 @@ const	port = 3000;
 const	express = require('express'),
 		bodyParser = require('body-parser'),
 		fs = require('fs'),
-		// bencode = require('bencode'),
-		// download = require('./node_server/download'),
-		// torrentParser = require('./node_server/torrent-parser'),
 		app = express();
 
 const	torrentStream = require('torrent-stream'),
@@ -28,47 +25,55 @@ let torrentFile = process.argv[2];
 
 //load and save downloaded films
 // con.connect();
-// con.query('SELECT * FROM users', function (error, results, fields) {
+// con.query('SELECT * FROM `all_movie_ids`', function (error, results, fields) {
 //   if (error) throw error;
-//   console.log('The solution is: ', results);
+//   console.log(results);
 // });
  
 // con.end();
 
 
+
+let id = '123';
+let quality = '720';
+
 magnetLink(torrentFile, (err, link) => {
-		var engine = torrentStream(link, {
-				path: 'public/downloaded_movies'
-			}
-		);
+	var engine = torrentStream(link, { path: 'public/movies' });
 
-engine.on('ready', () => {
-			engine.files.forEach((file) => {
-				console.log('filepath:', file.path);
-				let format = file.name.split('.').pop();
-				// if (format === 'mp4' || format === 'webm' || format === 'ogg' || format === 'mkv') {
-					let stream = file.createReadStream();
-					moviePath = 'public/downloaded_movies/' + file.path;
-					//moviesArr[requestId] = moviePath;
-					// request.post(
-					// 	{
-					// 		url:'http://localhost:8100/movie/add-film-to-db',
-					// 		form: {
-					// 			path: moviePath,
-					// 			timeToDelete: Math.floor(new Date / 1000) + 2592000
-					// 		}
-					// 	},
-					// 	function(err,httpResponse,body) {
+	engine.on('ready', () => {
+		engine.files.forEach((file) => {
+			let format = file.name.split('.').pop();
 
-					// 		// console.log(err);
-					// 		// console.log(body);
-					// 	}
-					// )
-					// moviesArr[requestId][deleteDate] = Math.floor(date / 1000) + 2592000;
-				// }
-			})
+			file.name = id + '_[' + quality + 'p]_' + file.name;
+			file.path = id + '/' + file.name;
+
+			console.log("\npath: " + file.path + "\nname: " + file.name);
+			console.log('length: ' + file.length);
+			console.log('format: ' + format);
+			
+			// if (format === 'mp4' || format === 'webm' || format === 'ogg' || format === 'mkv') {
+				//let stream = file.createReadStream();
+				//moviePath = 'public/movies/' + file.path;
+				//moviesArr[requestId] = moviePath;
+				// request.post(
+				// 	{
+				// 		url:'http://localhost:8100/movie/add-film-to-db',
+				// 		form: {
+				// 			path: moviePath,
+				// 			timeToDelete: Math.floor(new Date / 1000) + 2592000
+				// 		}
+				// 	},
+				// 	function(err,httpResponse,body) {
+
+				// 		// console.log(err);
+				// 		// console.log(body);
+				// 	}
+				// )
+				// moviesArr[requestId][deleteDate] = Math.floor(date / 1000) + 2592000;
+			// }
 		})
-	});
+	})
+});
 
 
 
