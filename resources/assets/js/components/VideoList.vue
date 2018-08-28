@@ -2,7 +2,15 @@
 	<div v-if="!loader">
 		<a :href="'/video/' + imdb_id + '/' + video_id">
 			<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
-			<h2>{{ video.title }}</h2>
+			<div class="info">
+				<h2>{{ video.title }}</h2>
+				<span class="genre" v-for="(genre, index) in video.genres" v-if="genre">
+					{{ genre.name }}<span v-if="video.genres.length > 1 &&
+					index != video.genres.length - 1">,</span>
+				</span>
+				<p class="year">{{ year }}</p>
+				<span class="rating">{{ rating }}/10</span>
+			</div>
 		</a>
 	</div>
 	<div class="loader" v-else></div>
@@ -16,6 +24,14 @@
 				required: true
 			},
 			video_id: {
+				type: Number,
+				required: true
+			},
+			year: {
+				type: Number,
+				required: true
+			},
+			rating: {
 				type: Number,
 				required: true
 			}
