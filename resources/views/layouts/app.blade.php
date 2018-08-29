@@ -64,6 +64,9 @@
 									<a class="dropdown-item" href="{{ route('profile') }}">
 										{{ __('Profile') }}
 									</a>
+									<a class="dropdown-item" href="{{ route('view.later') }}">
+										{{ __('View later list') }}
+									</a>
 								</div>
 							</li>
 							<li class="nav-item">

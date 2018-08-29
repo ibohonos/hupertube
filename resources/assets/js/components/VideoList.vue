@@ -8,8 +8,8 @@
 					{{ genre.name }}<span v-if="video.genres.length > 1 &&
 					index != video.genres.length - 1">,</span>
 				</span>
-				<p class="year">{{ year }}</p>
-				<span class="rating">{{ rating }}/10</span>
+				<p class="year" v-if="year">{{ year }}</p>
+				<span class="rating" v-if="rating">{{ rating }}/10</span>
 			</div>
 		</a>
 	</div>
@@ -29,16 +29,16 @@
 			},
 			year: {
 				type: Number,
-				required: true
+				required: false
 			},
 			rating: {
 				type: Number,
-				required: true
+				required: false
 			}
 		},
 
 		data() {
-			return  {
+			return {
 				video: {},
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				loader: true,

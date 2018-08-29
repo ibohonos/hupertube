@@ -38,6 +38,8 @@
 
 	"Hello :first_name :last_name"	: "Hello :first_name :last_name",
 	"Edit"							: "Edit",
+	"Social connected"				: "Social connected",
+	"User isset with this social"	: "User isset with this social!",
 
 	"Profile :first_name :last_name"	: "Profile :first_name :last_name",
 	"Full name"							: "Full name",

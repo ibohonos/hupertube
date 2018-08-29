@@ -36,7 +36,7 @@
 		},
 
 		 data: function() {
-		 	return  {
+		 	return {
 				user: {},
 			 }
 		 },
