@@ -1,7 +1,10 @@
 <template>
 	<div class="row" v-if="!loader">
 		<div class="col-md-4" v-for="video in videos" v-if="video">
-			<video-list :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year"></video-list>
+		<figure class="film-plate">
+			<video-list :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year">
+			</video-list>
+		</figure>
 		</div>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
