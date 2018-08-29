@@ -1,8 +1,8 @@
 <template>
 	<div v-if="!loader">
-		<div v-if="is_viewed" class="viewed">Viewed</div>
-		<div v-else class="not_viewed">Not viewed</div>
-		<a href="#" @click="viewAdd">Add to viewed</a>
+		<div v-if="is_view" class="viewed">View later</div>
+		<div v-else class="not_view">Not view later</div>
+		<a href="#" @click="viewAdd">Add to view later</a>
 	</div>
 	<div class="loader" v-else></div>
 </template>
@@ -29,13 +29,13 @@
 		data() {
 			return {
 				loader: true,
-				is_viewed: false
+				is_view: false
 			}
 		},
 
 		methods: {
-			isViewedMethod() {
-				axios.get('/api/v2/is-viewed', {
+			isViewMethod() {
+				axios.get('/api/v2/is-view-later', {
 					params: {
 						api_token: this.user_token,
 						imdb_id: this.imdb_id,
@@ -43,27 +43,27 @@
 					},
 				}).then(resp => {
 					if (resp.data.data) {
-						this.is_viewed = true
+						this.is_view = true
 					}
 					this.loader = false;
 				});
 			},
 
 			viewAdd() {
-				axios.post('/api/v2/viewed', {
+				axios.post('/api/v2/view-later', {
 					api_token: this.user_token,
 					imdb_id: this.imdb_id,
 					video_id: this.video_id
 				}).then(resp => {
 					if (resp.data.success) {
-						this.is_viewed = !this.is_viewed;
+						this.is_view = !this.is_view;
 					}
 				});
 			}
 		},
 
 		mounted() {
-			this.isViewedMethod();
+			this.isViewMethod();
 		}
 	}
 </script>

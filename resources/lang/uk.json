@@ -26,10 +26,10 @@
 	 "Reset Password"			: "Reset Password",
 	 "Send Password Reset Link"	: "Send Password Reset Link",
 
-	 "Thank's for registration"		: "Thank's for registration",
-	 "Please activate your account."	: "Please activate your account.",
-	 "Activate account"				: "Activate account",
-	 "Thanks,"						: "Thanks,",
+	 "Thank's for registration"		: "Дякуємо за реєстрацію",
+	 "Please activate your account."	: "Будь ласка, активуйте свій аккаунт.",
+	 "Activate account"				: "Активувати аккаунт",
+	 "Thanks,"						: "Дякуємо,",
 
 	 "Edit :first_name :last_name"	: "Edit :first_name :last_name",
 	 "Update"						: "Update",
@@ -38,6 +38,8 @@
 
 	 "Hello :first_name :last_name"	: "Hello :first_name :last_name",
 	 "Edit"							: "Edit",
+	 "Social connected"				: "Соціальну мережу підключено",
+	 "User isset with this social"	: "Користувач з такою соціальною мережею вже існує!",
 
 	 "Profile :first_name :last_name"	: "Profile :first_name :last_name",
 	 "Full name"							: "Full name",

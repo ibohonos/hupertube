@@ -14,7 +14,6 @@ class CreateViewedsTable extends Migration
 	public function up()
 	{
 		Schema::create('vieweds', function (Blueprint $table) {
-			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('video_id');
 			$table->string('imdb_id');

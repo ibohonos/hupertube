@@ -6,6 +6,7 @@
 		<div class="col-md-4" v-if="video.poster_path">
 			<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
 			<viewed :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></viewed>
+			<view-later :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></view-later>
 		</div>
 		<div class="col-md-4" v-else>
 			<div class="loader mx-auto"></div>
