@@ -1,19 +1,21 @@
-<template v-if="video">
-	<div v-if="!loader">
-		<a :href="'/video/' + imdb_id + '/' + video_id">
-			<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
-			<div class="info">
-				<h2>{{ video.title }}</h2>
-				<span class="genre" v-for="(genre, index) in video.genres" v-if="genre">
-					{{ genre.name }}<span v-if="video.genres.length > 1 &&
-					index != video.genres.length - 1">,</span>
-				</span>
-				<p class="year" v-if="year">{{ year }}</p>
-				<span class="rating" v-if="rating">{{ rating }}/10</span>
-			</div>
-		</a>
+<template>
+	<div class="col-md-4" v-if="is_visible">
+		<figure class="film-plate" v-if="!loader">
+			<a :href="'/video/' + imdb_id + '/' + video_id">
+				<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
+				<div class="info">
+					<h2>{{ video.title }}</h2>
+					<span class="genre" v-for="(genre, index) in video.genres" v-if="genre">
+						{{ genre.name }}<span v-if="video.genres.length > 1 &&
+						index != video.genres.length - 1">,</span>
+					</span>
+					<p class="year" v-if="year">{{ year }}</p>
+					<span class="rating" v-if="rating">{{ rating }}/10</span>
+				</div>
+			</a>
+		</figure>
+		<div class="loader" v-else></div>
 	</div>
-	<div class="loader" v-else></div>
 </template>
 
 <script>
@@ -43,6 +45,7 @@
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				loader: true,
 				lang: native_lang,
+				is_visible: true
 			}
 		},
 
@@ -56,7 +59,9 @@
 				}).then(response => {
 						this.video = response.data;
 						this.loader = false;
-					}).catch(error => {});
+					}).catch(error => {
+						this.is_visible = false;
+				});
 			}
 		},
 

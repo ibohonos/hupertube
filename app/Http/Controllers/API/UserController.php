@@ -67,7 +67,7 @@ class UserController extends APIController
 			$view->save();
 		else :
 			$view = $view->findByIds($imdb_id, $video_id, $user_id);
-			$view->truncate();
+			$view->delete();
 
 			return $this->sendResponse("Deleted!", "OK");
 		endif;

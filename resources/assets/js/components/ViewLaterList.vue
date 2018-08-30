@@ -1,9 +1,7 @@
 <template>
 	<div v-if="!loader">
 		<div class="row">
-			<div v-for="video in videos" v-if="video" class="col-md-3">
-				<video-list :imdb_id="video.imdb_id" :video_id="video.video_id"></video-list>
-			</div>
+			<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_id" :video_id="video.video_id"></video-list>
 		</div>
 	</div>
 	<div class="loader" v-else></div>
