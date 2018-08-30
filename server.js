@@ -66,27 +66,28 @@ magnetLink(torrentFile, function(err, link) {
 			console.log('length: ' + file.length);
 			console.log('format: ' + extension);
 			
-			if (extension == 'mp4' || 1) {
-				//file.select();	//скачує блоки рандомно
+			if (extension == 'mp4') {
+				file.select();	//скачує блоки рандомно
 
 				//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
-				//let stream = file.createReadStream({
-				// 	start: 10,
-				// 	end: 100
-				// });
+				let stream = file.createReadStream({
+					start: 389914225,
+					end: 779828449
+				});
 
-				/**
-				res.writeHead(status, headers);
-				var streamReadOpts = { start: start, end: end, autoClose: true };
-				var stream = fs.createReadStream(filePath, streamReadOpts)
-				    // previous 'open' & 'error' event handlers are still here
-				    .on('end', function () {
-				      console.log('stream end');
-				    })
-				    .on('close', function () {
-				      console.log('stream close');
-				    })
-				*/
+				//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
+			
+				
+				// var streamReadOpts = { start: 0, end: 2000, autoClose: true };
+				// var stream = file.createReadStream(file.path, streamReadOpts)
+				//     // previous 'open' & 'error' event handlers are still here
+				//     .on('end', function () {
+				//       console.log('stream end');
+				//     })
+				//     .on('close', function () {
+				//       console.log('stream close');
+				//     })
+				
 			}
 		})
 	})
@@ -94,7 +95,10 @@ magnetLink(torrentFile, function(err, link) {
 
 //change to post
 app.get('/movie/:id/:quality/:lng', function(req, res) {
-	console.log(req.params);
+		
+	res.send(req.headers);
+	
+
 	// check for file in public/downloaded_films
 	// if no file -> get torrent file in storage/torrents
 	// return stream
