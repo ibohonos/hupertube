@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAllMovieIdsTable extends Migration
+class CreateViewLatersTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -13,8 +13,10 @@ class CreateAllMovieIdsTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('all_movie_ids', function (Blueprint $table) {
+		Schema::create('view_laters', function (Blueprint $table) {
 			$table->increments('id');
+			$table->integer('user_id');
+			$table->integer('video_id');
 			$table->string('imdb_id');
 			$table->timestamps();
 		});
@@ -27,6 +29,6 @@ class CreateAllMovieIdsTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('all_movie_ids');
+		Schema::dropIfExists('view_laters');
 	}
 }

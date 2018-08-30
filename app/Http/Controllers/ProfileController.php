@@ -157,4 +157,9 @@ class ProfileController extends Controller
 		return $name;
 	}
 
+	public function viewLater()
+	{
+		return view('user.later');
+	}
+
 }

@@ -1,11 +1,6 @@
 <template>
 	<div class="row" v-if="!loader">
-		<div class="col-md-4" v-for="video in videos" v-if="video">
-		<figure class="film-plate">
-			<video-list :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year">
-			</video-list>
-		</figure>
-		</div>
+		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year"></video-list>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
 				<span slot="no-more">
@@ -27,6 +22,8 @@
 
 		data() {
 			return  {
+				api_key: 'e4649c026a8d8a3c93ed840286816339',
+				t_video: true,
 				videos: {},
 				loader: true,
 				page: 1,
@@ -69,6 +66,18 @@
 			infiniteHandler($state) {
 				this.page++;
 				this.scrollVideos($state);
+			},
+
+			testVideo(imdb_id) {
+				axios.get('https://api.themoviedb.org/3/movie/' + imdb_id, {
+					params: {
+						api_key: this.api_key,
+					},
+				}).then(resp => {
+					return true;
+				}).catch(err => {
+					return false;
+				})
 			}
 		},
 		mounted() {

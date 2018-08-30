@@ -52,10 +52,12 @@ class HomeController extends Controller
 	public function reSendMail()
 	{
 		$email = Session::get('tmp_user_email');
-		$user = User::getUserByEmail($email);
+		if ($email) :
+			$user = User::getUserByEmail($email);
 
-		Mail::to($email)->send(new RegisterUser($user));
-		return redirect()->back();
+			Mail::to($email)->send(new RegisterUser($user));
+			return redirect()->back();
+		endif;
 	}
 
 	/**

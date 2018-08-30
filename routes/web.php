@@ -104,6 +104,11 @@ Route::group([
 			'uses' => 'VideosController@saveComment',
 			'as' => 'comment.save'
 		]);
+
+		Route::get('/view-later', [
+			'uses' => 'ProfileController@viewLater',
+			'as' => 'view.later'
+		]);
 	});
 });
 
