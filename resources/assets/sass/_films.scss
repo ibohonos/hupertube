@@ -64,3 +64,10 @@ figure.film-plate {
     font-size: 1.8em;
   }
 }
+
+figure img {
+  opacity: 1;
+  &:hover {
+    opacity: 0.5;
+  }
+}
