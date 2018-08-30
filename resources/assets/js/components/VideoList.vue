@@ -2,15 +2,17 @@
 	<div class="col-md-4" v-if="is_visible">
 		<figure class="film-plate" v-if="!loader">
 			<a :href="'/video/' + imdb_id + '/' + video_id">
-				<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
-				<div class="info">
-					<h2>{{ video.title }}</h2>
-					<span class="genre" v-for="(genre, index) in video.genres" v-if="genre">
-						{{ genre.name }}<span v-if="video.genres.length > 1 &&
-						index != video.genres.length - 1">,</span>
-					</span>
-					<p class="year" v-if="year">{{ year }}</p>
-					<span class="rating" v-if="rating">{{ rating }}/10</span>
+				<div class="overlay">
+					<div class="additional-info">
+						<p class="rating" v-if="rating">{{ rating }}/10</p>
+						<span class="genre" v-for="(genre, index) in video.genres" v-if="genre">
+              {{ genre.name }}<span v-if="video.genres.length > 1 &&
+              index != video.genres.length - 1">,</span>
+            </span>
+						<p class="year" v-if="year">{{ year }}</p>
+						<h2>{{ video.title }}</h2>
+					</div>
+					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
 				</div>
 			</a>
 		</figure>
@@ -19,56 +21,56 @@
 </template>
 
 <script>
-	export default {
-		props: {
-			imdb_id: {
-				type: String,
-				required: true
-			},
-			video_id: {
-				type: Number,
-				required: true
-			},
-			year: {
-				type: Number,
-				required: false
-			},
-			rating: {
-				type: Number,
-				required: false
-			}
-		},
+    export default {
+        props: {
+            imdb_id: {
+                type: String,
+                required: true
+            },
+            video_id: {
+                type: Number,
+                required: true
+            },
+            year: {
+                type: Number,
+                required: false
+            },
+            rating: {
+                type: Number,
+                required: false
+            }
+        },
 
-		data() {
-			return {
-				video: {},
-				api_key: 'e4649c026a8d8a3c93ed840286816339',
-				loader: true,
-				lang: native_lang,
-				is_visible: true
-			}
-		},
+        data() {
+            return {
+                video: {},
+                api_key: 'e4649c026a8d8a3c93ed840286816339',
+                loader: true,
+                lang: native_lang,
+                is_visible: true
+            }
+        },
 
-		methods: {
-			getVideoInfo() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
-					params: {
-						api_key: this.api_key,
-						language: this.lang,
-					},
-				}).then(response => {
-						this.video = response.data;
-						this.loader = false;
-					}).catch(error => {
-						this.is_visible = false;
-				});
-			}
-		},
+        methods: {
+            getVideoInfo() {
+                axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+                    params: {
+                        api_key: this.api_key,
+                        language: this.lang,
+                    },
+                }).then(response => {
+                    this.video = response.data;
+                    this.loader = false;
+                }).catch(error => {
+                    this.is_visible = false;
+                });
+            }
+        },
 
-		mounted() {
-			this.getVideoInfo();
-		}
-	}
+        mounted() {
+            this.getVideoInfo();
+        }
+    }
 </script>
 
 <style scoped>
