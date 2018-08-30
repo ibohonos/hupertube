@@ -6,9 +6,9 @@
 					<div class="additional-info">
 						<p class="rating" v-if="rating">{{ rating }}/10</p>
 						<span class="genre" v-for="(genre, index) in video.genres" v-if="genre">
-              {{ genre.name }}<span v-if="video.genres.length > 1 &&
-              index != video.genres.length - 1">,</span>
-            </span>
+						  {{ genre.name }}<span v-if="video.genres.length > 1 &&
+						  index != video.genres.length - 1">,</span>
+						</span>
 						<p class="year" v-if="year">{{ year }}</p>
 						<h2>{{ video.title }}</h2>
 					</div>

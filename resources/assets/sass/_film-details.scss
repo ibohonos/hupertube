@@ -1,0 +1,55 @@
+@import "variables";
+
+
+.film-details {
+  position: relative;
+  .overlay {
+    background-color: #1b1e21;
+  }
+  .background-img {
+    opacity: 0.2;
+    border-top: 100px dotted black;
+    border-bottom: 120px dotted black;
+  }
+}
+
+.film-desc {
+    color: white;
+    position: absolute;
+    top: 1%;
+    left: 0;
+    max-height: 550px;
+    overflow: hidden;
+  h1 {
+    font-size: 3em;
+    margin: 25px;
+    text-shadow: 1px 1px 2px rgb(88, 90, 142);
+  }
+  li {
+    display: flex;
+    align-items: center;
+    span {
+      font-size: 1.2em;
+    }
+  }
+  img {
+    margin-top: -80px;
+    border-radius: 4px;
+  }
+  .desc {
+    font-size: 1.2em;
+  }
+  .rating {
+    font-size: 1.2em;
+    padding-left: 8px;
+    color: white;
+    .ofTen {
+      font-size: 1em;
+      color: white;
+    }
+  }
+}
+
+.film-extra {
+
+}
