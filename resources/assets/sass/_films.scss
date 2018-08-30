@@ -71,3 +71,10 @@ figure img {
     opacity: 0.5;
   }
 }
+
+figure img {
+  opacity: 1;
+  &:hover {
+    opacity: 0.5;
+  }
+}
