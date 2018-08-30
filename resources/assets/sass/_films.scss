@@ -91,3 +91,10 @@ figure img {
     }
   }
 }
+
+figure img {
+  opacity: 1;
+  &:hover {
+    opacity: 0.5;
+  }
+}
