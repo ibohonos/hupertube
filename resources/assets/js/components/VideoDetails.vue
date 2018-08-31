@@ -1,89 +1,136 @@
 <template>
 	<div class="row film-details" v-if="video">
-		<div class="overlay">
-			<img class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
-		</div>
-		<div class="row film-desc">
-			<div class="col-md-12">
-				<div class="row">
-					<div class="col-md-4" v-if="video.poster_path">
-						<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
-						<viewed :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></viewed>
-						<view-later :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></view-later>
+		<div class="col-12">
+			<div class="overlay">
+				<img class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
+			</div>
+			<div class="row film-desc">
+				<div class="col-md-12">
+					<div class="row">
+						<div class="col-md-4" v-if="video.poster_path">
+							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
+							<div class="film-icons-info">
+								<viewed :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></viewed>
+								<view-later :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></view-later>
+							</div>
+						</div>
+						<div class="col-md-4" v-else>
+							<div class="loader mx-auto"></div>
+						</div>
+						<div class="col-md-8">
+							<h1 class="text-center">{{ video.title }}</h1>
+							<p class="desc" v-if="video.overview">{{ video.overview }}</p>
+							<p v-else>{{ video_en.overview }}</p>
+							<ul>
+								<li>
+									<h3>{{ $lang.video_details.rating }}:</h3>
+									<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'' + imdb_id" data-style="p4">
+										<a :href="'https://www.imdb.com/title/' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">
+											<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />
+										</a>
+									</span>
+								</li>
+								<li>
+									<h3>{{ $lang.video_details.release }}:</h3>
+									<span>{{ video.release_date }}</span>
+								</li>
+								<li>
+									<h3>{{ $lang.video_details.run_time }}:</h3>
+									<span>{{ video.runtime }} min</span>
+								</li>
+								<li>
+									<h3>{{ $lang.video_details.genres }}:</h3>
+									<span v-for="janr in video.genres">{{ janr.name }} </span>
+								</li>
+							</ul>
+						</div>
 					</div>
-					<div class="col-md-4" v-else>
-						<div class="loader mx-auto"></div>
+				</div>
+			</div>
+
+			<div class="row film-extra">
+				<div class="col-md-12">
+					<h1 class="text-center">{{ $lang.video_details.actors }}</h1>
+				</div>
+				<div class="col-md-2" v-for="(actor, index) in credits.cast" v-if="index < 6">
+					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
+					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
+					<p>{{ actor.name }}</p>
+				</div>
+			</div>
+			<div class="row film-extra">
+				<div class="col-md-12">
+					<h1 class="text-center">{{ $lang.video_details.cast }}</h1>
+				</div>
+				<div class="col-md-2" v-for="(cast, index) in credits.crew" v-if="index < 6">
+					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
+					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
+					<h5>{{ cast.job }}</h5>
+					<p>{{ cast.name }}</p>
+				</div>
+			</div>
+			<div class="row film-watch">
+				<div class="col-md-12">
+					<h1 class="text-center">Watch online</h1>
+				</div>
+				<div class="col-md-12">
+					<div class="accordion" id="accordionExample">
+						<div class="card">
+							<div class="card-header" id="headingOne">
+								<h5 class="mb-0">
+									<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										Watch film online
+									</button>
+								</h5>
+							</div>
+
+							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+								<div class="card-body">
+									<h4>Choose quality: </h4>
+									<a v-for="torrent in torrents" :href="torrent.url" class="torrent_quality">{{ torrent.quality }}</a>
+									<p>player</p>
+								</div>
+							</div>
+						</div>
+						<div class="card">
+							<div class="card-header" id="headingTwo">
+								<h5 class="mb-0">
+									<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										Watch trailers
+									</button>
+								</h5>
+							</div>
+							<div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+								<div class="card-body">
+									<div v-if="tr_length">
+										<h3 class="text-center">{{ $lang.video_details.trailers }} ({{ tr_length }}):</h3>
+										<div class="text-center trailers" v-for="trailer in trailers.results">
+											<iframe width="560" height="315" :src="'https://www.youtube.com/embed/' + trailer.key" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+										</div>
+									</div>
+									<div v-else>
+										No trailers available
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
-					<div class="col-md-8">
-						<h1 class="text-center">{{ video.title }}</h1>
-						<p class="desc" v-if="video.overview">{{ video.overview }}</p>
-						<p v-else>{{ video_en.overview }}</p>
-						<ul>
-							<li>
-								<h3>{{ $lang.video_details.rating }}:</h3>
-								<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'' + imdb_id" data-style="p4">
-									<a :href="'https://www.imdb.com/title/' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">
-										<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />
-									</a>
-								</span>
-							</li>
-							<li>
-								<h3>{{ $lang.video_details.release }}:</h3>
-								<span>{{ video.release_date }}</span>
-							</li>
-							<li>
-								<h3>{{ $lang.video_details.run_time }}:</h3>
-								<span>{{ video.runtime }} min</span>
-							</li>
-							<li>
-								<h3>{{ $lang.video_details.genres }}:</h3>
-								<span v-for="janr in video.genres">{{ janr.name }} </span>
-							</li>
-						</ul>
-
-
-
-
-					</div>
+				</div>
+			</div>
+			<div class="row film-comments">
+				<div class="col-md-12">
+					<h1 class="text-center">{{ $lang.video_details.comments }}</h1>
+					<comments :imdb_id="imdb_id"></comments>
 				</div>
 			</div>
 		</div>
 
-		<div class="row film-extra">
-			<div class="col-md-12">
-				<h3 class="text-center">{{ $lang.video_details.actors }}</h3>
-			</div>
-			<div class="col-md-2" v-for="(actor, index) in credits.cast" v-if="index < 6">
-				<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
-				<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
-				<p>{{ actor.name }}</p>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-12">
-				<h3 class="text-center">{{ $lang.video_details.cast }}</h3>
-			</div>
-			<div class="col-md-2" v-for="(cast, index) in credits.crew" v-if="index < 6">
-				<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
-				<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
-				<h5>{{ cast.job }}</h5>
-				<p>{{ cast.name }}</p>
-			</div>
-		</div>
-		<h3>{{ $lang.video_details.quality }}:</h3>
-		<a v-for="torrent in torrents" :href="torrent.url" class="torrent_quality">{{ torrent.quality }}</a>
-		<div v-if="tr_length">
-			<h3>{{ $lang.video_details.trailers }} ({{ tr_length }}):</h3>
-			<div class="trailers" v-for="trailer in trailers.results">
-				<iframe width="560" height="315" :src="'https://www.youtube.com/embed/' + trailer.key" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-			</div>
-		</div>
-		<div class="col-md-12">
-			<h3 class="text-center">{{ $lang.video_details.comments }}:</h3>
-			<comments :imdb_id="imdb_id"></comments>
-		</div>
+
+
+
 	</div>
 </template>
+
 
 <script>
 	(function(d, s, id) {

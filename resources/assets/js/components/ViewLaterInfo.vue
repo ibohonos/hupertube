@@ -1,8 +1,11 @@
 <template>
-	<div v-if="!loader">
-		<div v-if="is_view" class="viewed">View later</div>
-		<div v-else class="not_view">Not view later</div>
-		<a href="#" @click="viewAdd">Add to view later</a>
+	<div v-if="!loader" class="film-pocket-info">
+		<div v-if="is_view" class="viewed">
+			<i class="fab fa-get-pocket"> In list</i>
+		</div>
+		<a href="#" @click="viewAdd">
+			<i class="fab fa-bookmark"> View later</i>
+		</a>
 	</div>
 	<div class="loader" v-else></div>
 </template>
