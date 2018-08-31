@@ -1,7 +1,7 @@
 <template>
-	<div class="text-center">
+	<div class="user-avatar">
 		<img class="avatar" v-if="imgDataUrl" :src="imgDataUrl" v-show="true" style="display: none;">
-		<a class="btn btn-success" @click="toggleShow">Upload</a>
+		<a class="btn" @click="toggleShow"><i class="fab fa-upload"></i></a>
 		<my-upload url="/avatar/save"
 					@crop-success="cropSuccess"
 					:no-circle="true"
