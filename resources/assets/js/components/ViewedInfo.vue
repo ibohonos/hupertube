@@ -1,8 +1,15 @@
 <template>
-	<div v-if="!loader">
-		<div v-if="is_viewed" class="viewed">Viewed</div>
-		<div v-else class="not_viewed">Not viewed</div>
-		<a href="#" @click="viewAdd">Add to viewed</a>
+	<div v-if="!loader" class="film-view-info">
+
+		<div v-if="is_viewed" class="viewed">
+			<i class="fab fa-eye"> Watched</i>
+		</div>
+		<div v-else class="not_viewed">
+			<i class="fab fa-eye-slash"> Not Watched</i>
+		</div>
+		<a href="#" @click="viewAdd">
+			<i class="fab fa-plus-circle"> Mark as watched</i>
+		</a>
 	</div>
 	<div class="loader" v-else></div>
 </template>

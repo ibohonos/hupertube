@@ -13,14 +13,21 @@
 							</div>
 						@endif
 						<div class="row">
-							<div class="col-12">
-								<div class="img-circle" style="float: left;">
-									{{--<img src="{{ url(Auth::user()->avatar) }}" class="img-circle">--}}
-									<avatar-crope img="{{ url(Auth::user()->avatar) }}" token="{{ Auth::user()->api_token  }}"></avatar-crope>
-								</div>
-								<div style="float: right;">
-									<a href="{{ route('profile.edit') }}" class="btn btn-secondary">{{ __('Edit') }}</a>
-								</div>
+							<div class="col-md-6">
+								<avatar-crope img="{{ url(Auth::user()->avatar) }}" token="{{ Auth::user()->api_token  }}"></avatar-crope>
+							</div>
+
+							<div class="col-md-6">
+								<fieldset>
+									<legend class="text-center">Your details</legend>
+									<a href="{{ route('profile.edit') }}"><i class="fab fa-pen-square fa-2x"></i></a>
+									<ul>
+										<li>Username: {{Auth::user()->name}}</li>
+										<li>Name: {{Auth::user()->first_name}} </li>
+										<li>Surname: {{Auth::user()->last_name}}</li>
+										<li>Email: {{Auth::user()->email}}</li>
+									</ul>
+								</fieldset>
 							</div>
 						</div>
 					</div>
