@@ -1,5 +1,64 @@
 <template>
 	<div class="row" v-if="!loader">
+		<div class="col-md-12">
+			<div class="form-group">
+				<input type="text" class="form-control form-control-lg" v-model="query_term" placeholder="Please enter film name">
+			</div>
+			<h3>Quality:</h3>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios1" value="All" checked>
+				<label class="form-check-label" for="exampleRadios1">
+					All
+				</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios2" value="3D">
+				<label class="form-check-label" for="exampleRadios2">
+					3D
+				</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios3" value="720p">
+				<label class="form-check-label" for="exampleRadios3">
+					720p
+				</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios4" value="1080p">
+				<label class="form-check-label" for="exampleRadios4">
+					1080p
+				</label>
+			</div>
+			<div class="row">
+				<div class="form-group col">
+					<label for="sortBy">Sort By</label>
+					<select class="form-control" id="sortBy" v-model="sort_by">
+						<option value="title">Title</option>
+						<option value="year">Year</option>
+						<option value="rating">Rating</option>
+						<option value="peers">Peers</option>
+						<option value="seeds">Seeds</option>
+						<option value="download_count">Download count</option>
+						<option value="like_count">Like count</option>
+						<option value="date_added">Date added</option>
+					</select>
+				</div>
+				<div class="form-group col">
+					<label for="orderBy">Order By</label>
+					<select class="form-control" id="orderBy" v-model="order_by">
+						<option value="asc">Asc</option>
+						<option value="desc">Desc</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group" v-if="genres">
+				<label for="genre">Genre</label>
+				<select class="form-control" id="genre" v-model="genre">
+					<option value="">Default</option>
+					<option v-for="item in genres" :key="item.id" :value="item.name">{{ item.name }}</option>
+				</select>
+			</div>
+		</div>
 		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year"></video-list>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
@@ -8,6 +67,9 @@
 				</span>
 			</infinite-loading>
 		</div>
+		<span slot="no-more" v-if="!videos">
+			{{ $lang.videos.no_news }}
+		</span>
 	</div>
 	<div class="loader mx-auto" v-else></div>
 </template>
@@ -28,7 +90,40 @@
 				loader: true,
 				page: 1,
 				limit: 12,
+				sort_by: "download_count",
+				order_by: 'desc',
+				quality: 'All',
+				minimum_rating: 0,
+				query_term: "",
+				genre: "",
+				genres: {}
 			}
+		},
+
+		watch: {
+			query_term() {
+				this.debouncedGetAllVideos();
+			},
+
+			quality() {
+				this.debouncedGetAllVideos();
+			},
+
+			sort_by() {
+				this.debouncedGetAllVideos();
+			},
+
+			order_by() {
+				this.debouncedGetAllVideos();
+			},
+
+			genre() {
+				this.debouncedGetAllVideos();
+			}
+		},
+
+		created() {
+			this.debouncedGetAllVideos = _.debounce(this.getAllVideos, 500)
 		},
 
 		methods: {
@@ -37,6 +132,12 @@
 					params: {
 						page: this.page,
 						limit: this.limit,
+						sort_by: this.sort_by,
+						order_by: this.order_by,
+						quality: this.quality,
+						minimum_rating: this.minimum_rating,
+						query_term: this.query_term,
+						genre: this.genre
 					},
 				}).then(response => {
 						this.videos = response.data.data.movies;
@@ -44,19 +145,32 @@
 					});
 			},
 
+			getAllGenres() {
+				axios.get('https://api.themoviedb.org/3/genre/movie/list', {
+					params: {
+						api_key: this.api_key
+					}
+				}).then(resp => {
+					this.genres = resp.data.genres;
+				});
+			},
+
 			scrollVideos($state) {
 				axios.get('https://yts.am/api/v2/list_movies.json', {
 					params: {
 						page: this.page,
 						limit: this.limit,
+						sort_by: this.sort_by,
+						order_by: this.order_by,
+						quality: this.quality,
+						minimum_rating: this.minimum_rating,
+						query_term: this.query_term,
+						genre: this.genre
 					},
 				}).then(response => {
-					if (response.data.data.movies.length) {
+					if (response.data.data.movies && response.data.data.movies.length) {
 						this.videos = this.videos.concat(response.data.data.movies);
 						$state.loaded();
-//						if (this.videos.length / 20 === 10) {
-//							$state.complete();
-//						}
 					} else {
 						$state.complete();
 					}
@@ -83,6 +197,7 @@
 		mounted() {
 			this.$lang.setLang(currentLang);
 			this.getAllVideos();
+			this.getAllGenres();
 		}
 	}
 </script>
