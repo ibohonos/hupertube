@@ -15,7 +15,6 @@
 						<div class="row">
 							<div class="col-12">
 								<div class="img-circle" style="float: left;">
-									{{--<img src="{{ url(Auth::user()->avatar) }}" class="img-circle">--}}
 									<avatar-crope img="{{ url(Auth::user()->avatar) }}" token="{{ Auth::user()->api_token  }}"></avatar-crope>
 								</div>
 								<div style="float: right;">
