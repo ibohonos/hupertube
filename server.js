@@ -12,7 +12,17 @@ const	express = require('express'),
 const	torrentStream = require('torrent-stream'),
 		magnetLink = require('magnet-link');
 
+const cors = require('cors');
 
+// app.use(cors());
+
+app.use(cors({
+	origin: 'http://localhost:8300',
+	credentials: true
+}));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 process.on('uncaughtException', function (exception) {
 	let date = new Date();
 	
@@ -45,59 +55,70 @@ let id = '123';
 let quality = '720';
 
 //if no film
-let torrentFile = process.argv[2];
+// let torrentFile = process.argv[2];
 
-magnetLink(torrentFile, function(err, link) {
-	if (err) {
-		console.log(err);
-		return;
-	}
-	console.log(link);
-	let engine = torrentStream(link, { path: 'public/movies' });
 
-	engine.on('ready', function() {
-		engine.files.forEach(function (file) {
-			let extension = file.name.split('.').pop();
-
-			file.name = id + '_[' + quality + 'p]_' + file.name;
-			file.path = id + '/' + file.name;
-
-			console.log("\npath: " + file.path + "\nname: " + file.name);
-			console.log('length: ' + file.length);
-			console.log('format: ' + extension);
-			
-			if (extension == 'mp4') {
-				file.select();	//скачує блоки рандомно
-
-				//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
-				let stream = file.createReadStream({
-					start: 389914225,
-					end: 779828449
-				});
-
-				//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
-			
-				
-				// var streamReadOpts = { start: 0, end: 2000, autoClose: true };
-				// var stream = file.createReadStream(file.path, streamReadOpts)
-				//     // previous 'open' & 'error' event handlers are still here
-				//     .on('end', function () {
-				//       console.log('stream end');
-				//     })
-				//     .on('close', function () {
-				//       console.log('stream close');
-				//     })
-				
-			}
-		})
-	})
-});
 
 //change to post
-app.get('/movie/:id/:quality/:lng', function(req, res) {
-		
-	res.send(req.headers);
-	
+app.post('/movie/:id/:quality/:lng', function(req, res) {
+
+	// console.log('req');
+	// console.log(req.body.torrent_link);
+	// console.log('res');
+	// console.log(res);
+
+
+	magnetLink(req.body.torrent_link, function(err, link) {
+		if (err) {
+			// console.log(err);
+			return;
+		}
+		// console.log(link);
+		let engine = torrentStream(link, { path: 'public/movies' });
+
+		engine.on('ready', function() {
+			engine.files.forEach(function (file) {
+				let extension = file.name.split('.').pop();
+
+				this.files.name = id + '_[' + quality + 'p]_' + file.name;
+				this.files.path = file.path.replace(' ', '_');
+
+				console.log("\npath: " + file.path + "\nname: " + file.name);
+				console.log('length: ' + file.length);
+				if (extension === 'mp4') {
+
+					console.log('format: ' + extension);
+					this.files.select();	//скачує блоки рандомно
+
+					//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
+					// let stream = file.createReadStream({
+					// 	start: 389914225,
+					// 	end: 779828449
+					// });
+
+					//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
+
+
+					// var streamReadOpts = { start: 0, end: 2000, autoClose: true };
+					// var stream = file.createReadStream(file.path, streamReadOpts)
+					//     // previous 'open' & 'error' event handlers are still here
+					//     .on('end', function () {
+					//       console.log('stream end');
+					//     })
+					//     .on('close', function () {
+					//       console.log('stream close');
+					//     })
+
+				}
+			})
+		})
+	});
+
+
+	res.send("OK");
+
+
+
 
 	// check for file in public/downloaded_films
 	// if no file -> get torrent file in storage/torrents

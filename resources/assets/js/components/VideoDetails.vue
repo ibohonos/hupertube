@@ -85,16 +85,16 @@
 							</div>
 
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-								<div class="card-body" v-if="torrents[0].quality === '3D'">
+								<div class="card-body">
 									<h4>Choose quality: </h4>
 									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
 								</div>
-								<div class="card-body" v-else>
-									<h4>Choose quality: </h4>
-									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 2">{{ torrent.quality }}</button>
-									<p>player</p>
-								</div>
+								<!--<div class="card-body" v-else>-->
+									<!--<h4>Choose quality: </h4>-->
+									<!--<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 2">{{ torrent.quality }}</button>-->
+									<!--<p>player</p>-->
+								<!--</div>-->
 							</div>
 						</div>
 						<div class="card">
@@ -175,7 +175,7 @@
 				torrents: {},
 				lang: native_lang,
 				short_lang: short_lang,
-				server_link: "localhost:3000"
+				server_link: "http://localhost:3000"
 			}
 		},
 
@@ -237,9 +237,9 @@
 
 			send_file(url, quality) {
 				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + quality + '/' + this.short_lang, {
-					torrent_link: url
+					torrent_link: url,
 				}).then(resp => {
-					cosole.log(resp);
+					console.log(resp);
 				});
 			}
 		},
