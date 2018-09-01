@@ -20,6 +20,7 @@ class HomeController extends Controller
 	 */
 	public function index()
 	{
+		dd(file_get_contents('https://yts.am/torrent/download/16B087DFF9C8153072BD35C1BEC245CB831AEF4D'));
 		return view('home');
 	}
 

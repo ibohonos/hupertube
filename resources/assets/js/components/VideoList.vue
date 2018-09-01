@@ -21,56 +21,56 @@
 </template>
 
 <script>
-    export default {
-        props: {
-            imdb_id: {
-                type: String,
-                required: true
-            },
-            video_id: {
-                type: Number,
-                required: true
-            },
-            year: {
-                type: Number,
-                required: false
-            },
-            rating: {
-                type: Number,
-                required: false
-            }
-        },
+	export default {
+		props: {
+			imdb_id: {
+				type: String,
+				required: true
+			},
+			video_id: {
+				type: Number,
+				required: true
+			},
+			year: {
+				type: Number,
+				required: false
+			},
+			rating: {
+				type: Number,
+				required: false
+			}
+		},
 
-        data() {
-            return {
-                video: {},
-                api_key: 'e4649c026a8d8a3c93ed840286816339',
-                loader: true,
-                lang: native_lang,
-                is_visible: true
-            }
-        },
+		data() {
+			return {
+				video: {},
+				api_key: 'e4649c026a8d8a3c93ed840286816339',
+				loader: true,
+				lang: native_lang,
+				is_visible: true
+			}
+		},
 
-        methods: {
-            getVideoInfo() {
-                axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
-                    params: {
-                        api_key: this.api_key,
-                        language: this.lang,
-                    },
-                }).then(response => {
-                    this.video = response.data;
-                    this.loader = false;
-                }).catch(error => {
-                    this.is_visible = false;
-                });
-            }
-        },
+		methods: {
+			getVideoInfo() {
+				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+					params: {
+						api_key: this.api_key,
+						language: this.lang,
+					},
+				}).then(response => {
+					this.video = response.data;
+					this.loader = false;
+				}).catch(error => {
+					this.is_visible = false;
+				});
+			}
+		},
 
-        mounted() {
-            this.getVideoInfo();
-        }
-    }
+		mounted() {
+			this.getVideoInfo();
+		}
+	}
 </script>
 
 <style scoped>
