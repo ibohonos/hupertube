@@ -83,10 +83,10 @@
 
 <style scoped>
 	.loader {
-		border-top: 16px solid blue;
-		border-right: 16px solid green;
-		border-bottom: 16px solid red;
-		border-left: 16px solid pink;
+		border-top: 16px solid #3b5aff;
+		border-right: 16px solid #2e93ff;
+		border-bottom: 16px solid #24bbff;
+		border-left: 16px solid #26dfff;
 		border-radius: 50%;
 		width: 100px;
 		height: 100px;
