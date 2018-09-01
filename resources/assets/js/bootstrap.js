@@ -32,6 +32,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 let token = document.head.querySelector('meta[name="csrf-token"]');
 window.native_lang = document.head.querySelector('meta[name="regional-name"]').content;
+window.short_lang = document.head.querySelector('meta[name="lang"]').content;
 
 if (token) {
 	window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
