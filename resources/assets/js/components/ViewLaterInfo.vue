@@ -1,11 +1,17 @@
 <template>
 	<div v-if="!loader" class="film-pocket-info">
 		<div v-if="is_view" class="viewed">
-			<i class="fab fa-get-pocket"> In list</i>
+			<i class="fab fa-get-pocket"><span> in list</span></i>
+			<a href="#" @click="viewAdd">
+				<i class="fab fa-minus-circle"></i>
+			</a>
 		</div>
-		<a href="#" @click="viewAdd">
-			<i class="fab fa-bookmark"> View later</i>
-		</a>
+		<div v-else>
+			<i class="fab fa-bookmark"><span> add to list</span></i>
+			<a href="#" @click="viewAdd">
+				<i class="fab fa-plus-circle"></i>
+			</a>
+		</div>
 	</div>
 	<div class="loader" v-else></div>
 </template>
