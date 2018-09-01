@@ -154,7 +154,7 @@
 				required: true
 			},
 			video_id: {
-				type: String,
+				type: Number,
 				required: true
 			},
 

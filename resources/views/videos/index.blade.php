@@ -15,7 +15,7 @@
 								{{ session('status') }}
 							</div>
 						@endif
-						<videos></videos>
+						<videos user_token="{{ Auth::user()->api_token }}"></videos>
 					</div>
 				</div>
 			</div>

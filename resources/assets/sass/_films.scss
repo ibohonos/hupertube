@@ -27,11 +27,19 @@ figure.film-plate {
   }
   .overlay {
     background-color: #1b1e21;
+    .film-icons-info {
+      position: absolute;
+      top: 270px;
+      padding: 0;
+      background: none;
+      z-index: 2;
+    }
     &:hover > .additional-info {
       display: block;
     }
   }
 }
+
 
 .additional-info {
   display: none;

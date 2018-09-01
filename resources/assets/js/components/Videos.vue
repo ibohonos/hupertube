@@ -59,7 +59,7 @@
 				</select>
 			</div>
 		</div>
-		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year"></video-list>
+		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year" :user_token="user_token"></video-list>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
 				<span slot="no-more">
@@ -81,6 +81,13 @@
 	export default {
 		components: {
 			InfiniteLoading,
+		},
+
+		props: {
+            user_token: {
+                type: String,
+                required: true
+            }
 		},
 
 		data() {

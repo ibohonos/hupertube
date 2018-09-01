@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!loader">
 		<div class="row">
-			<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_id" :video_id="video.video_id"></video-list>
+			<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_id" :video_id="video.video_id" :user_token="user_token"></video-list>
 		</div>
 	</div>
 	<div class="loader" v-else></div>
