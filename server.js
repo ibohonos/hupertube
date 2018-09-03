@@ -63,38 +63,46 @@ let quality = '720';
 app.post('/movie/:id/:quality/:lng', function(req, res) {
 
 	// console.log('req');
-	// console.log(req.body.torrent_link);
+	console.log(req.body.torrent_link);
 	// console.log('res');
 	// console.log(res);
 
 
 	magnetLink(req.body.torrent_link, function(err, link) {
 		if (err) {
-			// console.log(err);
+			console.log(err);
 			return;
 		}
-		// console.log(link);
-		let engine = torrentStream(link, { path: 'public/movies' });
+		console.log("link: " + link);
+
+		let path = 'public/movies/' + req.params.id + '/' + req.params.lng;
+		let engine = torrentStream(link, { path: path });
 
 		engine.on('ready', function() {
 			engine.files.forEach(function (file) {
 				let extension = file.name.split('.').pop();
 
-				this.files.name = id + '_[' + quality + 'p]_' + file.name;
-				this.files.path = file.path.replace(' ', '_');
+				// file.name = id + '_[' + quality + 'p]_' + file.name;
+				// file.path = file.path.replace(' ', '_');
 
 				console.log("\npath: " + file.path + "\nname: " + file.name);
 				console.log('length: ' + file.length);
 				if (extension === 'mp4') {
 
 					console.log('format: ' + extension);
-					this.files.select();	//скачує блоки рандомно
+					file.select();	//скачує блоки рандомно
 
 					//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
-					// let stream = file.createReadStream({
-					// 	start: 389914225,
-					// 	end: 779828449
-					// });
+					let stream = file.createReadStream({
+						start: 0,
+						end: 5242880
+					});
+
+					stream.on("open", function() {
+			          stream.pipe(res);
+			        }).on("error", function(err) {
+			          res.end(err);
+			        });
 
 					//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
 
@@ -109,6 +117,8 @@ app.post('/movie/:id/:quality/:lng', function(req, res) {
 					//       console.log('stream close');
 					//     })
 
+				} else {
+					file.deselect();
 				}
 			})
 		})
