@@ -27,11 +27,20 @@ figure.film-plate {
   }
   .overlay {
     background-color: #1b1e21;
+    .film-icons-info {
+      position: absolute;
+      top: 270px;
+      left: 0;
+      padding: 0;
+      background: none;
+      z-index: 2;
+    }
     &:hover > .additional-info {
       display: block;
     }
   }
 }
+
 
 .additional-info {
   display: none;
@@ -76,7 +85,7 @@ figure img {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
-  .additional-info {
+  figure.film-plate .overlay .additional-info {
     bottom: 20px;
     left: 70%;
     width: 160px;
@@ -92,12 +101,11 @@ figure img {
     h2 {
       font-size: 22px;
     }
+    .film-icons-info {
+      top: 190px;
+    }
   }
+
 }
 
-figure img {
-  opacity: 1;
-  &:hover {
-    opacity: 0.5;
-  }
-}
+

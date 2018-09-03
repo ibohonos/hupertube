@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!loader">
 		<div class="row">
-			<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_id" :video_id="video.video_id"></video-list>
+			<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_id" :video_id="video.video_id" :user_token="user_token"></video-list>
 		</div>
 	</div>
 	<div class="loader" v-else></div>
@@ -44,10 +44,10 @@
 
 <style scoped>
 	.loader {
-		border-top: 16px solid blue;
-		border-right: 16px solid green;
-		border-bottom: 16px solid red;
-		border-left: 16px solid pink;
+		border-top: 16px solid #3b5aff;
+		border-right: 16px solid #2e93ff;
+		border-bottom: 16px solid #24bbff;
+		border-left: 16px solid #26dfff;
 		border-radius: 50%;
 		width: 100px;
 		height: 100px;

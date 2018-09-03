@@ -1,11 +1,17 @@
 <template>
 	<div v-if="!loader" class="film-pocket-info">
 		<div v-if="is_view" class="viewed">
-			<i class="fab fa-get-pocket"> In list</i>
+			<i class="fab fa-get-pocket"><span> in list</span></i>
+			<a @click="viewAdd">
+				<i class="fab fa-minus-circle"></i>
+			</a>
 		</div>
-		<a href="#" @click="viewAdd">
-			<i class="fab fa-bookmark"> View later</i>
-		</a>
+		<div v-else>
+			<i class="fab fa-bookmark"><span> add to list</span></i>
+			<a @click="viewAdd">
+				<i class="fab fa-plus-circle"></i>
+			</a>
+		</div>
 	</div>
 	<div class="loader" v-else></div>
 </template>
@@ -14,7 +20,7 @@
 	export default {
 		props: {
 			video_id: {
-				type: String,
+				type: Number,
 				required: true
 			},
 
@@ -52,7 +58,8 @@
 				});
 			},
 
-			viewAdd() {
+			viewAdd(e) {
+			    e.preventDefault();
 				axios.post('/api/v2/view-later', {
 					api_token: this.user_token,
 					imdb_id: this.imdb_id,
@@ -73,10 +80,10 @@
 
 <style scoped>
 	.loader {
-		border-top: 16px solid blue;
-		border-right: 16px solid green;
-		border-bottom: 16px solid red;
-		border-left: 16px solid pink;
+		border-top: 16px solid #3b5aff;
+		border-right: 16px solid #2e93ff;
+		border-bottom: 16px solid #24bbff;
+		border-left: 16px solid #26dfff;
 		border-radius: 50%;
 		width: 100px;
 		height: 100px;

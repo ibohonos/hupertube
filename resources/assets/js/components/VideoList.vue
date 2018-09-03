@@ -11,6 +11,10 @@
 						</span>
 						<p class="year" v-if="year">{{ year }}</p>
 						<h2>{{ video.title }}</h2>
+						<div class="film-icons-info">
+							<viewed :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></viewed>
+							<view-later :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></view-later>
+						</div>
 					</div>
 					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
 				</div>
@@ -38,6 +42,10 @@
 			rating: {
 				type: Number,
 				required: false
+			},
+			user_token: {
+			    type: String,
+				required: true
 			}
 		},
 
@@ -75,10 +83,10 @@
 
 <style scoped>
 	.loader {
-		border-top: 16px solid blue;
-		border-right: 16px solid green;
-		border-bottom: 16px solid red;
-		border-left: 16px solid pink;
+		border-top: 16px solid #3b5aff;
+		border-right: 16px solid #2e93ff;
+		border-bottom: 16px solid #24bbff;
+		border-left: 16px solid #26dfff;
 		border-radius: 50%;
 		width: 100px;
 		height: 100px;

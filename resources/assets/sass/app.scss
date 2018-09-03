@@ -15,6 +15,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
+.card {
+  margin: 3rem 0 !important;
+}
+
+.card-header {
+  font-size: 2em;
+}
+
 @import "forms";
 @import "films";
 @import "film-details";

@@ -5,6 +5,7 @@
   position: relative;
   .overlay {
     background-color: #1b1e21;
+    min-height: 460px;
   }
   .background-img {
     opacity: 0.2;
@@ -47,6 +48,14 @@
   }
   .desc {
     font-size: 1.2em;
+    padding: 0 2.5rem;
+    line-height: 1.5em;
+    height: 10.5em;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
   }
   .rating {
     font-size: 1.2em;
@@ -75,16 +84,37 @@
   padding: 10px 14px 10px 30px;
   font-size: 1.25em;
   text-shadow: 1px 1px 2px #060725;
+  button {
+
+  }
   .film-view-info, .film-pocket-info {
-    i {
+    i:first-of-type {
+      width: 95px;
       padding-right: 4px;
     }
     display: flex;
   }
 }
 
-//.film-watch {
-//  width: 100%;
-//}
-
+@media screen and (max-width: 991px) {
+  .film-desc {
+    h1 {
+      font-size: 2.5em;
+    }
+    .desc {
+      font-size: 1em;
+      line-height: 1.4em;
+      height: 8.4em;
+      -webkit-line-clamp: 6;
+    }
+  }
+  .film-view-info, .film-pocket-info {
+    i {
+      width: 22px !important;
+      span {
+        display: none;
+      }
+    }
+  }
+}
 
