@@ -95,10 +95,17 @@ app.post('/movie/:id/:quality/:lng', function(req, res) {
 					//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
 					let stream = file.createReadStream({
 						start: 0,
-						end: 5242880
+						end: 5242880 //5Mb
 					});
 
 					stream.on("open", function() {
+						res.writeHead(206, {
+					        "Content-Range": "bytes " + 0 + "-" + 5242880 + "/" + file.length,
+					        "Accept-Ranges": "bytes",
+					        "Content-Length": 5242881,
+					        "Content-Type": "video/mp4"
+					    });
+
 			          stream.pipe(res);
 			        }).on("error", function(err) {
 			          res.end(err);
@@ -125,7 +132,7 @@ app.post('/movie/:id/:quality/:lng', function(req, res) {
 	});
 
 
-	res.send("OK");
+	// res.send("OK");
 
 
 

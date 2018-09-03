@@ -89,6 +89,13 @@
 									<h4>Choose quality: </h4>
 									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
+									<video controls>
+								        <source src="/public/movies/tt4154756/en/Avengers Infinity War (2018) [BluRay] [720p] [YTS.AM]/Avengers.Infinity.War.2018.720p.BluRay.x264-[YTS.AM].mp4" type="video/mp4"/>
+								        <source src="movie.webm" type="video/webm"/>
+								        <source src="movie.ogg" type="video/ogg"/>
+								        <!-- fallback -->
+								        Your browser does not support the <code>video</code> element.
+								    </video>
 								</div>
 								<!--<div class="card-body" v-else>-->
 									<!--<h4>Choose quality: </h4>-->
