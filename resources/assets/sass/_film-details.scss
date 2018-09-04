@@ -84,9 +84,6 @@
   padding: 10px 14px 10px 30px;
   font-size: 1.25em;
   text-shadow: 1px 1px 2px #060725;
-  button {
-
-  }
   .film-view-info, .film-pocket-info {
     i:first-of-type {
       width: 95px;
@@ -94,6 +91,10 @@
     }
     display: flex;
   }
+}
+
+.viewed .fa-eye, .viewed .fa-get-pocket {
+  color: #08d608;
 }
 
 @media screen and (max-width: 991px) {
@@ -117,4 +118,6 @@
     }
   }
 }
+
+
 

@@ -13,35 +13,26 @@
 							</div>
 						@endif
 						<div class="row">
-							<div class="col-md-3">
-								<div class="img-circle" style="float: left;">
-									<img src="{{ url($user->avatar) }}" class="img-circle" width="100%">
+							<div class="col-md-6">
+								<div class="user-avatar">
+									<img class="avatar" src="{{ url($user->avatar) }}">
 								</div>
 							</div>
-							<div class="col-md-9">
-								<div style="float: right;">
+							<div class="col-md-6">
+								<fieldset>
+									<legend class="text-center">User details</legend>
 									@if(Auth::id() === $user->id)
-										<a href="{{ route('profile.edit') }}" class="btn btn-secondary">{{ __('Edit') }}</a>
+										<a href="{{ route('profile.edit') }}"><i class="fab fa-pen-square fa-2x"></i></a>
 									@endif
-								</div>
-								<div class="info">
-									<div class="row">
-										<div class="col-md-3">
-											{{ __('Name') }}:
-										</div>
-										<div class="col-md-9">
-											{{ $user->name }}
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-md-3">
-											{{ __('Full name') }}:
-										</div>
-										<div class="col-md-9">
-											{{ $user->first_name }} {{ $user->last_name }}
-										</div>
-									</div>
-								</div>
+									<ul>
+										<li>Username: {{ $user->name }}</li>
+										<li>Name: {{ $user->first_name }}</li>
+										<li>Surname: {{ $user->last_name }}</li>
+										@if(Auth::id() === $user->id)
+											<li>Email: {{ $user->email }}</li>
+										@endif
+									</ul>
+								</fieldset>
 							</div>
 						</div>
 					</div>
