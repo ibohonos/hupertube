@@ -60,7 +60,7 @@ let quality = '720';
 
 
 //change to post
-app.post('/movie/:id/:quality/:lng', function(req, res) {
+app.post('/movie/:id/:lng/:init', function(req, res) {
 
 	// console.log('req');
 	console.log(req.body.torrent_link);
@@ -82,9 +82,6 @@ app.post('/movie/:id/:quality/:lng', function(req, res) {
 			engine.files.forEach(function (file) {
 				let extension = file.name.split('.').pop();
 
-				// file.name = id + '_[' + quality + 'p]_' + file.name;
-				// file.path = file.path.replace(' ', '_');
-
 				console.log("\npath: " + file.path + "\nname: " + file.name);
 				console.log('length: ' + file.length);
 				if (extension === 'mp4') {
@@ -98,18 +95,30 @@ app.post('/movie/:id/:quality/:lng', function(req, res) {
 						end: 5242880 //5Mb
 					});
 
-					stream.on("open", function() {
-						res.writeHead(206, {
-					        "Content-Range": "bytes " + 0 + "-" + 5242880 + "/" + file.length,
-					        "Accept-Ranges": "bytes",
-					        "Content-Length": 5242881,
-					        "Content-Type": "video/mp4"
-					    });
+					if (req.params.init){
+						console.log('init request');
+						res.setHeader('Content-Type', 'application/json');
+						res.send(JSON.stringify({
+							// src: '/' + path + '/' + encodeURI(file.path),
+							src: '/' + path + '/' + file.path,
+						}));
 
-			          stream.pipe(res);
-			        }).on("error", function(err) {
-			          res.end(err);
-			        });
+						return;
+					} else {
+						console.log('return stream');
+						stream.on("open", function() {
+							res.writeHead(206, {
+						        "Content-Range": "bytes " + 0 + "-" + 5242880 + "/" + file.length,
+						        "Accept-Ranges": "bytes",
+						        "Content-Length": 5242881,
+						        "Content-Type": "video/mp4"
+						    });
+
+				          stream.pipe(res);
+				        }).on("error", function(err) {
+				          res.end(err);
+				        });
+			    	}
 
 					//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
 

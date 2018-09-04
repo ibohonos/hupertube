@@ -89,14 +89,22 @@
 									<h4>Choose quality: </h4>
 									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
+									
+
+
+
+
 									<video controls>
-								        <source src="/public/movies/tt4154756/en/Avengers Infinity War (2018) [BluRay] [720p] [YTS.AM]/Avengers.Infinity.War.2018.720p.BluRay.x264-[YTS.AM].mp4" type="video/mp4"/>
-								        <source src="movie.webm" type="video/webm"/>
-								        <source src="movie.ogg" type="video/ogg"/>
+								        <source src="http://localhost:8300/public/movies/tt4154756/en/Avengers%20Infinity%20War%20(2018)%20[BluRay]%20[720p]%20[YTS.AM]/Avengers.Infinity.War.2018.720p.BluRay.x264-[YTS.AM].mp4" type="video/mp4"/>
+		<!-- 						        <source src="movie.webm" type="video/webm"/>
+								        <source src="movie.ogg" type="video/ogg"/> -->
 								        <!-- fallback -->
 								        Your browser does not support the <code>video</code> element.
 								    </video>
 								</div>
+
+
+								
 								<!--<div class="card-body" v-else>-->
 									<!--<h4>Choose quality: </h4>-->
 									<!--<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 2">{{ torrent.quality }}</button>-->
@@ -243,7 +251,7 @@
 			},
 
 			send_file(url, quality) {
-				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + quality + '/' + this.short_lang, {
+				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + this.short_lang + '/1', {
 					torrent_link: url,
 				}).then(resp => {
 					console.log(resp);
