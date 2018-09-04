@@ -89,18 +89,34 @@
 									<h4>Choose quality: </h4>
 									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
-									
 
 
 
 
-									<video controls>
-								        <source src="http://localhost:8300/public/movies/tt4154756/en/Avengers%20Infinity%20War%20(2018)%20[BluRay]%20[720p]%20[YTS.AM]/Avengers.Infinity.War.2018.720p.BluRay.x264-[YTS.AM].mp4" type="video/mp4"/>
-		<!-- 						        <source src="movie.webm" type="video/webm"/>
-								        <source src="movie.ogg" type="video/ogg"/> -->
-								        <!-- fallback -->
-								        Your browser does not support the <code>video</code> element.
-								    </video>
+									<!--<plyr-video v-if="this.videos[0].src" :videos="this.videos[0].src" :crossorigin="true" />-->
+
+									<!--<plyr v-if="video_link">-->
+										<!--<video>-->
+											<!--<source :src="video_link" type="video/mp4" />-->
+											<!--&lt;!&ndash;<source src="video.ogg" type="video/ogg" />&ndash;&gt;-->
+										<!--</video>-->
+									<!--</plyr>-->
+
+									<vue-plyr v-if="video_link">
+										<video src="/play/videos/movies">
+											<source :src="video_link" type="video/mp4" size="720">
+											<!--<source src="video-1080p.mp4" type="video/mp4" size="1080">-->
+											<!--<track kind="captions" label="English" srclang="en" src="captions-en.vtt" default>-->
+										</video>
+									</vue-plyr>
+
+									<!--<video controls v-if="video_link" style="width: 100%;">-->
+								        <!--<source :src="video_link" type="video/mp4"/>-->
+		<!--&lt;!&ndash; 						        <source src="movie.webm" type="video/webm"/>-->
+								        <!--<source src="movie.ogg" type="video/ogg"/> &ndash;&gt;-->
+								        <!--&lt;!&ndash; fallback &ndash;&gt;-->
+								        <!--Your browser does not support the <code>video</code> element.-->
+								    <!--</video>-->
 								</div>
 
 
@@ -153,6 +169,9 @@
 
 
 <script>
+	import 'vue-plyr';
+	import 'vue-plyr/dist/vue-plyr.css';
+
 	(function(d, s, id) {
 		let js, stags = d.getElementsByTagName(s)[0];
 		if (d.getElementById(id)) {return;}
@@ -190,7 +209,12 @@
 				torrents: {},
 				lang: native_lang,
 				short_lang: short_lang,
-				server_link: "http://localhost:3000"
+				server_link: "http://localhost:3000",
+				video_link: "",
+//				videos: [
+//					{ src: '', format: 'mp4' }
+////					{ src: 'path/to/video.webm', format: 'webm' }
+//				],
 			}
 		},
 
@@ -254,7 +278,9 @@
 				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + this.short_lang + '/1', {
 					torrent_link: url,
 				}).then(resp => {
-					console.log(resp);
+//					console.log(resp);
+//					this.videos[0].src = resp.data.src;
+					this.video_link = resp.data.src;
 				});
 			}
 		},

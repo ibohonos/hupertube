@@ -1,5 +1,7 @@
 //https://www.youtube.com/watch?v=N2aMWdS0ANc
 //https://github.com/Gryshchenko/digitalcinema/blob/2fc9e5e191dd2ec16aa12b6ae3658b816fc10002/public/torrent-stream/torrent.js
+'use strict'
+
 require('dotenv').config();
 
 const	port = 3000;
@@ -75,8 +77,8 @@ app.post('/movie/:id/:lng/:init', function(req, res) {
 		}
 		console.log("link: " + link);
 
-		let path = 'public/movies/' + req.params.id + '/' + req.params.lng;
-		let engine = torrentStream(link, { path: path });
+		let path = 'movies/' + req.params.id + '/' + req.params.lng;
+		let engine = torrentStream(link, { path: 'public/' + path });
 
 		engine.on('ready', function() {
 			engine.files.forEach(function (file) {
@@ -99,8 +101,8 @@ app.post('/movie/:id/:lng/:init', function(req, res) {
 						console.log('init request');
 						res.setHeader('Content-Type', 'application/json');
 						res.send(JSON.stringify({
-							// src: '/' + path + '/' + encodeURI(file.path),
-							src: '/' + path + '/' + file.path,
+							src: '/' + path + '/' + encodeURI(file.path),
+							// src: '/' + path + '/' + file.path,
 						}));
 
 						return;

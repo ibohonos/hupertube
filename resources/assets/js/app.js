@@ -35,6 +35,11 @@ Vue.component('avatar-crope', require('./components/AvatarCrope.vue'));
 Lang.requireAll(require.context('./lang', true, /\.js$/));
 Vue.use(Lang);
 
+// window.VuePlyr = require('vue-plyr');
+// import VuePlyr from 'vue-plyr';
+// import 'vue-plyr/dist/vue-plyr.css';
+// Vue.use(VuePlyr);
+
 const app = new Vue({
 	el: '#app'
 });

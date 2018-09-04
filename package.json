@@ -27,11 +27,13 @@
         "mysql": "^2.16.0",
         "parse-torrent": "^6.1.1",
         "parse-torrent-file": "^4.2.2",
+        "plyr": "^3.4.3",
         "popper.js": "^1.14.4",
         "torrent-stream": "^1.0.4",
         "vue": "^2.5.7",
         "vue-infinite-loading": "^2.3.3",
         "vue-laravel-image-crop-upload": "^3.0.1",
+        "vue-plyr": "^4.0.0",
         "vuejs-localization": "^1.0.3"
     }
 }
