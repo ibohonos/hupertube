@@ -2,29 +2,29 @@
 	<div class="row" v-if="!loader">
 		<div class="col-md-12">
 			<div class="form-group">
-				<input type="text" class="form-control form-control-lg" v-model="query_term" placeholder="Please enter film name">
+				<input type="text" class="form-control form-control-lg" v-model="query_term" placeholder="Please enter film name" @change="changeFilter">
 			</div>
 			<h3>Quality:</h3>
 			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios1" value="All" checked>
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios1" value="All" checked @change="changeFilter">
 				<label class="form-check-label" for="exampleRadios1">
 					All
 				</label>
 			</div>
 			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios2" value="3D">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios2" value="3D" @change="changeFilter">
 				<label class="form-check-label" for="exampleRadios2">
 					3D
 				</label>
 			</div>
 			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios3" value="720p">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios3" value="720p" @change="changeFilter">
 				<label class="form-check-label" for="exampleRadios3">
 					720p
 				</label>
 			</div>
 			<div class="form-check form-check-inline">
-				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios4" value="1080p">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios4" value="1080p" @change="changeFilter">
 				<label class="form-check-label" for="exampleRadios4">
 					1080p
 				</label>
@@ -32,7 +32,7 @@
 			<div class="row">
 				<div class="form-group col">
 					<label for="sortBy">Sort By</label>
-					<select class="form-control" id="sortBy" v-model="sort_by">
+					<select class="form-control" id="sortBy" v-model="sort_by" @change="changeFilter">
 						<option value="title">Title</option>
 						<option value="year">Year</option>
 						<option value="rating">Rating</option>
@@ -45,7 +45,7 @@
 				</div>
 				<div class="form-group col">
 					<label for="orderBy">Order By</label>
-					<select class="form-control" id="orderBy" v-model="order_by">
+					<select class="form-control" id="orderBy" v-model="order_by" @change="changeFilter">
 						<option value="asc">Asc</option>
 						<option value="desc">Desc</option>
 					</select>
@@ -53,7 +53,7 @@
 			</div>
 			<div class="form-group" v-if="genres">
 				<label for="genre">Genre</label>
-				<select class="form-control" id="genre" v-model="genre">
+				<select class="form-control" id="genre" v-model="genre" @change="changeFilter">
 					<option value="">Default</option>
 					<option v-for="item in genres" :key="item.id" :value="item.name">{{ item.name }}</option>
 				</select>
@@ -61,7 +61,7 @@
 		</div>
 		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year" :user_token="user_token"></video-list>
 		<div class="col-md-12">
-			<infinite-loading @infinite="infiniteHandler" spinner="waveDots">
+			<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading">
 				<span slot="no-more">
 					{{ $lang.videos.no_news }}
 				</span>
@@ -84,10 +84,10 @@
 		},
 
 		props: {
-            user_token: {
-                type: String,
-                required: true
-            }
+			user_token: {
+				type: String,
+				required: true
+			}
 		},
 
 		data() {
@@ -110,22 +110,27 @@
 
 		watch: {
 			query_term() {
+				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
 			quality() {
+				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
 			sort_by() {
+				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
 			order_by() {
+				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
 			genre() {
+				this.page = 1;
 				this.debouncedGetAllVideos();
 			}
 		},
@@ -176,7 +181,8 @@
 						genre: this.genre
 					},
 				}).then(response => {
-					if (response.data.data.movies && response.data.data.movies.length) {
+					console.log(response.data.data);
+					if (response.data.data.movie_count > 0 && response.data.data.movies && response.data.data.movies.length > 0) {
 						this.videos = this.videos.concat(response.data.data.movies);
 						$state.loaded();
 					} else {
@@ -188,6 +194,12 @@
 			infiniteHandler($state) {
 				this.page++;
 				this.scrollVideos($state);
+			},
+
+			changeFilter() {
+				this.$nextTick(() => {
+					this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+				});
 			},
 
 			testVideo(imdb_id) {
