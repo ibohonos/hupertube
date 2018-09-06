@@ -14,9 +14,18 @@ const	express = require('express'),
 const	torrentStream = require('torrent-stream'),
 		magnetLink = require('magnet-link');
 
-const cors = require('cors');
+const	cors = require('cors'),
+		http = require('http'),
+		Iconv  = require('iconv').Iconv,
+		srt2vtt = require('srt-to-vtt');
 
-// app.use(cors());
+const OpenSubtitles = require('opensubtitles-api');
+const OS = new OpenSubtitles({
+    useragent:'Hypertube v1',
+    username: 'ibohonos',
+    password: 'John1993862655',
+    ssl: true
+});
 
 app.use(cors({
 	origin: 'http://localhost:8300',
@@ -32,6 +41,22 @@ process.on('uncaughtException', function (exception) {
 	console.log(exception);
 	console.log();
   });
+
+let download = function(url, dest, enc) {
+  let file = fs.createWriteStream(dest + '.srt');
+  let iconv = new Iconv(enc, 'UTF-8');
+
+  let request = http.get(url, function(response) {
+    response.pipe(iconv).pipe(file);
+    file.pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
+    file.unlink(dest + '.srt')
+    file.on('finish', function() {
+      file.close();  // close() is async, call cb after close completes.
+    });
+  }).on('error', function(err) { // Handle errors
+    // fs.unlink(dest); // Delete the file async. (But we don't check the result)
+  });
+};
 
 // var mysql = require('mysql');
 // var con = mysql.createConnection({
@@ -53,8 +78,8 @@ process.on('uncaughtException', function (exception) {
 
 
 
-let id = '123';
-let quality = '720';
+// let id = '123';
+// let quality = '720';
 
 //if no film
 // let torrentFile = process.argv[2];
@@ -77,7 +102,7 @@ app.post('/movie/:id/:lng/:init', function(req, res) {
 		}
 		console.log("link: " + link);
 
-		let path = 'movies/' + req.params.id + '/' + req.params.lng;
+		let path = 'movies/' + req.params.id;
 		let engine = torrentStream(link, { path: 'public/' + path });
 
 		engine.on('ready', function() {
@@ -87,6 +112,18 @@ app.post('/movie/:id/:lng/:init', function(req, res) {
 				console.log("\npath: " + file.path + "\nname: " + file.name);
 				console.log('length: ' + file.length);
 				if (extension === 'mp4') {
+					let lang = req.params.lng;
+					let subtitle_path = 'public/' + path + '/' + lang
+
+					OS.search({
+						imdbid: req.params.id
+					}).then(subtitles => {
+						if (subtitles[lang]) {
+							download(subtitles[lang].url, subtitle_path, subtitles[lang].encoding);
+						} else {
+							throw 'no subtitle found';
+						}
+					}).catch(console.error);
 
 					console.log('format: ' + extension);
 					file.select();	//скачує блоки рандомно

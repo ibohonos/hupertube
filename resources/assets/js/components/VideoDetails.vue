@@ -106,7 +106,7 @@
 										<video src="/play/videos/movies">
 											<source :src="video_link" type="video/mp4" size="720">
 											<!--<source src="video-1080p.mp4" type="video/mp4" size="1080">-->
-											<!--<track kind="captions" label="English" srclang="en" src="captions-en.vtt" default>-->
+											<track v-if="subtitle" kind="captions" :srclang="short_lang" :src="subtitle" default>
 										</video>
 									</vue-plyr>
 
@@ -211,6 +211,7 @@
 				short_lang: short_lang,
 				server_link: "http://localhost:3000",
 				video_link: "",
+				subtitle: "",
 //				videos: [
 //					{ src: '', format: 'mp4' }
 ////					{ src: 'path/to/video.webm', format: 'webm' }
@@ -281,6 +282,7 @@
 //					console.log(resp);
 //					this.videos[0].src = resp.data.src;
 					this.video_link = resp.data.src;
+					this.subtitle = '/movies/' + this.imdb_id + '/' + this.short_lang + '.vtt';
 				});
 			}
 		},
