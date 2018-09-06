@@ -15,7 +15,7 @@ const	torrentStream = require('torrent-stream'),
 		magnetLink = require('magnet-link');
 
 const	cors = require('cors'),
-		http = require('http'),
+		http = require('https'),
 		Iconv  = require('iconv').Iconv,
 		srt2vtt = require('srt-to-vtt');
 
@@ -44,12 +44,12 @@ process.on('uncaughtException', function (exception) {
 
 let download = function(url, dest, enc) {
   let file = fs.createWriteStream(dest + '.srt');
-  let iconv = new Iconv(enc, 'UTF-8');
 
   let request = http.get(url, function(response) {
+  	let iconv = new Iconv(enc, 'UTF-8');
     response.pipe(iconv).pipe(file);
-    file.pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
-    file.unlink(dest + '.srt')
+    fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
+    fs.unlink(dest + '.srt')
     file.on('finish', function() {
       file.close();  // close() is async, call cb after close completes.
     });
