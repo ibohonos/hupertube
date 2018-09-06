@@ -51,7 +51,7 @@ let download = function(url, dest, enc) {
     fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
     fs.unlink(dest + '.srt')
     file.on('finish', function() {
-      file.close();  // close() is async, call cb after close completes.
+      file.close(function(){});  // close() is async, call cb after close completes.
     });
   }).on('error', function(err) { // Handle errors
     // fs.unlink(dest); // Delete the file async. (But we don't check the result)
