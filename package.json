@@ -20,6 +20,8 @@
         "cross-env": "^5.1",
         "db": "^1.0.7",
         "dotenv": "^6.0.0",
+        "fs": "0.0.1-security",
+        "https": "^1.0.0",
         "iconv": "^2.3.0",
         "jquery": "^3.2",
         "laravel-mix": "^2.1.14",

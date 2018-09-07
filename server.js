@@ -49,7 +49,7 @@ let download = function(url, dest, enc) {
   	let iconv = new Iconv(enc, 'UTF-8');
     response.pipe(iconv).pipe(file);
     fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
-    fs.unlink(dest + '.srt')
+    // fs.unlink(dest + '.srt');
     file.on('finish', function() {
       file.close(function(){});  // close() is async, call cb after close completes.
     });

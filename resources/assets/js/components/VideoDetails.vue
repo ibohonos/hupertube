@@ -103,7 +103,7 @@
 									<!--</plyr>-->
 
 									<vue-plyr v-if="video_link">
-										<video src="/play/videos/movies">
+										<video :src="video_link">
 											<source :src="video_link" type="video/mp4" size="720">
 											<!--<source src="video-1080p.mp4" type="video/mp4" size="1080">-->
 											<track v-if="subtitle" kind="captions" :label="short_lang" :srclang="short_lang" :src="subtitle" default>
