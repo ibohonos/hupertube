@@ -156,7 +156,7 @@
 			<div class="row film-comments">
 				<div class="col-md-12">
 					<h1 class="text-center">{{ $lang.video_details.comments }}</h1>
-					<comments :imdb_id="imdb_id"></comments>
+					<comments :imdb_id="imdb_id" :user_token="user_token"></comments>
 				</div>
 			</div>
 		</div>

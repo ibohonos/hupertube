@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\AllMovieIds;
-use App\Comments;
 use App\Videos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,21 +72,5 @@ class VideosController extends Controller
 			});
 //		}
 //		return response("File doesn't exists", 404);
-	}
-
-	public function saveComment(Request $request)
-	{
-		$comment = new Comments;
-
-		$comment->user_id = Auth::id();
-		$comment->imdb_id = $request->imdb_id;
-		$comment->comment = $request->comment;
-
-		$comment->saveOrFail();
-
-		$this->data['user'] = Auth::user();
-		$this->data['comment'] = $comment;
-
-		return json_encode($this->data);
 	}
 }

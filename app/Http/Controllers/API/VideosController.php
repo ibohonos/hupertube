@@ -88,4 +88,19 @@ class VideosController extends APIController
 
 		return $this->sendResponse($this->data, "OK");
 	}
+
+	public function saveComment(Request $request)
+	{
+		$comment = new Comments;
+
+		$comment->user_id = $request->user()->id;
+		$comment->imdb_id = $request->imdb_id;
+		$comment->comment = $request->comment;
+
+		$comment->save();
+
+		$this->data['comment'] = $comment;
+
+		return $this->sendResponse($this->data, "OK");
+	}
 }

@@ -100,11 +100,6 @@ Route::group([
 			'as' => 'avatar.save'
 		]);
 
-		Route::post('/comment/save', [
-			'uses' => 'VideosController@saveComment',
-			'as' => 'comment.save'
-		]);
-
 		Route::get('/view-later', [
 			'uses' => 'ProfileController@viewLater',
 			'as' => 'view.later'
