@@ -1,10 +1,10 @@
 <template v-if="user">
 	<div class="row">
-		<div class="col-md-4">
-			<img :src="user.avatar" height="100%" />
-		</div>
-		<div class="col-md-8">
-			{{ user.first_name }} {{ user.last_name }}
+		<div class="col-md-12">
+			<a :href="'/user/' + user.id">
+				<img :src="user.avatar" class="avatar" style="width: 160px; height: 160px;" />
+				<span class="text-center">{{ user.first_name }} {{ user.last_name }}</span>
+			</a>
 		</div>
 	</div>
 </template>
@@ -14,6 +14,11 @@
 		props: {
 			user_id: {
 				type: Number,
+				required: true
+			},
+
+			user_token: {
+				type: String,
 				required: true
 			}
 		},
@@ -26,7 +31,11 @@
 
 		methods: {
 			getCommentUser() {
-				axios.get('/api/v1/comment/user/' + this.user_id)
+				axios.get('/api/v2/comment/user/' + this.user_id, {
+					params: {
+						api_token: this.user_token
+					},
+				})
 					.then(resp => {
 						this.user = resp.data.data.user;
 					});

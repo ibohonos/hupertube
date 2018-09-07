@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\AllMovieIds;
-use App\Comments;
 use App\Videos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -64,30 +63,14 @@ class VideosController extends Controller
 
 	public function fileShow($file)
 	{
-		$path = 'public/videos/' . $file;
-		if (Storage::disk('local')->exists($path)) {
-			$type = Storage::disk('local')->mimeType($path);
-			$stream = new VideoStreamController(storage_path('app/' . $path), $type);
+		$path = 'movies/tt4154756/ru/Avengers Infinity War (2018) [BluRay] [720p] [YTS.AM]/Avengers.Infinity.War.2018.720p.BluRay.x264-[YTS.AM].mp4';// . $file;
+//		if (Storage::disk('local')->exists($path)) {
+//			$type = Storage::disk('local')->mimeType($path);
+			$stream = new VideoStreamController(public_path($path), 'mp4');
 			return response()->stream(function() use ($stream) {
 				$stream->start();
 			});
-		}
-		return response("File doesn't exists", 404);
-	}
-
-	public function saveComment(Request $request)
-	{
-		$comment = new Comments;
-
-		$comment->user_id = Auth::id();
-		$comment->imdb_id = $request->imdb_id;
-		$comment->comment = $request->comment;
-
-		$comment->saveOrFail();
-
-		$this->data['user'] = Auth::user();
-		$this->data['comment'] = $comment;
-
-		return json_encode($this->data);
+//		}
+//		return response("File doesn't exists", 404);
 	}
 }

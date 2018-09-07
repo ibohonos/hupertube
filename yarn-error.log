@@ -1,0 +1,56 @@
+Arguments: 
+  /usr/bin/node /usr/bin/yarn
+
+PATH: 
+  /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/mnt/c/Program Files/Microsoft MPI/Bin:/mnt/c/Windows/System32:/mnt/c/Windows:/mnt/c/Windows/System32/wbem:/mnt/c/Windows/System32/WindowsPowerShell/v1.0:/mnt/c/Program Files (x86)/ATI Technologies/ATI.ACE/Core-Static:/mnt/c/Program Files/dotnet:/mnt/c/Program Files/Microsoft SQL Server/130/Tools/Binn:/mnt/c/Windows/System32/OpenSSH:/mnt/c/Program Files/Git/cmd:/mnt/c/Users/volod/AppData/Local/Microsoft/WindowsApps:/home/vshkykav/.composer/vendor/bin/
+
+Yarn version: 
+  1.9.4
+
+Node version: 
+  8.11.3
+
+Platform: 
+  linux x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, copyfile '/home/vshkykav/.cache/yarn/v2/npm-qs-6.5.2-cb3ae806e8740444584ef154ce8ee98d403f3e36/lib/index.js' -> '/mnt/e/projects/hypertube/node_modules/request/node_modules/qs/lib/index.js'
+
+npm manifest: 
+  {
+      "private": true,
+      "scripts": {
+          "dev": "npm run development",
+          "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+          "watch": "npm run development -- --watch",
+          "watch-poll": "npm run watch -- --watch-poll",
+          "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+          "prod": "npm run production",
+          "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+      },
+      "devDependencies": {
+          "axios": "^0.18",
+          "bootstrap": "^4.0.0",
+          "popper.js": "^1.12",
+          "cross-env": "^5.1",
+          "jquery": "^3.2",
+          "laravel-mix": "^2.0",
+          "lodash": "^4.17.4",
+          "vue": "^2.5.7"
+      },
+      "dependencies": {
+          "@fortawesome/fontawesome-free": "^5.1.1",
+          "epic-spinners": "^1.0.3",
+          "node": "^10.8.0",
+          "path": "^0.12.7",
+          "plyr": "^3.4.3",
+          "range-parser": "^1.2.0",
+          "vue-plyr": "^4.0.0"
+      }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

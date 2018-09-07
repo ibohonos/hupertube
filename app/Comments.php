@@ -20,6 +20,6 @@ class Comments extends Model
 
 	public function scopeImdbId($query, $imdb_id)
 	{
-		$query->where(['imdb_id' => $imdb_id]);
+		$query->where(['imdb_id' => $imdb_id])->latest();
 	}
 }

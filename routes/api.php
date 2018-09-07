@@ -14,11 +14,10 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::prefix('v1')->namespace('API')->group(function () {
-	Route::get('/videos', [
-		'uses' => 'VideosController@index',
-		'as' => 'allVideos'
-	]);
+Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function () {
+	Route::get('/user', function (Request $request) {
+		return $request->user();
+	})->name('user');
 
 	Route::get('/comments/{imdb_id}', [
 		'uses' => 'VideosController@allComments',
@@ -29,12 +28,11 @@ Route::prefix('v1')->namespace('API')->group(function () {
 		'uses' => 'VideosController@getCommentUser',
 		'as' => 'comments.all'
 	]);
-});
 
-Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function () {
-	Route::get('/user', function (Request $request) {
-		return $request->user();
-	})->name('user');
+	Route::post('/comment/save', [
+		'uses' => 'VideosController@saveComment',
+		'as' => 'comment.save'
+	]);
 
 	Route::get('/is-viewed', [
 		'uses' => 'UserController@isViewed'

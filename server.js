@@ -1,0 +1,199 @@
+//https://www.youtube.com/watch?v=N2aMWdS0ANc
+//https://github.com/Gryshchenko/digitalcinema/blob/2fc9e5e191dd2ec16aa12b6ae3658b816fc10002/public/torrent-stream/torrent.js
+'use strict'
+
+require('dotenv').config();
+
+const	port = 3000;
+
+const	express = require('express'),
+		bodyParser = require('body-parser'),
+		fs = require('fs'),
+		app = express();
+
+const	torrentStream = require('torrent-stream'),
+		magnetLink = require('magnet-link');
+
+const	cors = require('cors'),
+		http = require('https'),
+		Iconv  = require('iconv').Iconv,
+		srt2vtt = require('srt-to-vtt');
+
+const OpenSubtitles = require('opensubtitles-api');
+const OS = new OpenSubtitles({
+    useragent:'Hypertube v1',
+    username: 'ibohonos',
+    password: 'John1993862655',
+    ssl: true
+});
+
+app.use(cors({
+	origin: 'http://localhost:8300',
+	credentials: true
+}));
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+process.on('uncaughtException', function (exception) {
+	let date = new Date();
+	
+	console.log("\nWas error at " + date.toString());
+	console.log(exception);
+	console.log();
+  });
+
+let download = function(url, dest, enc) {
+  let file = fs.createWriteStream(dest + '.srt');
+
+  let request = http.get(url, function(response) {
+  	let iconv = new Iconv(enc, 'UTF-8');
+    response.pipe(iconv).pipe(file);
+    fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
+    // fs.unlink(dest + '.srt');
+    file.on('finish', function() {
+      file.close(function(){});  // close() is async, call cb after close completes.
+    });
+  }).on('error', function(err) { // Handle errors
+    // fs.unlink(dest); // Delete the file async. (But we don't check the result)
+  });
+};
+
+// var mysql = require('mysql');
+// var con = mysql.createConnection({
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USERNAME,
+//   password: process.env.DB_PASSWORD,
+//   database : process.env.DB_DATABASE
+// });
+
+
+//load and save downloaded films
+// con.connect();
+// con.query('SELECT * FROM `all_movie_ids`', function (error, results, fields) {
+//   if (error) throw error;
+//   console.log(results);
+// });
+ 
+// con.end();
+
+
+
+// let id = '123';
+// let quality = '720';
+
+//if no film
+// let torrentFile = process.argv[2];
+
+
+
+//change to post
+app.post('/movie/:id/:lng/:init', function(req, res) {
+
+	// console.log('req');
+	console.log(req.body.torrent_link);
+	// console.log('res');
+	// console.log(res);
+
+
+	magnetLink(req.body.torrent_link, function(err, link) {
+		if (err) {
+			console.log(err);
+			return;
+		}
+		console.log("link: " + link);
+
+		let path = 'movies/' + req.params.id;
+		let engine = torrentStream(link, { path: 'public/' + path });
+
+		engine.on('ready', function() {
+			engine.files.forEach(function (file) {
+				let extension = file.name.split('.').pop();
+
+				console.log("\npath: " + file.path + "\nname: " + file.name);
+				console.log('length: ' + file.length);
+				if (extension === 'mp4') {
+					let lang = req.params.lng;
+					let subtitle_path = 'public/' + path + '/' + lang
+
+					OS.search({
+						imdbid: req.params.id
+					}).then(subtitles => {
+						if (subtitles[lang]) {
+							download(subtitles[lang].url, subtitle_path, subtitles[lang].encoding);
+						} else {
+							throw 'no subtitle found';
+						}
+					}).catch(console.error);
+
+					console.log('format: ' + extension);
+					file.select();	//скачує блоки рандомно
+
+					//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
+					let stream = file.createReadStream({
+						start: 0,
+						end: 5242880 //5Mb
+					});
+
+					if (req.params.init){
+						console.log('init request');
+						res.setHeader('Content-Type', 'application/json');
+						res.send(JSON.stringify({
+							src: '/' + path + '/' + encodeURI(file.path),
+							// src: '/' + path + '/' + file.path,
+						}));
+
+						return;
+					} else {
+						console.log('return stream');
+						stream.on("open", function() {
+							res.writeHead(206, {
+						        "Content-Range": "bytes " + 0 + "-" + 5242880 + "/" + file.length,
+						        "Accept-Ranges": "bytes",
+						        "Content-Length": 5242881,
+						        "Content-Type": "video/mp4"
+						    });
+
+				          stream.pipe(res);
+				        }).on("error", function(err) {
+				          res.end(err);
+				        });
+			    	}
+
+					//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
+
+
+					// var streamReadOpts = { start: 0, end: 2000, autoClose: true };
+					// var stream = file.createReadStream(file.path, streamReadOpts)
+					//     // previous 'open' & 'error' event handlers are still here
+					//     .on('end', function () {
+					//       console.log('stream end');
+					//     })
+					//     .on('close', function () {
+					//       console.log('stream close');
+					//     })
+
+				} else {
+					file.deselect();
+				}
+			})
+		})
+	});
+
+
+	// res.send("OK");
+
+
+
+
+	// check for file in public/downloaded_films
+	// if no file -> get torrent file in storage/torrents
+	// return stream
+});
+
+
+
+
+
+app.listen(port, function(){
+	console.log('Server startet at port:' + port)
+});

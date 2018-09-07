@@ -85,16 +85,47 @@
 							</div>
 
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-								<div class="card-body" v-if="torrents[0].quality === '3D'">
+								<div class="card-body">
 									<h4>Choose quality: </h4>
 									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
+
+
+
+
+									<!--<plyr-video v-if="this.videos[0].src" :videos="this.videos[0].src" :crossorigin="true" />-->
+
+									<!--<plyr v-if="video_link">-->
+										<!--<video>-->
+											<!--<source :src="video_link" type="video/mp4" />-->
+											<!--&lt;!&ndash;<source src="video.ogg" type="video/ogg" />&ndash;&gt;-->
+										<!--</video>-->
+									<!--</plyr>-->
+
+									<vue-plyr v-if="video_link">
+										<video :src="video_link">
+											<source :src="video_link" type="video/mp4" size="720">
+											<!--<source src="video-1080p.mp4" type="video/mp4" size="1080">-->
+											<track v-if="subtitle" kind="captions" :label="short_lang" :srclang="short_lang" :src="subtitle" default>
+										</video>
+									</vue-plyr>
+
+									<!--<video controls v-if="video_link" style="width: 100%;">-->
+								        <!--<source :src="video_link" type="video/mp4"/>-->
+		<!--&lt;!&ndash; 						        <source src="movie.webm" type="video/webm"/>-->
+								        <!--<source src="movie.ogg" type="video/ogg"/> &ndash;&gt;-->
+								        <!--&lt;!&ndash; fallback &ndash;&gt;-->
+								        <!--Your browser does not support the <code>video</code> element.-->
+								    <!--</video>-->
 								</div>
-								<div class="card-body" v-else>
-									<h4>Choose quality: </h4>
-									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 2">{{ torrent.quality }}</button>
-									<p>player</p>
-								</div>
+
+
+								
+								<!--<div class="card-body" v-else>-->
+									<!--<h4>Choose quality: </h4>-->
+									<!--<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 2">{{ torrent.quality }}</button>-->
+									<!--<p>player</p>-->
+								<!--</div>-->
 							</div>
 						</div>
 						<div class="card">
@@ -125,7 +156,7 @@
 			<div class="row film-comments">
 				<div class="col-md-12">
 					<h1 class="text-center">{{ $lang.video_details.comments }}</h1>
-					<comments :imdb_id="imdb_id"></comments>
+					<comments :imdb_id="imdb_id" :user_token="user_token"></comments>
 				</div>
 			</div>
 		</div>
@@ -138,6 +169,9 @@
 
 
 <script>
+	import 'vue-plyr';
+	import 'vue-plyr/dist/vue-plyr.css';
+
 	(function(d, s, id) {
 		let js, stags = d.getElementsByTagName(s)[0];
 		if (d.getElementById(id)) {return;}
@@ -175,7 +209,13 @@
 				torrents: {},
 				lang: native_lang,
 				short_lang: short_lang,
-				server_link: "localhost:3000"
+				server_link: "http://localhost:3000",
+				video_link: "",
+				subtitle: "",
+//				videos: [
+//					{ src: '', format: 'mp4' }
+////					{ src: 'path/to/video.webm', format: 'webm' }
+//				],
 			}
 		},
 
@@ -236,10 +276,13 @@
 			},
 
 			send_file(url, quality) {
-				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + quality + '/' + this.short_lang, {
-					torrent_link: url
+				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + this.short_lang + '/1', {
+					torrent_link: url,
 				}).then(resp => {
-					cosole.log(resp);
+//					console.log(resp);
+//					this.videos[0].src = resp.data.src;
+					this.video_link = resp.data.src;
+					this.subtitle = '/movies/' + this.imdb_id + '/' + this.short_lang + '.vtt';
 				});
 			}
 		},
