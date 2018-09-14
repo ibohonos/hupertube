@@ -3,7 +3,9 @@
 		<div class="col-md-12 comment-container">
 			<div class="form-group">
 				<label for="comment">{{ $lang.comments.enter_comment }}:</label>
-				<textarea class="form-control" id="comment" name="comment" rows="3" v-model="comment"></textarea>
+				<span class="input-group-addon" v-text="(max - comment.length) + ` chars left`"></span>
+				<textarea class="form-control" id="comment" name="comment" rows="3" v-on:keyup.13="sendComment"
+						  :maxlength="max" v-model="comment"></textarea>
 			</div>
 			<button class="btn btn-primary" type="submit" @click="sendComment">{{ $lang.comments.add_comment }}</button>
 		</div>
@@ -37,11 +39,17 @@
 			user_token: {
 				type: String,
 				required: true
-			}
+			},
+//			el: '#comment',
+//			data: {
+//			    max: 1665,
+//				text: ''
+//			}
 		},
 
 		data() {
 			return {
+                max: 1665,
 				comment: '',
 				comments: {}
 			}
