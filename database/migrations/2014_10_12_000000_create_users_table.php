@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
 			$table->string('last_name');
 			$table->string('email')->unique();
 			$table->string('password');
-			$table->string('avatar')->default('storage/avatars/default.jpg');
+			$table->string('avatar')->default('/storage/avatars/default.jpg');
 			$table->boolean('active')->default('0');
 			$table->string('github_id')->unique()->nullable();
 			$table->string('facebook_id')->unique()->nullable();

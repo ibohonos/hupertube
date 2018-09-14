@@ -2,8 +2,8 @@
 	<div class="row">
 		<div class="col-md-12">
 			<a :href="'/user/' + user.id">
-				<img :src="user.avatar" class="avatar" style="width: 160px; height: 160px;" />
-				<span class="text-center">{{ user.first_name }} {{ user.last_name }}</span>
+				<img :src="user.avatar" class="avatar-comment" />
+				<p class="text-center">{{ user.first_name }} {{ user.last_name }}</p>
 			</a>
 		</div>
 	</div>

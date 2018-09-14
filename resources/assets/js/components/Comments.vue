@@ -1,19 +1,22 @@
 <template>
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-12 comment-container">
 			<div class="form-group">
 				<label for="comment">{{ $lang.comments.enter_comment }}:</label>
 				<textarea class="form-control" id="comment" name="comment" rows="3" v-model="comment"></textarea>
 			</div>
 			<button class="btn btn-primary" type="submit" @click="sendComment">{{ $lang.comments.add_comment }}</button>
 		</div>
-		<div class="col-md-12" v-for="item in comments" v-if="item">
+		<div class="col-md-12 comment-container" v-for="item in comments" v-if="item">
 			<div class="row">
 				<div class="col-md-2">
 					<user-info :user_id="item.user_id" :user_token="user_token"></user-info>
 				</div>
 				<div class="col-md-10">
-					<p>{{ item.comment }}</p>
+					<div class="comment-item">
+						<p>{{ item.comment }}</p>
+						<span>{{ item.created_at }}</span>
+					</div>
 				</div>
 			</div>
 		</div>

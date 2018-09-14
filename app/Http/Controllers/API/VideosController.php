@@ -77,6 +77,10 @@ class VideosController extends APIController
 
 		$this->data['comments'] = $comments->getCommentsByImdbId($imdb_id);
 
+		foreach ($this->data['comments'] as &$val) {
+		    $val['user'] = $val->user();
+        }
+
 		return $this->sendResponse($this->data, 'OK');
 	}
 

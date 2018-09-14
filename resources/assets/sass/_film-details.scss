@@ -97,6 +97,49 @@
   color: #08d608;
 }
 
+a[href^="/user"] {
+  text-decoration: none;
+}
+
+.comment-container {
+  margin-bottom: 3rem;
+  .avatar-comment + p {
+    color: #17a2b8;
+    font-size: 0.9em;
+  }
+}
+
+.comment-item {
+  background-color: rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .15);
+  min-height: 80px;
+  position: relative;
+  padding: 15px;
+  &:after {
+    border-width: 10px 10px 10px 0;
+    border-style: solid;
+    border-color: transparent rgba(0, 0, 0, 0.1);
+    content: "";
+    left: -10px;
+    position: absolute;
+    top: 20px;
+  }
+  &:before {
+    border-color: transparent rgba(0, 0, 0, .05);
+    top: 22px;
+  }
+  span {
+    position: absolute;
+    right: 10px;
+    bottom: 5px;
+    color: dimgray;
+    font-size: 0.7em;
+  }
+}
+
+
 @media screen and (max-width: 991px) {
   .film-desc {
     h1 {
