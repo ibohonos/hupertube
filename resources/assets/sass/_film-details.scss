@@ -50,7 +50,7 @@
     font-size: 1.2em;
     padding: 0 2.5rem;
     line-height: 1.5em;
-    height: 10.5em;
+    height: 10.4em;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 7;
@@ -147,9 +147,18 @@ a[href^="/user"] {
     }
     .desc {
       font-size: 1em;
-      line-height: 1.4em;
+      line-height: 1.3em;
       height: 8.4em;
       -webkit-line-clamp: 6;
+    }
+    ul li {
+      flex-wrap: wrap;
+      h3 {
+        font-size: 1.3em;
+      }
+      span {
+        font-size: 0.9em;
+      }
     }
   }
   .film-view-info, .film-pocket-info {

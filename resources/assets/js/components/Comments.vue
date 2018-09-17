@@ -40,11 +40,6 @@
 				type: String,
 				required: true
 			},
-//			el: '#comment',
-//			data: {
-//			    max: 1665,
-//				text: ''
-//			}
 		},
 
 		data() {
