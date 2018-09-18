@@ -81,10 +81,6 @@ Route::group([
 			'as' => 'videos.show'
 		]);
 
-		Route::get('/play/videos/{file}', [
-			'uses' => 'VideosController@fileShow'
-		]);
-
 		Route::get('/profile/edit/unlink/{social}', [
 			'uses' => 'ProfileController@unlink',
 			'as' => 'unlink'
@@ -105,5 +101,11 @@ Route::group([
 			'as' => 'view.later'
 		]);
 	});
+});
+
+Route::middleware('auth')->group(function () {
+	Route::get('/play/videos/{movies}/{imdb_id}/{path}/{file}', [
+		'uses' => 'VideosController@fileShow'
+	]);
 });
 

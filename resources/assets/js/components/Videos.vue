@@ -59,7 +59,7 @@
 				</select>
 			</div>
 		</div>
-		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :video_id="video.id" :rating="video.rating" :year="video.year" :user_token="user_token"></video-list>
+		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :video_id="video.id.toString()" :rating="video.rating" :year="video.year" :user_token="user_token"></video-list>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading">
 				<span slot="no-more">
@@ -181,7 +181,6 @@
 						genre: this.genre
 					},
 				}).then(response => {
-					console.log(response.data.data);
 					if (response.data.data.movie_count > 0 && response.data.data.movies && response.data.data.movies.length > 0) {
 						this.videos = this.videos.concat(response.data.data.movies);
 						$state.loaded();

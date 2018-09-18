@@ -84,10 +84,13 @@ let download = function(url, dest, enc) {
 //if no film
 // let torrentFile = process.argv[2];
 
+function sleep (time) {
+	return new Promise((resolve) => setTimeout(resolve, time));
+}
 
 
 //change to post
-app.post('/movie/:id/:lng/:init', function(req, res) {
+app.post('/movie/:id/:init', function(req, res) {
 
 	// console.log('req');
 	console.log(req.body.torrent_link);
@@ -112,52 +115,78 @@ app.post('/movie/:id/:lng/:init', function(req, res) {
 				console.log("\npath: " + file.path + "\nname: " + file.name);
 				console.log('length: ' + file.length);
 				if (extension === 'mp4') {
-					let lang = req.params.lng;
-					let subtitle_path = 'public/' + path + '/' + lang
+					let subtitle_path = 'public/' + path + '/';
 
 					OS.search({
 						imdbid: req.params.id
 					}).then(subtitles => {
-						if (subtitles[lang]) {
-							download(subtitles[lang].url, subtitle_path, subtitles[lang].encoding);
+						if (subtitles['en']) {
+							download(subtitles['en'].url, subtitle_path + 'en', subtitles['en'].encoding);
 						} else {
-							throw 'no subtitle found';
+							throw 'en no subtitle found';
+						}
+						if (subtitles['ru']) {
+							download(subtitles['ru'].url, subtitle_path + 'ru', subtitles['ru'].encoding);
+						} else {
+							throw 'ru no subtitle found';
+						}
+						if (subtitles['uk']) {
+							download(subtitles['uk'].url, subtitle_path + 'uk', subtitles['uk'].encoding);
+						} else {
+							throw 'uk no subtitle found';
 						}
 					}).catch(console.error);
 
 					console.log('format: ' + extension);
 					file.select();	//скачує блоки рандомно
 
-					//let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
+					// let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
 					let stream = file.createReadStream({
 						start: 0,
-						end: 5242880 //5Mb
+						end: 10485760 //10Mb
 					});
 
-					if (req.params.init){
-						console.log('init request');
-						res.setHeader('Content-Type', 'application/json');
-						res.send(JSON.stringify({
-							src: '/' + path + '/' + encodeURI(file.path),
-							// src: '/' + path + '/' + file.path,
-						}));
+					stream.on('readable', function(){
+						// let data = stream.read();
+						// if (data !== null) {
+						// 	console.log(data);
+						// }
+						// console.log("test");
 
-						return;
-					} else {
-						console.log('return stream');
-						stream.on("open", function() {
-							res.writeHead(206, {
-						        "Content-Range": "bytes " + 0 + "-" + 5242880 + "/" + file.length,
-						        "Accept-Ranges": "bytes",
-						        "Content-Length": 5242881,
-						        "Content-Type": "video/mp4"
-						    });
+						if (req.params.init){
+							// sleep time expects milliseconds
 
-				          stream.pipe(res);
-				        }).on("error", function(err) {
-				          res.end(err);
-				        });
-			    	}
+
+							sleep(10000).then(() => {
+								// Do something after the sleep!
+								console.log('init request');
+								res.setHeader('Content-Type', 'application/json');
+								res.send(JSON.stringify({
+									src: path + '/' + encodeURI(file.path),
+									// src: '/' + path + '/' + file.path,
+								}));
+
+								return;
+							});
+
+						} else {
+							console.log('return stream');
+							stream.on("open", function() {
+								res.writeHead(206, {
+									"Content-Range": "bytes " + 0 + "-" + 5242880 + "/" + file.length,
+									"Accept-Ranges": "bytes",
+									"Content-Length": 5242881,
+									"Content-Type": "video/mp4"
+								});
+
+								stream.pipe(res);
+							}).on("error", function(err) {
+								res.end(err);
+							});
+						}
+					});
+
+
 
 					//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
 

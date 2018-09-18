@@ -1,7 +1,7 @@
 <template>
 	<div class="row film-details" v-if="video">
 		<div class="col-12">
-			<div class="overlay">
+			<div class="overlay" v-if="video.backdrop_path">
 				<img class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
 			</div>
 			<div class="row film-desc">
@@ -87,7 +87,7 @@
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 								<div class="card-body">
 									<h4>Choose quality: </h4>
-									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
+									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
 
 
@@ -103,10 +103,16 @@
 									<!--</plyr>-->
 
 									<vue-plyr v-if="video_link">
-										<video :src="video_link">
-											<source :src="video_link" type="video/mp4" size="720">
-											<!--<source src="video-1080p.mp4" type="video/mp4" size="1080">-->
-											<track v-if="subtitle" kind="captions" :label="short_lang" :srclang="short_lang" :src="subtitle" default>
+										<video crossorigin="anonymous" :src="'/play/videos/' + video_link">
+											<track v-if="subtitle_en" kind="subtitles" label="English" srclang="EN" :src="subtitle_en" type="text/vtt" default>
+											<track v-if="subtitle_ru" kind="subtitles" label="Русский" srclang="RU" :src="subtitle_ru" type="text/vtt">
+											<track v-if="subtitle_ua" kind="subtitles" label="Український" srclang="UA" :src="subtitle_ua" type="text/vtt">
+											<!--<track label="English Captions" kind="captions" srclang="en-US">-->
+												<!--<source :src="subtitle_en" type="text/vtt">-->
+											<!--</track>-->
+											<!--<track label="Russian Captions" kind="captions" srclang="ru-RU">-->
+												<!--<source :src="subtitle_ru" type="text/vtt">-->
+											<!--</track>-->
 										</video>
 									</vue-plyr>
 
@@ -188,7 +194,7 @@
 				required: true
 			},
 			video_id: {
-				type: Number,
+				type: String,
 				required: true
 			},
 
@@ -211,7 +217,9 @@
 				short_lang: short_lang,
 				server_link: "http://localhost:3000",
 				video_link: "",
-				subtitle: "",
+				subtitle_en: "",
+				subtitle_ru: "",
+				subtitle_ua: "",
 //				videos: [
 //					{ src: '', format: 'mp4' }
 ////					{ src: 'path/to/video.webm', format: 'webm' }
@@ -275,14 +283,15 @@
 					});
 			},
 
-			send_file(url, quality) {
-				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + this.short_lang + '/1', {
+			send_file(url) {
+				axios.post(this.server_link + '/movie/' + this.imdb_id + '/1', {
 					torrent_link: url,
 				}).then(resp => {
-//					console.log(resp);
 //					this.videos[0].src = resp.data.src;
 					this.video_link = resp.data.src;
-					this.subtitle = '/movies/' + this.imdb_id + '/' + this.short_lang + '.vtt';
+					this.subtitle_en = '/movies/' + this.imdb_id + '/en.vtt';
+					this.subtitle_ru = '/movies/' + this.imdb_id + '/ru.vtt';
+					this.subtitle_ua = '/movies/' + this.imdb_id + '/uk.vtt';
 				});
 			}
 		},

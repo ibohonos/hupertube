@@ -32,7 +32,7 @@
 				required: true
 			},
 			video_id: {
-				type: Number,
+				type: String,
 				required: true
 			},
 			year: {
@@ -55,7 +55,7 @@
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				loader: true,
 				lang: native_lang,
-				is_visible: true
+				is_visible: true,
 			}
 		},
 

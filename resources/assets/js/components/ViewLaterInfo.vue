@@ -20,7 +20,7 @@
 	export default {
 		props: {
 			video_id: {
-				type: Number,
+				type: String,
 				required: true
 			},
 
