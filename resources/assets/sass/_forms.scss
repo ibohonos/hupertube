@@ -5,6 +5,16 @@
   background-color: rgba(255, 255, 255, 0.5);
 }
 
+.form-group.row.mb-0 {
+  text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .nav-link.dropdown-toggle.language {
+    padding-left: 5rem;
+  }
+}
+
 .py-4 {
   background: url("../img/fo_film-cover.jpg") center;
   background-size: cover;
@@ -30,6 +40,11 @@
 .card-body-main p {
   font-size: 3em;
   margin-bottom: 5%;
+}
+
+.social-container {
+  display: flex;
+  justify-content: center;
 }
 
 .card-body {

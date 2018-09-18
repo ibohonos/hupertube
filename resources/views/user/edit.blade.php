@@ -107,7 +107,7 @@
 						<div class="row">
 							<div class="col-12">
 								<h2 class="text-center">{{ __('Connect to socials') }}</h2>
-								<div class="card-group">
+								<div class="card-group social-container">
 									@if(!Auth::user()->facebook_id)
 										<a href="{{ route('social', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i> Facebook</a>
 									@else
