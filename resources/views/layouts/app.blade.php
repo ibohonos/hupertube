@@ -67,19 +67,28 @@
 									<a class="dropdown-item" href="{{ route('view.later') }}">
 										{{ __('View later list') }}
 									</a>
+
+									<a class="dropdown-item" href="{{ route('logout') }}"
+									   onclick="event.preventDefault();
+										document.getElementById('logout-form').submit();">
+										{{ __('Logout') }}
+									</a>
+									<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+										@csrf
+									</form>
 								</div>
 							</li>
-							<li class="nav-item">
-								<a class="nav-link" href="{{ route('logout') }}"
-								   onclick="event.preventDefault();
-													 document.getElementById('logout-form').submit();">
-									{{ __('Logout') }}
-								</a>
+							{{--<li class="nav-item">--}}
+								{{--<a class="nav-link" href="{{ route('logout') }}"--}}
+								   {{--onclick="event.preventDefault();--}}
+													 {{--document.getElementById('logout-form').submit();">--}}
+									{{--{{ __('Logout') }}--}}
+								{{--</a>--}}
 
-								<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-									@csrf
-								</form>
-							</li>
+								{{--<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">--}}
+									{{--@csrf--}}
+								{{--</form>--}}
+							{{--</li>--}}
 						@endguest
 						<li class="nav-item dropdown">
 							<a id="navbarDropdownLang" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
