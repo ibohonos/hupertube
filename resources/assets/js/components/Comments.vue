@@ -3,7 +3,8 @@
 		<div class="col-md-12 comment-container">
 			<div class="form-group">
 				<label for="comment">{{ $lang.comments.enter_comment }}:</label>
-				<span class="input-group-addon" v-text="(max - comment.length) + ` chars left`"></span>
+				<span class="input-group-addon"
+					  v-text="(max - comment.length) + ' ' + $lang.comments.symbols"></span>
 				<textarea class="form-control" id="comment" name="comment" rows="3" v-on:keyup.13="sendComment"
 						  :maxlength="max" v-model="comment"></textarea>
 			</div>
@@ -23,7 +24,7 @@
 			</div>
 		</div>
 		<div v-if="comments.length === 0">
-			<p>No comments</p>
+			<p>{{ $lang.comments.no_comments }}</p>
 		</div>
 	</div>
 </template>

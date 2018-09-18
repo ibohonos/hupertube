@@ -1,4 +1,6 @@
 module.exports = {
-	enter_comment	: 'Please enter comment',
-	add_comment		: 'Add comment'
+	enter_comment	: 'Добавьте комментарий',
+	add_comment		: 'Добавить',
+    symbols			: 'символов осталось',
+    no_comments		: 'Комментариев нет'
 };
