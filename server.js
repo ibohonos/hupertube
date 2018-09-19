@@ -15,7 +15,8 @@ const	torrentStream = require('torrent-stream'),
 		magnetLink = require('magnet-link');
 
 const	cors = require('cors'),
-		http = require('https'),
+		https = require('https'),
+		axios = require('axios'),
 		Iconv  = require('iconv').Iconv,
 		srt2vtt = require('srt-to-vtt');
 
@@ -45,7 +46,7 @@ process.on('uncaughtException', function (exception) {
 let download = function(url, dest, enc) {
   let file = fs.createWriteStream(dest + '.srt');
 
-  let request = http.get(url, function(response) {
+  let request = https.get(url, function(response) {
 	let iconv = new Iconv(enc, 'UTF-8');
 	response.pipe(iconv).pipe(file);
 	fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
@@ -56,6 +57,26 @@ let download = function(url, dest, enc) {
   }).on('error', function(err) { // Handle errors
 	// fs.unlink(dest); // Delete the file async. (But we don't check the result)
   });
+};
+
+let insertUpdateFilm = function($imdb_id, $path) {
+	//add/update film info in DB
+	console.log('path to API: ' + process.env.APP_URL + '/api/v2/insert-to-db');
+	axios.post(process.env.APP_URL + '/api/v2/insert-to-db', {
+		imdb_id: $imdb_id,
+		video_path: $path
+	})
+	.then(function (resp){
+		console.log('db insert: ' + $imdb_id);
+		// console.log(resp);
+	}).
+	catch(function(err){
+		console.log('can\'t update film info: ' + $imdb_id);
+		console.log(err);
+		throw (err);
+		// return; 
+		});
+
 };
 
 // var mysql = require('mysql');
@@ -85,6 +106,31 @@ app.post('/movie/:id/:init', function(req, res) {
 	let subtitles_arr = [];
 	console.log(req.body.torrent_link);
 
+	axios.post(process.env.APP_URL + '/api/v2/get-video-info', {
+		imdb_id: req.params.id
+	})
+	.then(function (resp){
+		
+		if (resp.data.success){
+			let data = resp.data.data[0];
+
+			console.log(data);
+			insertUpdateFilm(req.params.id, data.video);
+			
+			res.setHeader('Content-Type', 'application/json');
+			//add check for subtitles
+				res.send(JSON.stringify({
+					src: data.video,
+					subtitles: subtitles_arr,
+				}));
+
+			if (data.downloaded)
+				return;
+		}
+	})
+	.catch(function (err){
+		console.log(err);
+	});
 
 	magnetLink(req.body.torrent_link, function(err, link) {
 		if (err) {
@@ -133,14 +179,17 @@ app.post('/movie/:id/:init', function(req, res) {
 
 					stream.on('readable', function(){
 						if (req.params.init){
+							let src = '/' +path + '/' + encodeURI(file.path);
 
+							insertUpdateFilm(req.params.id, src);
+							
 							// sleep time expects milliseconds
 							sleep(10000).then(() => {
 								// Do something after the sleep!
 								console.log('init request');
 								res.setHeader('Content-Type', 'application/json');
 								res.send(JSON.stringify({
-									src: '/' +path + '/' + encodeURI(file.path),
+									src: src,
 									subtitles: subtitles_arr,
 								}));
 
