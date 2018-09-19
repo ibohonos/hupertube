@@ -87,7 +87,7 @@
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 								<div class="card-body">
 									<h4>Choose quality: </h4>
-									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
+									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
 
 
@@ -274,17 +274,12 @@
 					});
 			},
 
-			send_file(url) {
-				axios.post(this.server_link + '/movie/' + this.imdb_id + '/1', {
+			send_file(url, quality) {
+				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + quality, {
 					torrent_link: url,
 				}).then(resp => {
-					console.log(resp.data);
 					this.subtitles = resp.data.subtitles;
-//					this.videos[0].src = resp.data.src;
 					this.video_link = resp.data.src;
-//					this.subtitle_en = '/movies/' + this.imdb_id + '/en.vtt';
-//					this.subtitle_ru = '/movies/' + this.imdb_id + '/ru.vtt';
-//					this.subtitle_ua = '/movies/' + this.imdb_id + '/uk.vtt';
 				});
 			}
 		},

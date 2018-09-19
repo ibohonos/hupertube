@@ -15,10 +15,13 @@ class CreateVideosTable extends Migration
 	{
 		Schema::create('videos', function (Blueprint $table) {
 			$table->increments('id');
-			$table->string('imdb_id')->unique();
-			$table->string('video');
+			$table->string('imdb_id');
+			$table->string('quality');
+			$table->text('video');
 			$table->boolean('downloaded')->default(0);
 			$table->timestamps();
+
+			$table->unique(['imdb_id', 'quality']);
 		});
 	}
 

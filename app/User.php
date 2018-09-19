@@ -27,16 +27,6 @@ class User extends Authenticatable
 		'password', 'remember_token',
 	];
 
-	/**
-	 * User has many videos
-	 *
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function videos()
-	{
-		return $this->hasMany(Videos::class);
-	}
-
 	public function comments()
 	{
 		return $this->hasMany(Comments::class);

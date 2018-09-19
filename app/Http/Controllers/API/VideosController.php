@@ -50,20 +50,16 @@ class VideosController extends APIController
 
 	public function insertToDB(Request $request)
 	{
-		// $videos = new Videos;
+		Videos::updateOrCreate(['imdb_id' => $request->imdb_id, 'video' => $request->video_path, 'quality' => $request->quality]);
 
-		// $videos->imdb_id = $request->imdb_id;
-		// $videos->video = $request->video_path;
-
-		Videos::updateOrCreate(['imdb_id' => $request->imdb_id, 'video' => $request->video_path]);
-
-
+		return $this->sendResponse("OK", "OK");
 	}
 
 	public function getVideoInfo(Request $request)
 	{
-		$video = new Videos;
-		$result = $video->where('imdb_id', $request->imdb_id)->get();
+//		$video = new Videos;
+		$result = Videos::where(['imdb_id' => $request->imdb_id, 'quality' => $request->quality])->first();
+//		$result = $video->where('imdb_id', $request->imdb_id)->get();
 
 		return $this->sendResponse($result, "OK");
 	}

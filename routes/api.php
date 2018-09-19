@@ -46,7 +46,7 @@ Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function ()
 
 });
 
-Route::prefix('v2')->namespace('API')->group(function () {
+Route::prefix('v1')->namespace('API')->group(function () {
 	Route::post('/insert-to-db', 'VideosController@insertToDB');
 	Route::post('/get-video-info', 'VideosController@getVideoInfo');
 });
