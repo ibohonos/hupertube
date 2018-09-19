@@ -66,16 +66,6 @@ Route::group([
 			'as' => 'videos.index'
 		]);
 
-		Route::get('/videos/add', [
-			'uses' => 'VideosController@add',
-			'as' => 'videos.add'
-		]);
-
-		Route::post('/videos/store', [
-			'uses' => 'VideosController@store',
-			'as' => 'videos.store'
-		]);
-
 		Route::get('/video/{id}/{video_id}', [
 			'uses' => 'VideosController@show',
 			'as' => 'videos.show'
@@ -104,8 +94,6 @@ Route::group([
 });
 
 Route::middleware('auth')->group(function () {
-	Route::get('/play/videos/{movies}/{imdb_id}/{path}/{file}', [
-		'uses' => 'VideosController@fileShow'
-	]);
+	Route::get('/play/videos/{movies}/{imdb_id}/{path}/{file}', 'VideosController@fileShow');
 });
 

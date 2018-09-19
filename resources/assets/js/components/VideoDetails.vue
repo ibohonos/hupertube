@@ -103,16 +103,9 @@
 									<!--</plyr>-->
 
 									<vue-plyr v-if="video_link">
-										<video crossorigin="anonymous" :src="'/play/videos/' + video_link">
-											<track v-if="subtitle_en" kind="subtitles" label="English" srclang="EN" :src="subtitle_en" type="text/vtt" default>
-											<track v-if="subtitle_ru" kind="subtitles" label="Русский" srclang="RU" :src="subtitle_ru" type="text/vtt">
-											<track v-if="subtitle_ua" kind="subtitles" label="Український" srclang="UA" :src="subtitle_ua" type="text/vtt">
-											<!--<track label="English Captions" kind="captions" srclang="en-US">-->
-												<!--<source :src="subtitle_en" type="text/vtt">-->
-											<!--</track>-->
-											<!--<track label="Russian Captions" kind="captions" srclang="ru-RU">-->
-												<!--<source :src="subtitle_ru" type="text/vtt">-->
-											<!--</track>-->
+										<video crossorigin="anonymous" :src="'/play/videos' + video_link">
+											<track v-if="subtitle.code === short_lang" v-for="subtitle in subtitles" kind="subtitles" :label="subtitle.title" :srclang="subtitle.code" :src="'/movies/' + imdb_id + '/' + subtitle.code + '.vtt'" type="text/vtt" default>
+											<track v-else kind="subtitles" :label="subtitle.title" :srclang="subtitle.code" :src="'/movies/' + imdb_id + '/' + subtitle.code + '.vtt'" type="text/vtt">
 										</video>
 									</vue-plyr>
 
@@ -217,9 +210,7 @@
 				short_lang: short_lang,
 				server_link: "http://localhost:3000",
 				video_link: "",
-				subtitle_en: "",
-				subtitle_ru: "",
-				subtitle_ua: "",
+				subtitles: {},
 //				videos: [
 //					{ src: '', format: 'mp4' }
 ////					{ src: 'path/to/video.webm', format: 'webm' }
@@ -287,11 +278,13 @@
 				axios.post(this.server_link + '/movie/' + this.imdb_id + '/1', {
 					torrent_link: url,
 				}).then(resp => {
+					console.log(resp.data);
+					this.subtitles = resp.data.subtitles;
 //					this.videos[0].src = resp.data.src;
 					this.video_link = resp.data.src;
-					this.subtitle_en = '/movies/' + this.imdb_id + '/en.vtt';
-					this.subtitle_ru = '/movies/' + this.imdb_id + '/ru.vtt';
-					this.subtitle_ua = '/movies/' + this.imdb_id + '/uk.vtt';
+//					this.subtitle_en = '/movies/' + this.imdb_id + '/en.vtt';
+//					this.subtitle_ru = '/movies/' + this.imdb_id + '/ru.vtt';
+//					this.subtitle_ua = '/movies/' + this.imdb_id + '/uk.vtt';
 				});
 			}
 		},

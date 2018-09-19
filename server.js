@@ -21,14 +21,14 @@ const	cors = require('cors'),
 
 const OpenSubtitles = require('opensubtitles-api');
 const OS = new OpenSubtitles({
-    useragent:'Hypertube v1',
-    username: 'ibohonos',
-    password: 'John1993862655',
-    ssl: true
+	useragent:process.env.OPEN_SUBTITLES_USERAGENT,
+	username: process.env.OPEN_SUBTITLES_USERNAME,
+	password: process.env.OPEN_SUBTITLES_PASSWORD,
+	ssl: true
 });
 
 app.use(cors({
-	origin: 'http://localhost:8300',
+	origin: process.env.APP_URL,
 	credentials: true
 }));
 
@@ -46,15 +46,15 @@ let download = function(url, dest, enc) {
   let file = fs.createWriteStream(dest + '.srt');
 
   let request = http.get(url, function(response) {
-  	let iconv = new Iconv(enc, 'UTF-8');
-    response.pipe(iconv).pipe(file);
-    fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
-    // fs.unlink(dest + '.srt');
-    file.on('finish', function() {
-      file.close(function(){});  // close() is async, call cb after close completes.
-    });
+	let iconv = new Iconv(enc, 'UTF-8');
+	response.pipe(iconv).pipe(file);
+	fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
+	// fs.unlink(dest + '.srt');
+	file.on('finish', function() {
+	  file.close(function(){});  // close() is async, call cb after close completes.
+	});
   }).on('error', function(err) { // Handle errors
-    // fs.unlink(dest); // Delete the file async. (But we don't check the result)
+	// fs.unlink(dest); // Delete the file async. (But we don't check the result)
   });
 };
 
@@ -76,26 +76,14 @@ let download = function(url, dest, enc) {
  
 // con.end();
 
-
-
-// let id = '123';
-// let quality = '720';
-
-//if no film
-// let torrentFile = process.argv[2];
-
 function sleep (time) {
 	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-
 //change to post
 app.post('/movie/:id/:init', function(req, res) {
-
-	// console.log('req');
+	let subtitles_arr = [];
 	console.log(req.body.torrent_link);
-	// console.log('res');
-	// console.log(res);
 
 
 	magnetLink(req.body.torrent_link, function(err, link) {
@@ -122,67 +110,43 @@ app.post('/movie/:id/:init', function(req, res) {
 					}).then(subtitles => {
 						if (subtitles['en']) {
 							download(subtitles['en'].url, subtitle_path + 'en', subtitles['en'].encoding);
-						} else {
-							throw 'en no subtitle found';
+							subtitles_arr.push({'code': 'en', 'title': subtitles['en'].lang});
 						}
 						if (subtitles['ru']) {
 							download(subtitles['ru'].url, subtitle_path + 'ru', subtitles['ru'].encoding);
-						} else {
-							throw 'ru no subtitle found';
+							subtitles_arr.push({'code': 'ru', 'title': subtitles['ru'].lang});
 						}
 						if (subtitles['uk']) {
 							download(subtitles['uk'].url, subtitle_path + 'uk', subtitles['uk'].encoding);
-						} else {
-							throw 'uk no subtitle found';
+							subtitles_arr.push({'code': 'uk', 'title': subtitles['uk'].lang});
 						}
 					}).catch(console.error);
 
 					console.log('format: ' + extension);
 					file.select();	//скачує блоки рандомно
 
-					// let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
-					let stream = file.createReadStream({
-						start: 0,
-						end: 10485760 //10Mb
-					});
+					let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
+					// let stream = file.createReadStream({
+					// 	start: 0,
+					// 	end: 10485760 //10Mb
+					// });
 
 					stream.on('readable', function(){
-						// let data = stream.read();
-						// if (data !== null) {
-						// 	console.log(data);
-						// }
-						// console.log("test");
-
 						if (req.params.init){
+
 							// sleep time expects milliseconds
-
-
 							sleep(10000).then(() => {
 								// Do something after the sleep!
 								console.log('init request');
 								res.setHeader('Content-Type', 'application/json');
 								res.send(JSON.stringify({
-									src: path + '/' + encodeURI(file.path),
-									// src: '/' + path + '/' + file.path,
+									src: '/' +path + '/' + encodeURI(file.path),
+									subtitles: subtitles_arr,
 								}));
 
 								return;
 							});
 
-						} else {
-							console.log('return stream');
-							stream.on("open", function() {
-								res.writeHead(206, {
-									"Content-Range": "bytes " + 0 + "-" + 5242880 + "/" + file.length,
-									"Accept-Ranges": "bytes",
-									"Content-Length": 5242881,
-									"Content-Type": "video/mp4"
-								});
-
-								stream.pipe(res);
-							}).on("error", function(err) {
-								res.end(err);
-							});
 						}
 					});
 
@@ -209,19 +173,11 @@ app.post('/movie/:id/:init', function(req, res) {
 	});
 
 
-	// res.send("OK");
-
-
-
 
 	// check for file in public/downloaded_films
 	// if no file -> get torrent file in storage/torrents
 	// return stream
 });
-
-
-
-
 
 app.listen(port, function(){
 	console.log('Server startet at port:' + port)
