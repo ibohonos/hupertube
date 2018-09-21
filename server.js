@@ -35,6 +35,8 @@ app.use(cors({
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+// schedule.
 process.on('uncaughtException', function (exception) {
 	let date = new Date();
 
@@ -50,13 +52,11 @@ let download = function (url, dest, enc) {
 		let iconv = new Iconv(enc, 'UTF-8');
 		response.pipe(iconv).pipe(file);
 		fs.createReadStream(dest + '.srt').pipe(srt2vtt()).pipe(fs.createWriteStream(dest + '.vtt'));
-		// fs.unlink(dest + '.srt');
 		file.on('finish', function () {
 			file.close(function () {
 			});  // close() is async, call cb after close completes.
 		});
 	}).on('error', function (err) { // Handle errors
-		// fs.unlink(dest); // Delete the file async. (But we don't check the result)
 	});
 };
 
@@ -68,14 +68,11 @@ let insertUpdateFilm = function (imdb_id, path, quality) {
 		video_path: path,
 		quality: quality
 	})
-		.then(function (resp) {
-			console.log('db insert: ' + imdb_id);
-			// console.log(resp);
-		}).catch(function (err) {
+		.catch(function (err) {
 		console.log('can\'t update film info: ' + imdb_id);
 		console.log(err);
 		throw (err);
-		// return; 
+
 	});
 
 };
@@ -112,87 +109,69 @@ function getSubtitles(imdb_id) {
 
 }
 
-// function setIsDownloaded($imdb_id) {
-// axios.post(process.env.APP_URL + '/api/v1/insert-to-db', )
-// }
-
-// var mysql = require('mysql');
-// var con = mysql.createConnection({
-//   host: process.env.DB_HOST,
-//   user: process.env.DB_USERNAME,
-//   password: process.env.DB_PASSWORD,
-//   database : process.env.DB_DATABASE
-// });
-
-
-//load and save downloaded films
-// con.connect();
-// con.query('SELECT * FROM `all_movie_ids`', function (error, results, fields) {
-//   if (error) throw error;
-//   console.log(results);
-// });
-
-// con.end();
-
 function sleep(time) {
 	return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-//change to post
 app.post('/movie/:id/:quality', function (req, res) {
 	let subtitles_arr = [];
-	getSubtitles(req.params.id).then(function (result) {
-		subtitles_arr = result;
-		console.log(req.body.torrent_link);
+	let data;
 
-		axios.post(process.env.APP_URL + '/api/v1/get-video-info', {
-			imdb_id: req.params.id,
-			quality: req.params.quality
-		})
-			.then(function (resp) {
+	console.log(req.body.torrent_link);
 
-				console.log(resp.data);
-				if (resp.data.success && resp.data.data) {
-					let data = resp.data.data;
-					console.log("--------------------------");
-					console.log(data);
-					console.log("--------------------------");
-					insertUpdateFilm(req.params.id, data.video, req.params.quality);
+	axios.post(process.env.APP_URL + '/api/v1/get-video-info', {
+		imdb_id: req.params.id,
+		quality: req.params.quality
+	}).then(function (resp) {
 
-					res.setHeader('Content-Type', 'application/json');
-					//add check for subtitles
-					res.send(JSON.stringify({
-						src: data.video,
-						subtitles: subtitles_arr,
-					}));
+		console.log(resp.data);
+		if (resp.data.success && resp.data && resp.data.data) {
+			getSubtitles(req.params.id).then(function (result) {
+				subtitles_arr = result;
+				data = resp.data.data;
+				console.log("--------------------------");
+				console.log(data);
+				console.log("--------------------------");
+				insertUpdateFilm(req.params.id, data.video, req.params.quality);
 
-					magnetLink(req.body.torrent_link, function (err, link) {
-						if (err) {
-							console.log(err);
-							return;
-						}
-						console.log("link: " + link);
+				res.setHeader('Content-Type', 'application/json');
+				res.send(JSON.stringify({
+					src: data.video,
+					subtitles: subtitles_arr,
+				}));
+			});
+		}
 
-						let path = 'movies/' + req.params.id;
-						let engine = torrentStream(link, {path: 'public/' + path});
+			magnetLink(req.body.torrent_link, function (err, link) {
+				if (err) {
+					console.log(err);
+					return;
+				}
+				console.log("link: " + link);
 
-						engine.on('ready', function () {
-							engine.files.forEach(function (file) {
-								let extension = file.name.split('.').pop();
+				let path = 'movies/' + req.params.id;
+				let engine = torrentStream(link, {path: 'public/' + path});
 
-								console.log("\npath: " + file.path + "\nname: " + file.name);
-								console.log('length: ' + file.length);
-								if (extension === 'mp4') {
+				engine.on('ready', function () {
+					engine.files.forEach(function (file) {
+						let extension = file.name.split('.').pop();
 
-									console.log('format: ' + extension);
-									file.select();	//скачує блоки рандомно
+						console.log("\npath: " + file.path + "\nname: " + file.name);
+						console.log('length: ' + file.length);
+						console.log('extension');
+						console.log(extension);
+						if (extension === 'mp4') {
 
-									let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
-									// let stream = file.createReadStream({
-									// 	start: 0,
-									// 	end: 10485760 //10Mb
-									// });
+							console.log('extension2');
+							console.log(extension);
+							getSubtitles(req.params.id).then(function (result) {
+								subtitles_arr = result;
 
+								// file.select();	//скачує блоки рандомно
+
+								let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
+
+								if (!data) {
 									stream.on('readable', function () {
 										let src = '/' + path + '/' + encodeURI(file.path);
 
@@ -208,45 +187,22 @@ app.post('/movie/:id/:quality', function (req, res) {
 												subtitles: subtitles_arr,
 											}));
 
-											return;
 										});
 									});
-
-									stream.on('end', function () {
-										axios.post('')
-									});
-
-
-									//http://qaru.site/questions/79725/streaming-a-video-file-to-an-html5-video-player-with-nodejs-so-that-the-video-controls-continue-to-work
-
-
-									// var streamReadOpts = { start: 0, end: 2000, autoClose: true };
-									// var stream = file.createReadStream(file.path, streamReadOpts)
-									//     // previous 'open' & 'error' event handlers are still here
-									//     .on('end', function () {
-									//       console.log('stream end');
-									//     })
-									//     .on('close', function () {
-									//       console.log('stream close');
-									//     })
-
-								} else {
-									file.deselect();
 								}
-							})
-						})
-					});
-				}
-			})
-			.catch(function (err) {
-				console.log(err);
+
+							});
+
+						} else {
+							file.deselect();
+						}
+					})
+				});
 			});
-	});
-
-
-	// check for file in public/downloaded_films
-	// if no file -> get torrent file in storage/torrents
-	// return stream
+	})
+		.catch(function (err) {
+			console.log(err);
+		});
 });
 
 app.listen(port, function () {

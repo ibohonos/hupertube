@@ -6,6 +6,7 @@ use App\Comments;
 use App\User;
 use App\Videos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class VideosController extends APIController
 {
@@ -50,7 +51,10 @@ class VideosController extends APIController
 
 	public function insertToDB(Request $request)
 	{
-		Videos::updateOrCreate(['imdb_id' => $request->imdb_id, 'video' => $request->video_path, 'quality' => $request->quality]);
+		Videos::updateOrCreate(
+			['imdb_id' => $request->imdb_id, 'video' => $request->video_path, 'quality' => $request->quality],
+			['updated_at' => Carbon::now()]
+		);
 
 		return $this->sendResponse("OK", "OK");
 	}
@@ -62,5 +66,15 @@ class VideosController extends APIController
 //		$result = $video->where('imdb_id', $request->imdb_id)->get();
 
 		return $this->sendResponse($result, "OK");
+	}
+
+	public function setDownloaded(Request $request)
+	{
+		$videos = Videos::where(['imdb_id' => $request->imdb_id, 'quality' => $request->quality])->first();
+		$videos->downloaded = 1;
+
+		$videos->save();
+
+		return $this->sendResponse($videos, "Updated");
 	}
 }

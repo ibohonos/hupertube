@@ -2,13 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\AllMovieIds;
 use App\Videos;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class VideosController extends Controller
 {
@@ -34,5 +29,14 @@ class VideosController extends Controller
 		return response()->stream(function() use ($stream) {
 			$stream->start();
 		});
+	}
+
+	public static function deleteOldFilms()
+	{
+		$videos = Videos::where('updated_at', '<', Carbon::now()->subMonth()->toDateString())->get();
+		foreach ($videos as $video) :
+			system('rm -rf \'' . public_path(dirname(urldecode($video->video))) . '\'');
+			$video->delete();
+		endforeach;
 	}
 }
