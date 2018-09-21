@@ -2,13 +2,14 @@
 	<div class="row" v-if="!loader">
 		<div class="col-md-12">
 			<div class="form-group">
-				<input type="text" class="form-control form-control-lg" v-model="query_term" placeholder="Please enter film name" @change="changeFilter">
+				<input type="text" class="form-control form-control-lg" v-model="query_term"
+					   :placeholder="$lang.videos.film_name" @change="changeFilter">
 			</div>
-			<h3>Quality:</h3>
+			<h3>{{ $lang.videos.quality }}:</h3>
 			<div class="form-check form-check-inline">
 				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios1" value="All" checked @change="changeFilter">
 				<label class="form-check-label" for="exampleRadios1">
-					All
+					{{ $lang.videos.quality_all }}
 				</label>
 			</div>
 			<div class="form-check form-check-inline">
@@ -31,7 +32,7 @@
 			</div>
 			<div class="row">
 				<div class="form-group col">
-					<label for="sortBy">Sort By</label>
+					<label for="sortBy">{{ $lang.videos.sort_by }}</label>
 					<select class="form-control" id="sortBy" v-model="sort_by" @change="changeFilter">
 						<option value="title">Title</option>
 						<option value="year">Year</option>
@@ -44,7 +45,7 @@
 					</select>
 				</div>
 				<div class="form-group col">
-					<label for="orderBy">Order By</label>
+					<label for="orderBy">{{ $lang.videos.type }}</label>
 					<select class="form-control" id="orderBy" v-model="order_by" @change="changeFilter">
 						<option value="asc">Asc</option>
 						<option value="desc">Desc</option>
@@ -52,7 +53,7 @@
 				</div>
 			</div>
 			<div class="form-group" v-if="genres">
-				<label for="genre">Genre</label>
+				<label for="genre">{{ $lang.videos.genre }}</label>
 				<select class="form-control" id="genre" v-model="genre" @change="changeFilter">
 					<option value="">Default</option>
 					<option v-for="item in genres" :key="item.id" :value="item.name">{{ item.name }}</option>

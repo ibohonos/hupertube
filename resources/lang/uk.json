@@ -5,6 +5,7 @@
 	"Register"			: "Реєстрація",
 	"Profile"			: "Профіль",
 	"Logout"			: "Вийти",
+ 	"View later list"   : "Переглянути пізніше",
 	"Language"			: "Мова",
 
 	 "Thank's."																	: "Дякуємо.",
@@ -49,7 +50,7 @@
 	 "Dashboard"					: "Стрічка",
 	 "Please login or register"	: "Будь ласка ввійдіть або зареєструйтесь",
 	 "You are logged in!"		: "Ви ввійшли!",
-	 "Register for free"		: "Зареєструватись безплатно!",
+	 "Register for free"		: "Зареєструватись!",
 	 "Watch your favorite films in live! No need to spend time for download, just choose and watch in live!" : "Дивіться Ваші улюблені фільми вживу! Не потрібно чекати завантаження фільму, просто оберіть та дивіться!",
 	 "Welcome to"				: "Ласкаво просимо до"
  }
