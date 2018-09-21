@@ -155,11 +155,9 @@ app.post('/movie/:id/:quality', function (req, res) {
 										let src = '/' + path + '/' + encodeURI(file.path);
 
 										insertUpdateFilm(req.params.id, src, req.params.quality);
-
+										console.log('init request for ' + req.params.id);
 										// sleep time expects milliseconds
 										sleep(10000).then(() => {
-											console.log('init request for ' + req.params.id);
-
 											res.setHeader('Content-Type', 'application/json');
 											res.send(JSON.stringify({
 												src: src,
