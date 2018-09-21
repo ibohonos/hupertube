@@ -1,7 +1,3 @@
-//https://www.youtube.com/watch?v=N2aMWdS0ANc
-//https://github.com/Gryshchenko/digitalcinema/blob/2fc9e5e191dd2ec16aa12b6ae3658b816fc10002/public/torrent-stream/torrent.js
-'use strict'
-
 require('dotenv').config();
 
 const port = 3000;
@@ -36,7 +32,6 @@ app.use(cors({
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-// schedule.
 process.on('uncaughtException', function (exception) {
 	let date = new Date();
 
@@ -62,7 +57,6 @@ let download = function (url, dest, enc) {
 
 let insertUpdateFilm = function (imdb_id, path, quality) {
 	//add/update film info in DB
-	console.log('path to API: ' + process.env.APP_URL + '/api/v1/insert-to-db');
 	axios.post(process.env.APP_URL + '/api/v1/insert-to-db', {
 		imdb_id: imdb_id,
 		video_path: path,
@@ -117,23 +111,17 @@ app.post('/movie/:id/:quality', function (req, res) {
 	let subtitles_arr = [];
 	let data;
 
-	console.log(req.body.torrent_link);
-
 	axios.post(process.env.APP_URL + '/api/v1/get-video-info', {
 		imdb_id: req.params.id,
 		quality: req.params.quality
 	}).then(function (resp) {
 
-		console.log(resp.data);
 		if (resp.data.success && resp.data && resp.data.data) {
 			getSubtitles(req.params.id).then(function (result) {
 				subtitles_arr = result;
 				data = resp.data.data;
-				console.log("--------------------------");
-				console.log(data);
-				console.log("--------------------------");
-				insertUpdateFilm(req.params.id, data.video, req.params.quality);
 
+				insertUpdateFilm(req.params.id, data.video, req.params.quality);
 				res.setHeader('Content-Type', 'application/json');
 				res.send(JSON.stringify({
 					src: data.video,
@@ -147,7 +135,6 @@ app.post('/movie/:id/:quality', function (req, res) {
 					console.log(err);
 					return;
 				}
-				console.log("link: " + link);
 
 				let path = 'movies/' + req.params.id;
 				let engine = torrentStream(link, {path: 'public/' + path});
@@ -156,19 +143,11 @@ app.post('/movie/:id/:quality', function (req, res) {
 					engine.files.forEach(function (file) {
 						let extension = file.name.split('.').pop();
 
-						console.log("\npath: " + file.path + "\nname: " + file.name);
-						console.log('length: ' + file.length);
-						console.log('extension');
-						console.log(extension);
 						if (extension === 'mp4') {
-
-							console.log('extension2');
-							console.log(extension);
 							getSubtitles(req.params.id).then(function (result) {
 								subtitles_arr = result;
 
 								// file.select();	//скачує блоки рандомно
-
 								let stream = file.createReadStream();	//скачує блоки послідовно з пріоритетом над select()
 
 								if (!data) {
@@ -176,11 +155,9 @@ app.post('/movie/:id/:quality', function (req, res) {
 										let src = '/' + path + '/' + encodeURI(file.path);
 
 										insertUpdateFilm(req.params.id, src, req.params.quality);
-
+										console.log('init request for ' + req.params.id);
 										// sleep time expects milliseconds
 										sleep(10000).then(() => {
-											// Do something after the sleep!
-											console.log('init request');
 											res.setHeader('Content-Type', 'application/json');
 											res.send(JSON.stringify({
 												src: src,
