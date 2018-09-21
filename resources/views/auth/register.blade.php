@@ -123,8 +123,8 @@
 						</div>
 					</form>
 					<div class="form-group">
-						<label for="name" class="col-md-4 control-label">{{ __('Register With') }}</label>
-						<div class="col-md-12">
+						<label for="name" class="col-md-4 control-label"></label>
+						<div class="col-md-12 social-container">
 							<a href="{{ route('social', 'facebook') }}" class="btn btn-social-icon btn-facebook"><i class="fas fa-facebook"></i>Facebook</a>
 							<a href="{{ route('social', 'google') }}" class="btn btn-social-icon btn-google-plus"><i class="fa fa-google-plus"></i>Google</a>
 							<a href="{{ route('social', 'github') }}" class="btn btn-social-icon btn-github"><i class="fab fa-github"></i>Github</a>

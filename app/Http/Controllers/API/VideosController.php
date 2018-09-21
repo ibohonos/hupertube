@@ -15,11 +15,12 @@ class VideosController extends APIController
 	public function allComments($imdb_id)
 	{
 		$comments = new Comments;
+		$user = new User;
 
 		$this->data['comments'] = $comments->getCommentsByImdbId($imdb_id);
 
 		foreach ($this->data['comments'] as &$val) {
-		    $val['user'] = $val->user();
+            $val['user'] = $user->getUserById($val->user_id);
         }
 
 		return $this->sendResponse($this->data, 'OK');
@@ -37,6 +38,7 @@ class VideosController extends APIController
 	public function saveComment(Request $request)
 	{
 		$comment = new Comments;
+		$user = new User;
 
 		$comment->user_id = $request->user()->id;
 		$comment->imdb_id = $request->imdb_id;
@@ -45,6 +47,7 @@ class VideosController extends APIController
 		$comment->save();
 
 		$this->data['comment'] = $comment;
+		$this->data['comment']['user'] = $user->getUserById($comment->user_id);
 
 		return $this->sendResponse($this->data, "OK");
 	}

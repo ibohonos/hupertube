@@ -71,7 +71,7 @@
 			</div>
 			<div class="row film-watch">
 				<div class="col-md-12">
-					<h1 class="text-center">Watch online</h1>
+					<h1 class="text-center">{{ $lang.video_details.watch }}</h1>
 				</div>
 				<div class="col-md-12">
 					<div class="accordion" id="accordionExample">
@@ -79,14 +79,14 @@
 							<div class="card-header" id="headingOne">
 								<h5 class="mb-0">
 									<button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-										Watch film online
+										{{ $lang.video_details.watch_film }}
 									</button>
 								</h5>
 							</div>
 
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 								<div class="card-body">
-									<h4>Choose quality: </h4>
+									<h4>{{ $lang.video_details.quality }}:</h4>
 									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3">{{ torrent.quality }}</button>
 									<p>player</p>
 
@@ -131,7 +131,7 @@
 							<div class="card-header" id="headingTwo">
 								<h5 class="mb-0">
 									<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										Watch trailers
+										{{ $lang.video_details.watch_trailers }}
 									</button>
 								</h5>
 							</div>
@@ -144,7 +144,7 @@
 										</div>
 									</div>
 									<div v-else>
-										No trailers available
+										{{ $lang.video_details.no_trailers }}
 									</div>
 								</div>
 							</div>

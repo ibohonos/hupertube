@@ -5,7 +5,11 @@ module.exports = {
 	genres		: 'Genres',
 	actors		: 'Actors',
 	cast		: 'Cast',
-	quality		: 'Quality',
-	trailers	: 'Trailers',
+	watch		: 'Watch online',
+	quality		: 'Choose quality',
+	watch_film  : 'Watch film',
+	watch_trailers:'Watch trailers',
+    no_trailers : 'No trailers available',
+    trailers	: 'Trailers',
 	comments	: 'Comments'
 };
