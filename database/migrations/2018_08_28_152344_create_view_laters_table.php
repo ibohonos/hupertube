@@ -17,7 +17,7 @@ class CreateViewLatersTable extends Migration
 			$table->increments('id');
 			$table->integer('user_id');
 			$table->integer('video_id');
-			$table->string('imdb_id');
+			$table->string('imdb_id', 30);
 			$table->timestamps();
 		});
 	}

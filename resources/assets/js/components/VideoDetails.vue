@@ -1,7 +1,7 @@
 <template>
 	<div class="row film-details" v-if="video">
 		<div class="col-12">
-			<div class="overlay">
+			<div class="overlay" v-if="video.backdrop_path">
 				<img class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
 			</div>
 			<div class="row film-desc">
@@ -103,10 +103,9 @@
 									<!--</plyr>-->
 
 									<vue-plyr v-if="video_link">
-										<video :src="video_link">
-											<source :src="video_link" type="video/mp4" size="720">
-											<!--<source src="video-1080p.mp4" type="video/mp4" size="1080">-->
-											<track v-if="subtitle" kind="captions" :label="short_lang" :srclang="short_lang" :src="subtitle" default>
+										<video crossorigin="anonymous" :src="'/play/videos' + video_link">
+											<track v-if="subtitle.code === short_lang" v-for="subtitle in subtitles" kind="subtitles" :label="subtitle.title" :srclang="subtitle.code" :src="'/movies/' + imdb_id + '/' + subtitle.code + '.vtt'" type="text/vtt" default>
+											<track v-else kind="subtitles" :label="subtitle.title" :srclang="subtitle.code" :src="'/movies/' + imdb_id + '/' + subtitle.code + '.vtt'" type="text/vtt">
 										</video>
 									</vue-plyr>
 
@@ -188,7 +187,7 @@
 				required: true
 			},
 			video_id: {
-				type: Number,
+				type: String,
 				required: true
 			},
 
@@ -211,7 +210,7 @@
 				short_lang: short_lang,
 				server_link: "http://localhost:3000",
 				video_link: "",
-				subtitle: "",
+				subtitles: {},
 //				videos: [
 //					{ src: '', format: 'mp4' }
 ////					{ src: 'path/to/video.webm', format: 'webm' }
@@ -276,13 +275,11 @@
 			},
 
 			send_file(url, quality) {
-				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + this.short_lang + '/1', {
+				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + quality, {
 					torrent_link: url,
 				}).then(resp => {
-//					console.log(resp);
-//					this.videos[0].src = resp.data.src;
+					this.subtitles = resp.data.subtitles;
 					this.video_link = resp.data.src;
-					this.subtitle = '/movies/' + this.imdb_id + '/' + this.short_lang + '.vtt';
 				});
 			}
 		},

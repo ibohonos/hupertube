@@ -34,21 +34,20 @@ Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function ()
 		'as' => 'comment.save'
 	]);
 
-	Route::get('/is-viewed', [
-		'uses' => 'UserController@isViewed'
-	]);
+	Route::get('/is-viewed', 'UserController@isViewed');
 
-	Route::post('/viewed', [
-		'uses' => 'UserController@viewed'
-	]);
+	Route::post('/viewed', 'UserController@viewed');
 
-	Route::get('/is-view-later', [
-		'uses' => 'UserController@isViewLater'
-	]);
+	Route::get('/is-view-later', 'UserController@isViewLater');
 
-	Route::post('/view-later', [
-		'uses' => 'UserController@viewLater'
-	]);
+	Route::post('/view-later', 'UserController@viewLater');
 
 	Route::get('/all-view-later', 'UserController@allViewLater');
+
+});
+
+Route::prefix('v1')->namespace('API')->group(function () {
+	Route::post('/insert-to-db', 'VideosController@insertToDB');
+	Route::post('/get-video-info', 'VideosController@getVideoInfo');
+	Route::post('/set-downloaded', 'VideosController@setDownloaded');
 });

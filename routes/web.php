@@ -66,23 +66,9 @@ Route::group([
 			'as' => 'videos.index'
 		]);
 
-		Route::get('/videos/add', [
-			'uses' => 'VideosController@add',
-			'as' => 'videos.add'
-		]);
-
-		Route::post('/videos/store', [
-			'uses' => 'VideosController@store',
-			'as' => 'videos.store'
-		]);
-
 		Route::get('/video/{id}/{video_id}', [
 			'uses' => 'VideosController@show',
 			'as' => 'videos.show'
-		]);
-
-		Route::get('/play/videos/{file}', [
-			'uses' => 'VideosController@fileShow'
 		]);
 
 		Route::get('/profile/edit/unlink/{social}', [
@@ -105,5 +91,9 @@ Route::group([
 			'as' => 'view.later'
 		]);
 	});
+});
+
+Route::middleware('auth')->group(function () {
+	Route::get('/play/videos/{movies}/{imdb_id}/{path}/{file}', 'VideosController@fileShow');
 });
 
