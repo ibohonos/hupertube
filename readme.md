@@ -46,54 +46,54 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 
 ## Screens
 
-#Home page
+# Home page
 
 ![Home page](screens/1.png)
 
-#Login
+# Login
 
 ![Login](screens/2.png)
 
-#Register
+# Register
 
 ![Register](screens/3.png)
 
-#All films
+# All films
 
 ![All films](screens/4.png)
 
-#User profile
+# User profile
 
 ![User profile](screens/5.png)
 
-#Edit profile
+# Edit profile
 
 ![Edit profile](screens/6.png)
 
-#Upload avatar
+# Upload avatar
 
 ![Upload avatar](screens/7.png)
 
-#Crop avatar
+# Crop avatar
 
 ![Crop avatar](screens/8.png)
 
-#Film page
+# Film page
 
 ![Film page](screens/9.png)
 
-#Film trailers
+# Film trailers
 
 ![Film trailers](screens/10.png)
 
-#Film player
+# Film player
 
 ![Film player](screens/11.png)
 
-#Film comments
+# Film comments
 
 ![Film comments](screens/12.png)
 
-#View later list
+# View later list
 
 ![View later list](screens/13.png)
