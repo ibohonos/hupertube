@@ -46,16 +46,54 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 
 ## Screens
 
-![Screenshot](screens/1.png)
-![Screenshot](screens/2.png)
-![Screenshot](screens/3.png)
-![Screenshot](screens/4.png)
-![Screenshot](screens/5.png)
-![Screenshot](screens/6.png)
-![Screenshot](screens/7.png)
-![Screenshot](screens/8.png)
-![Screenshot](screens/9.png)
-![Screenshot](screens/10.png)
-![Screenshot](screens/11.png)
-![Screenshot](screens/12.png)
-![Screenshot](screens/13.png)
+#Home page
+
+![Home page](screens/1.png)
+
+#Login
+
+![Login](screens/2.png)
+
+#Register
+
+![Register](screens/3.png)
+
+#All films
+
+![All films](screens/4.png)
+
+#User profile
+
+![User profile](screens/5.png)
+
+#Edit profile
+
+![Edit profile](screens/6.png)
+
+#Upload avatar
+
+![Upload avatar](screens/7.png)
+
+#Crop avatar
+
+![Crop avatar](screens/8.png)
+
+#Film page
+
+![Film page](screens/9.png)
+
+#Film trailers
+
+![Film trailers](screens/10.png)
+
+#Film player
+
+![Film player](screens/11.png)
+
+#Film comments
+
+![Film comments](screens/12.png)
+
+#View later list
+
+![View later list](screens/13.png)
