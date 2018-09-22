@@ -88,6 +88,7 @@
 								<div class="card-body">
 									<h4>{{ $lang.video_details.quality }}:</h4>
 									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3 && show_btn">{{ torrent.quality }}</button>
+									<div class="loader mx-auto" v-if="!show_btn && !video_link"></div>
 										<div v-if="video_link">
 											<vue-plyr v-if="!video_preloader">
 											<video crossorigin="anonymous" :src="'/play/videos' + video_link">
