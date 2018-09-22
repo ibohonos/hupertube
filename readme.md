@@ -43,3 +43,19 @@ If you're not in the mood to read, [Laracasts](https://laracasts.com) contains o
 `php artisan migrate`
 
 Якщо буде помилка `Prevents access to $this/self from included files.` при `php artisan route:list` тоді потрібно ввести ці команди: `composer clear-cache` та `composer dump-autoload`
+
+## Screens
+
+![Screenshot](screens/1.png)
+![Screenshot](screens/2.png)
+![Screenshot](screens/3.png)
+![Screenshot](screens/4.png)
+![Screenshot](screens/5.png)
+![Screenshot](screens/6.png)
+![Screenshot](screens/7.png)
+![Screenshot](screens/8.png)
+![Screenshot](screens/9.png)
+![Screenshot](screens/10.png)
+![Screenshot](screens/11.png)
+![Screenshot](screens/12.png)
+![Screenshot](screens/13.png)
