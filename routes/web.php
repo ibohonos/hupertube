@@ -25,6 +25,11 @@ Route::group([
 		'as' => 'index'
 	]);
 
+	Route::get('/serials', [
+		'uses' => 'HomeController@serials',
+		'as' => 'serials'
+	]);
+
 	Route::get('/home', [
 		'uses' => 'HomeController@index',
 		'as' => 'home'
@@ -45,6 +50,21 @@ Route::group([
 		'as' => 'mail.resend'
 	]);
 
+	Route::get('/videos', [
+		'uses' => 'VideosController@index',
+		'as' => 'videos.index'
+	]);
+
+	Route::get('/video/{id}', [
+		'uses' => 'VideosController@show',
+		'as' => 'videos.show'
+	]);
+
+	Route::get('/serial/{id}', [
+		'uses' => 'VideosController@showSerial',
+		'as' => 'serials.show'
+	]);
+
 	Route::middleware('auth')->group(function () {
 		Route::get('/user/{id}', [
 			'uses' => 'ProfileController@userProfile',
@@ -59,16 +79,6 @@ Route::group([
 		Route::get('/profile/edit', [
 			'uses' => 'ProfileController@edit',
 			'as' => 'profile.edit'
-		]);
-
-		Route::get('/videos', [
-			'uses' => 'VideosController@index',
-			'as' => 'videos.index'
-		]);
-
-		Route::get('/video/{id}/{video_id}', [
-			'uses' => 'VideosController@show',
-			'as' => 'videos.show'
 		]);
 
 		Route::get('/profile/edit/unlink/{social}', [

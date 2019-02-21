@@ -1,6 +1,6 @@
 <template>
 	<div class="row">
-		<div class="col-md-12 comment-container">
+		<div class="col-md-12 comment-container" v-if="user_token != 'Null'">
 			<div class="form-group">
 				<label for="comment">{{ $lang.comments.enter_comment }}:</label>
 				<span class="input-group-addon"
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 		</div>
-		<div v-if="comments.length === 0">
+		<div v-else="comments.length === 0">
 			<p>{{ $lang.comments.no_comments }}</p>
 		</div>
 	</div>
@@ -74,11 +74,7 @@
 			},
 
 			getComments() {
-				axios.get('/api/v2/comments/' + this.imdb_id, {
-					params: {
-						api_token: this.user_token
-					},
-				}).then(resp => {
+				axios.get('/api/v1/comments/' + this.imdb_id).then(resp => {
 					this.comments = resp.data.data.comments;
 				});
 			},

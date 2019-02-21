@@ -3,28 +3,15 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<input type="text" class="form-control form-control-lg" v-model="query_term"
-						:placeholder="$lang.videos.film_name" @change="changeFilter">
-			</div>
-			<div class="row">
-				<div class="form-group col">
-					<label for="year_from">Year from</label>
-					<input class="form-control" id="year_from" v-model="year_from" @change="changeFilter" placeholder="2010-10-12">
-				</div>
-				<div class="form-group col">
-					<label for="year_to">Year to</label>
-					<input class="form-control" id="year_to" v-model="year_to" @change="changeFilter">
-				</div>
+					   :placeholder="$lang.videos.film_name" @change="changeFilter">
 			</div>
 			<div class="row">
 				<div class="form-group col">
 					<label for="sortBy">{{ $lang.videos.sort_by }}</label>
 					<select class="form-control" id="sortBy" v-model="sort_by" @change="changeFilter">
-						<option value="">Default</option>
-						<option value="popularity">Popularity</option>
-						<option value="revenue">Revenue</option>
-						<option value="primary_release_date">Release date</option>
-						<option value="original_title">Original title</option>
-						<option value="vote_count">Vote count</option>
+						<option value="year">Year</option>
+						<option value="created_at">Created</option>
+						<option value="updated_at">Updated</option>
 					</select>
 				</div>
 				<div class="form-group col">
@@ -35,15 +22,15 @@
 					</select>
 				</div>
 			</div>
-			<div class="form-group" v-if="genres">
-				<label for="genre">{{ $lang.videos.genre }}</label>
-				<select class="form-control" id="genre" v-model="genre" @change="changeFilter">
-					<option value="">Default</option>
-					<option v-for="item in genres" :key="item.id" :value="item.id">{{ item.name }}</option>
-				</select>
-			</div>
+			<!--<div class="form-group" v-if="genres">-->
+				<!--<label for="genre">{{ $lang.videos.genre }}</label>-->
+				<!--<select class="form-control" id="genre" v-model="genre" @change="changeFilter">-->
+					<!--<option value="">Default</option>-->
+					<!--<option v-for="item in genres" :key="item.id" :value="item.name">{{ item.name }}</option>-->
+				<!--</select>-->
+			<!--</div>-->
 		</div>
-		<video-list v-for="video in videos" :key="video.id" :video="video" :user_token="user_token"></video-list>
+		<serials-list v-for="video in videos" :key="video.id" :kodik="video" :imdb_id="video.imdb_id" :video_id="video.id.toString()" :user_token="user_token"></serials-list>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading">
 				<span slot="no-more">
@@ -80,99 +67,77 @@
 				t_video: true,
 				videos: {},
 				loader: true,
-				page: 1,
 				limit: 12,
-				sort_by: "popularity",
+				sort_by: "updated_at",
 				order_by: 'desc',
-				quality: 'All',
-				minimum_rating: 0,
 				query_term: "",
 				genre: "",
-				lang: native_lang,
 				genres: {},
-				year_from: "",
-				year_to: ""
+				kodik_api: "91cda3daa53978fdc025304879980c89",
+				kodik_url: "https://kodikapi.com/",
+				kodik_types: "documentary-serial,russian-serial,foreign-serial,multi-part-film,russian-documentary-serial,russian-cartoon-serial", //,anime-serial, cartoon-serial,
+				kodik_next: ""
 			}
 		},
 
 		watch: {
 			query_term() {
-				this.page = 1;
-				if (this.query_term === "") {
-					this.debouncedGetAllVideos();
-				} else {
-					this.debouncedGetSearchAllVideos();
-				}
-			},
-
-			year_from() {
-				this.page = 1;
-				this.debouncedGetAllVideos();
-			},
-
-			year_to() {
-				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
 			sort_by() {
-				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
 			order_by() {
-				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
 			genre() {
-				this.page = 1;
 				this.debouncedGetAllVideos();
 			}
 		},
 
 		created() {
-			this.debouncedGetAllVideos = _.debounce(this.getAllVideos, 500);
-			this.debouncedGetSearchAllVideos = _.debounce(this.getAllSearchVideos, 500);
+			this.debouncedGetAllVideos = _.debounce(this.getAllVideos, 500)
 		},
 
 		methods: {
 			getAllVideos() {
-				axios.get('https://api.themoviedb.org/3/discover/movie', {
-					params: {
-						api_key: this.api_key,
-						page: this.page,
-						sort_by: this.sort_by + '.' + this.order_by,
-						'primary_release_date.gte': this.year_from,
-						'primary_release_date.lte': this.year_to,
-						with_genres: this.genre,
-						language: this.lang
-					},
-				}).then(response => {
+				if (this.query_term === "") {
+					axios.get(this.kodik_url + 'list', {
+						params: {
+							token: this.kodik_api,
+							limit: this.limit,
+							sort: this.sort_by,
+							order: this.order_by,
+							types: this.kodik_types
+						},
+					}).then(response => {
 						this.videos = response.data.results;
+						this.kodik_next = response.data.next_page;
 						this.loader = false;
 					});
-			},
-
-			getAllSearchVideos() {
-				axios.get('https://api.themoviedb.org/3/search/movie', {
-					params: {
-						api_key: this.api_key,
-						page: this.page,
-						query: this.query_term,
-						language: this.lang
-					},
-				}).then(response => {
-					this.videos = response.data.results;
-					this.loader = false;
-				});
+				} else {
+					axios.get(this.kodik_url + 'search', {
+						params: {
+							token: this.kodik_api,
+							title: this.query_term,
+							limit: this.limit,
+							types: this.kodik_types
+						},
+					}).then(response => {
+						this.videos = response.data.results;
+						this.kodik_next = response.data.next_page;
+						this.loader = false;
+					});
+				}
 			},
 
 			getAllGenres() {
 				axios.get('https://api.themoviedb.org/3/genre/movie/list', {
 					params: {
-						api_key: this.api_key,
-						language: this.lang
+						api_key: this.api_key
 					}
 				}).then(resp => {
 					this.genres = resp.data.genres;
@@ -180,51 +145,23 @@
 			},
 
 			scrollVideos($state) {
-				axios.get('https://api.themoviedb.org/3/discover/movie', {
-					params: {
-						api_key: this.api_key,
-						page: this.page,
-						sort_by: this.sort_by + '.' + this.order_by,
-						'primary_release_date.gte': this.year_from,
-						'primary_release_date.lte': this.year_to,
-						with_genres: this.genre,
-						language: this.lang
-					},
-				}).then(response => {
-					if (response.data.results && response.data.results.length > 0) {
-						this.videos = this.videos.concat(response.data.results);
-						$state.loaded();
-					} else {
-						$state.complete();
-					}
-				});
-			},
-
-			scrollSearchVideos($state) {
-				axios.get('https://api.themoviedb.org/3/search/movie', {
-					params: {
-						api_key: this.api_key,
-						page: this.page,
-						query: this.query_term,
-						language: this.lang
-					},
-				}).then(response => {
-					if (response.data.results && response.data.results.length > 0) {
-						this.videos = this.videos.concat(response.data.results);
-						$state.loaded();
-					} else {
-						$state.complete();
-					}
-				});
+				if (this.kodik_next) {
+					axios.get(this.kodik_next).then(response => {
+						if (response.data.results) {
+							this.videos = this.videos.concat(response.data.results);
+							this.kodik_next = response.data.next_page;
+							$state.loaded();
+						} else {
+							$state.complete();
+						}
+					});
+				} else {
+					$state.complete();
+				}
 			},
 
 			infiniteHandler($state) {
-				this.page++;
-				if (this.query_term === "") {
-					this.scrollVideos($state);
-				} else {
-					this.scrollSearchVideos($state);
-				}
+				this.scrollVideos($state);
 			},
 
 			changeFilter() {
@@ -239,11 +176,8 @@
 				}, 500);
 			}
 		},
-
 		mounted() {
 			this.$lang.setLang(currentLang);
-			this.year_to = new Date();
-			this.year_to = this.year_to.getFullYear() + '-' + (this.year_to.getMonth() + 1) + '-' + this.year_to.getDate();
 			this.getAllVideos();
 			this.getAllGenres();
 			$(window).scroll(function() {

@@ -8,7 +8,7 @@ class Viewed extends Model
 {
 	protected $fillable = [
 		'user_id',
-		'video_id',
+		'video_type',
 		'imdb_id'
 	];
 
@@ -17,9 +17,9 @@ class Viewed extends Model
 		return $this->belongsTo(User::class);
 	}
 
-	public function isViewed($imdb_id, $video_id, $user_id)
+	public function isViewed($imdb_id, $video_type, $user_id)
 	{
-		$isViewed = $this->viewed($imdb_id, $video_id, $user_id)->first();
+		$isViewed = $this->viewed($imdb_id, $video_type, $user_id)->first();
 
 		if ($isViewed) :
 			return true;
@@ -28,13 +28,13 @@ class Viewed extends Model
 		return false;
 	}
 
-	public function findByIds($imdb_id, $video_id, $user_id)
+	public function findByIds($imdb_id, $video_type, $user_id)
 	{
-		return $this->viewed($imdb_id, $video_id, $user_id)->first();
+		return $this->viewed($imdb_id, $video_type, $user_id)->first();
 	}
 
-	public function scopeViewed($query, $imdb_id, $video_id, $user_id)
+	public function scopeViewed($query, $imdb_id, $video_type, $user_id)
 	{
-		$query->where(['imdb_id' => $imdb_id, 'video_id' => $video_id, 'user_id' => $user_id]);
+		$query->where(['imdb_id' => $imdb_id, 'video_type' => $video_type, 'user_id' => $user_id]);
 	}
 }

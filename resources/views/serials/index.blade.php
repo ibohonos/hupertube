@@ -6,7 +6,7 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<span>{{ __('Videos') }}</span>
+						<span>{{ __('Serials') }}</span>
 					</div>
 					<div class="card-body">
 						@if (session('status'))
@@ -15,9 +15,9 @@
 							</div>
 						@endif
 						@if (Auth::user())
-							<videos user_token="{{ Auth::user()->api_token }}"></videos>
+							<serials user_token="{{ Auth::user()->api_token }}"></serials>
 						@else
-							<videos user_token="Null"></videos>
+							<serials user_token="Null"></serials>
 						@endif
 					</div>
 				</div>

@@ -16,7 +16,7 @@ class CreateViewLatersTable extends Migration
 		Schema::create('view_laters', function (Blueprint $table) {
 			$table->increments('id');
 			$table->integer('user_id');
-			$table->integer('video_id');
+			$table->string('video_type');
 			$table->string('imdb_id', 30);
 			$table->timestamps();
 		});

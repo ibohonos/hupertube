@@ -3,28 +3,45 @@
 		<div class="col-md-12">
 			<div class="form-group">
 				<input type="text" class="form-control form-control-lg" v-model="query_term"
-						:placeholder="$lang.videos.film_name" @change="changeFilter">
+					   :placeholder="$lang.videos.film_name" @change="changeFilter">
 			</div>
-			<div class="row">
-				<div class="form-group col">
-					<label for="year_from">Year from</label>
-					<input class="form-control" id="year_from" v-model="year_from" @change="changeFilter" placeholder="2010-10-12">
-				</div>
-				<div class="form-group col">
-					<label for="year_to">Year to</label>
-					<input class="form-control" id="year_to" v-model="year_to" @change="changeFilter">
-				</div>
+			<h3>{{ $lang.videos.quality }}:</h3>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios1" value="All" checked @change="changeFilter">
+				<label class="form-check-label" for="exampleRadios1">
+					{{ $lang.videos.quality_all }}
+				</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios2" value="3D" @change="changeFilter">
+				<label class="form-check-label" for="exampleRadios2">
+					3D
+				</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios3" value="720p" @change="changeFilter">
+				<label class="form-check-label" for="exampleRadios3">
+					720p
+				</label>
+			</div>
+			<div class="form-check form-check-inline">
+				<input class="form-check-input" type="radio" v-model="quality" name="exampleRadios" id="exampleRadios4" value="1080p" @change="changeFilter">
+				<label class="form-check-label" for="exampleRadios4">
+					1080p
+				</label>
 			</div>
 			<div class="row">
 				<div class="form-group col">
 					<label for="sortBy">{{ $lang.videos.sort_by }}</label>
 					<select class="form-control" id="sortBy" v-model="sort_by" @change="changeFilter">
-						<option value="">Default</option>
-						<option value="popularity">Popularity</option>
-						<option value="revenue">Revenue</option>
-						<option value="primary_release_date">Release date</option>
-						<option value="original_title">Original title</option>
-						<option value="vote_count">Vote count</option>
+						<option value="title">Title</option>
+						<option value="year">Year</option>
+						<option value="rating">Rating</option>
+						<option value="peers">Peers</option>
+						<option value="seeds">Seeds</option>
+						<option value="download_count">Download count</option>
+						<option value="like_count">Like count</option>
+						<option value="date_added">Date added</option>
 					</select>
 				</div>
 				<div class="form-group col">
@@ -39,11 +56,11 @@
 				<label for="genre">{{ $lang.videos.genre }}</label>
 				<select class="form-control" id="genre" v-model="genre" @change="changeFilter">
 					<option value="">Default</option>
-					<option v-for="item in genres" :key="item.id" :value="item.id">{{ item.name }}</option>
+					<option v-for="item in genres" :key="item.id" :value="item.name">{{ item.name }}</option>
 				</select>
 			</div>
 		</div>
-		<video-list v-for="video in videos" :key="video.id" :video="video" :user_token="user_token"></video-list>
+		<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_code" :rating="video.rating" :year="video.year" :user_token="user_token"></video-list>
 		<div class="col-md-12">
 			<infinite-loading @infinite="infiniteHandler" spinner="waveDots" ref="infiniteLoading">
 				<span slot="no-more">
@@ -82,35 +99,24 @@
 				loader: true,
 				page: 1,
 				limit: 12,
-				sort_by: "popularity",
+				sort_by: "download_count",
 				order_by: 'desc',
 				quality: 'All',
 				minimum_rating: 0,
 				query_term: "",
 				genre: "",
 				lang: native_lang,
-				genres: {},
-				year_from: "",
-				year_to: ""
+				genres: {}
 			}
 		},
 
 		watch: {
 			query_term() {
 				this.page = 1;
-				if (this.query_term === "") {
-					this.debouncedGetAllVideos();
-				} else {
-					this.debouncedGetSearchAllVideos();
-				}
-			},
-
-			year_from() {
-				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
 
-			year_to() {
+			quality() {
 				this.page = 1;
 				this.debouncedGetAllVideos();
 			},
@@ -133,46 +139,31 @@
 
 		created() {
 			this.debouncedGetAllVideos = _.debounce(this.getAllVideos, 500);
-			this.debouncedGetSearchAllVideos = _.debounce(this.getAllSearchVideos, 500);
 		},
 
 		methods: {
 			getAllVideos() {
-				axios.get('https://api.themoviedb.org/3/discover/movie', {
+				axios.get('https://yts.am/api/v2/list_movies.json', {
 					params: {
-						api_key: this.api_key,
 						page: this.page,
-						sort_by: this.sort_by + '.' + this.order_by,
-						'primary_release_date.gte': this.year_from,
-						'primary_release_date.lte': this.year_to,
-						with_genres: this.genre,
-						language: this.lang
+						limit: this.limit,
+						sort_by: this.sort_by,
+						order_by: this.order_by,
+						quality: this.quality,
+						minimum_rating: this.minimum_rating,
+						query_term: this.query_term,
+						genre: this.genre
 					},
 				}).then(response => {
-						this.videos = response.data.results;
+						this.videos = response.data.data.movies;
 						this.loader = false;
 					});
-			},
-
-			getAllSearchVideos() {
-				axios.get('https://api.themoviedb.org/3/search/movie', {
-					params: {
-						api_key: this.api_key,
-						page: this.page,
-						query: this.query_term,
-						language: this.lang
-					},
-				}).then(response => {
-					this.videos = response.data.results;
-					this.loader = false;
-				});
 			},
 
 			getAllGenres() {
 				axios.get('https://api.themoviedb.org/3/genre/movie/list', {
 					params: {
-						api_key: this.api_key,
-						language: this.lang
+						api_key: this.api_key
 					}
 				}).then(resp => {
 					this.genres = resp.data.genres;
@@ -180,37 +171,20 @@
 			},
 
 			scrollVideos($state) {
-				axios.get('https://api.themoviedb.org/3/discover/movie', {
+				axios.get('https://yts.am/api/v2/list_movies.json', {
 					params: {
-						api_key: this.api_key,
 						page: this.page,
-						sort_by: this.sort_by + '.' + this.order_by,
-						'primary_release_date.gte': this.year_from,
-						'primary_release_date.lte': this.year_to,
-						with_genres: this.genre,
-						language: this.lang
+						limit: this.limit,
+						sort_by: this.sort_by,
+						order_by: this.order_by,
+						quality: this.quality,
+						minimum_rating: this.minimum_rating,
+						query_term: this.query_term,
+						genre: this.genre
 					},
 				}).then(response => {
-					if (response.data.results && response.data.results.length > 0) {
-						this.videos = this.videos.concat(response.data.results);
-						$state.loaded();
-					} else {
-						$state.complete();
-					}
-				});
-			},
-
-			scrollSearchVideos($state) {
-				axios.get('https://api.themoviedb.org/3/search/movie', {
-					params: {
-						api_key: this.api_key,
-						page: this.page,
-						query: this.query_term,
-						language: this.lang
-					},
-				}).then(response => {
-					if (response.data.results && response.data.results.length > 0) {
-						this.videos = this.videos.concat(response.data.results);
+					if (response.data.data.movie_count > 0 && response.data.data.movies && response.data.data.movies.length > 0) {
+						this.videos = this.videos.concat(response.data.data.movies);
 						$state.loaded();
 					} else {
 						$state.complete();
@@ -220,11 +194,7 @@
 
 			infiniteHandler($state) {
 				this.page++;
-				if (this.query_term === "") {
-					this.scrollVideos($state);
-				} else {
-					this.scrollSearchVideos($state);
-				}
+				this.scrollVideos($state);
 			},
 
 			changeFilter() {
@@ -233,17 +203,26 @@
 				});
 			},
 
+			testVideo(imdb_id) {
+				axios.get('https://api.themoviedb.org/3/movie/' + imdb_id, {
+					params: {
+						api_key: this.api_key,
+					},
+				}).then(resp => {
+					return true;
+				}).catch(err => {
+					return false;
+				})
+			},
+
 			scrollToTop() {
 				$('body,html').animate({
 					scrollTop : 0				// Scroll to top of body
 				}, 500);
 			}
 		},
-
 		mounted() {
 			this.$lang.setLang(currentLang);
-			this.year_to = new Date();
-			this.year_to = this.year_to.getFullYear() + '-' + (this.year_to.getMonth() + 1) + '-' + this.year_to.getDate();
 			this.getAllVideos();
 			this.getAllGenres();
 			$(window).scroll(function() {

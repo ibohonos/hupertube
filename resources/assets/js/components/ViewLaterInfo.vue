@@ -19,7 +19,7 @@
 <script>
 	export default {
 		props: {
-			video_id: {
+			video_type: {
 				type: String,
 				required: true
 			},
@@ -47,8 +47,8 @@
 				axios.get('/api/v2/is-view-later', {
 					params: {
 						api_token: this.user_token,
-						imdb_id: this.imdb_id,
-						video_id: this.video_id
+						imdb_id: this.$curToLat.transform(this.imdb_id, '_'),
+						video_type: this.video_type
 					},
 				}).then(resp => {
 					if (resp.data.data) {
@@ -62,8 +62,8 @@
 			    e.preventDefault();
 				axios.post('/api/v2/view-later', {
 					api_token: this.user_token,
-					imdb_id: this.imdb_id,
-					video_id: this.video_id
+					imdb_id: this.$curToLat.transform(this.imdb_id, '_'),
+					video_type: this.video_type
 				}).then(resp => {
 					if (resp.data.success) {
 						this.is_view = !this.is_view;

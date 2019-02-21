@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="regional-name" content="{{ LaravelLocalization::getCurrentLocaleRegional() }}">
+	<meta name="regional-name" content="{{ str_replace('_', '-', LaravelLocalization::getCurrentLocaleRegional()) }}">
 	<meta name="lang" content="{{ app()->getLocale() }}">
 
 	<!-- CSRF Token -->
@@ -17,8 +17,7 @@
 
 	<!-- Fonts -->
 	<link rel="dns-prefetch" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css?family=Raleway:300,400,600" rel="stylesheet" type="text/css">
-	{{--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">--}}
+	<link href="https://fonts.googleapis.com/css?family=Pangolin:300,400,600" rel="stylesheet" type="text/css">
 
 	<!-- Styles -->
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -28,13 +27,22 @@
 		<nav class="navbar navbar-expand-md navbar-light navbar-laravel">
 			<div class="container">
 				<a class="navbar-brand" href="{{ url('/') }}">
-					{{ config('app.name', 'Laravel') }}
+					<img src="/images/vuetube_logo.png" style="width: 145px;">
+{{--					{{ config('app.name', 'Laravel') }}--}}
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
 					<span class="navbar-toggler-icon"></span>
 				</button>
 
 				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item active">
+							<a class="nav-link" href="{{ route('index') }}">{{ __('Movies') }}</a>
+						</li>
+						<li class="nav-item active">
+							<a class="nav-link" href="{{ route('serials') }}">{{ __('Serials') }}</a>
+						</li>
+					</ul>
 					<!-- Right Side Of Navbar -->
 					<ul class="navbar-nav ml-auto">
 						<!-- Authentication Links -->
@@ -100,15 +108,15 @@
 				</div>
 			</div>
 		</nav>
-		@guest
-			<main class="py-4">
-				@yield('content')
-			</main>
-		@else
+		{{--@guest--}}
+			{{--<main class="py-4">--}}
+				{{--@yield('content')--}}
+			{{--</main>--}}
+		{{--@else--}}
 			<main class="py-4-cover">
 				@yield('content')
 			</main>
-		@endguest
+		{{--@endguest--}}
 	</div>
 </body>
 </html>

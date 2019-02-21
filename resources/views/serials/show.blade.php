@@ -7,9 +7,9 @@
 				<div class="card">
 					<div class="card-body">
 						@if (Auth::user())
-							<video-details imdb_id="{{ $video['imdb_id'] }}" user_token="{{ Auth::user()->api_token }}"></video-details>
+							<serial-details imdb_id="{{ $video['imdb_id'] }}" user_token="{{ Auth::user()->api_token }}"></serial-details>
 						@else
-							<video-details imdb_id="{{ $video['imdb_id'] }}" user_token="Null"></video-details>
+							<serial-details imdb_id="{{ $video['imdb_id'] }}" user_token="Null"></serial-details>
 						@endif
 					</div>
 				</div>

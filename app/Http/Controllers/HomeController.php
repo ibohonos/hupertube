@@ -20,11 +20,16 @@ class HomeController extends Controller
 	 */
 	public function index()
 	{
-		if (Auth::user()) :
+//		if (Auth::user()) :
 			return view('videos.index');
-		else :
-			return view('home');
-		endif;
+//		else :
+//			return view('home');
+//		endif;
+	}
+
+	public function serials()
+	{
+		return view('serials.index');
 	}
 
 	/**

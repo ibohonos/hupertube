@@ -20,7 +20,7 @@
 <script>
 	export default {
 		props: {
-			video_id: {
+			video_type: {
 				type: String,
 				required: true
 			},
@@ -49,7 +49,7 @@
 					params: {
 						api_token: this.user_token,
 						imdb_id: this.imdb_id,
-						video_id: this.video_id
+						video_type: this.video_type
 					},
 				}).then(resp => {
 					if (resp.data.data) {
@@ -64,7 +64,7 @@
 				axios.post('/api/v2/viewed', {
 					api_token: this.user_token,
 					imdb_id: this.imdb_id,
-					video_id: this.video_id
+					video_type: this.video_type
 				}).then(resp => {
 					if (resp.data.success) {
 						this.is_viewed = !this.is_viewed;

@@ -31,6 +31,8 @@
 										@if(Auth::id() === $user->id)
 											<li>Email: {{ $user->email }}</li>
 										@endif
+										<li>Registered: {{ \Carbon\Carbon::parse($user->created_at)->format("d.m.Y H:i") }}</li>
+										{{--<li>Activated: @if($user->active) True @else False @endif</li>--}}
 									</ul>
 								</fieldset>
 							</div>

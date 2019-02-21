@@ -19,11 +19,6 @@ Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function ()
 		return $request->user();
 	})->name('user');
 
-	Route::get('/comments/{imdb_id}', [
-		'uses' => 'VideosController@allComments',
-		'as' => 'comments.all'
-	]);
-
 	Route::get('/comment/user/{id}', [
 		'uses' => 'VideosController@getCommentUser',
 		'as' => 'comments.all'
@@ -50,4 +45,8 @@ Route::prefix('v1')->namespace('API')->group(function () {
 	Route::post('/insert-to-db', 'VideosController@insertToDB');
 	Route::post('/get-video-info', 'VideosController@getVideoInfo');
 	Route::post('/set-downloaded', 'VideosController@setDownloaded');
+	Route::get('/comments/{imdb_id}', [
+		'uses' => 'VideosController@allComments',
+		'as' => 'comments.all'
+	]);
 });

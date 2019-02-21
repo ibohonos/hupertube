@@ -12,7 +12,7 @@ class UserController extends APIController
 	{
 		$viewed = new Viewed;
 
-		$test = $viewed->isViewed($request->imdb_id, $request->video_id, $request->user()->id);
+		$test = $viewed->isViewed($request->imdb_id, $request->video_type, $request->user()->id);
 
 		return $this->sendResponse($test, 'OK');
 	}
@@ -21,7 +21,7 @@ class UserController extends APIController
 	{
 		$view = new ViewLater;
 
-		$test = $view->isViewLater($request->imdb_id, $request->video_id, $request->user()->id);
+		$test = $view->isViewLater($request->imdb_id, $request->video_type, $request->user()->id);
 
 		return $this->sendResponse($test, 'OK');
 	}
@@ -30,18 +30,18 @@ class UserController extends APIController
 	{
 		$viewed = new Viewed;
 		$imdb_id = $request->imdb_id;
-		$video_id = $request->video_id;
+		$video_type = $request->video_type;
 		$user_id = $request->user()->id;
-		$isViewed = $viewed->isViewed($imdb_id, $video_id, $user_id);
+		$isViewed = $viewed->isViewed($imdb_id, $video_type, $user_id);
 
 		if (!$isViewed) :
 			$viewed->imdb_id = $imdb_id;
-			$viewed->video_id = $video_id;
+			$viewed->video_type = $video_type;
 			$viewed->user_id = $user_id;
 
 			$viewed->save();
 		else :
-			$viewed = $viewed->findByIds($imdb_id, $video_id, $user_id);
+			$viewed = $viewed->findByIds($imdb_id, $video_type, $user_id);
 			$viewed->truncate();
 
 			return $this->sendResponse("Deleted!", "OK");
@@ -55,18 +55,18 @@ class UserController extends APIController
 		$view = new ViewLater;
 
 		$imdb_id = $request->imdb_id;
-		$video_id = $request->video_id;
+		$video_type = $request->video_type;
 		$user_id = $request->user()->id;
-		$isViewed = $view->isViewLater($imdb_id, $video_id, $user_id);
+		$isViewed = $view->isViewLater($imdb_id, $video_type, $user_id);
 
 		if (!$isViewed) :
 			$view->imdb_id = $imdb_id;
-			$view->video_id = $video_id;
+			$view->video_type = $video_type;
 			$view->user_id = $user_id;
 
 			$view->save();
 		else :
-			$view = $view->findByIds($imdb_id, $video_id, $user_id);
+			$view = $view->findByIds($imdb_id, $video_type, $user_id);
 			$view->delete();
 
 			return $this->sendResponse("Deleted!", "OK");

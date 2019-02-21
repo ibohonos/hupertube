@@ -14,11 +14,18 @@ class VideosController extends Controller
 		return view('videos.index');
 	}
 
-	public function show($id, $video_id)
+	public function show($id)
 	{
-		$this->data['video'] = ['imdb_id' => $id, 'id' => $video_id];
+		$this->data['video'] = ['imdb_id' => $id];
 
 		return view('videos.show', $this->data);
+	}
+
+	public function showSerial($id)
+	{
+		$this->data['video'] = ['imdb_id' => $id];
+
+		return view('serials.show', $this->data);
 	}
 
 	public function fileShow($movies, $imdb_id, $path, $file)

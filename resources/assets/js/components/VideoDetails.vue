@@ -1,34 +1,33 @@
 <template>
 	<div class="row film-details" v-if="video">
 		<div class="col-12">
-			<div class="overlay" v-if="video.backdrop_path">
-				<img class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
+			<div class="overlay">
+				<img v-if="video.backdrop_path" class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
+				<img v-else class="background-img" src="https://www.tpv.com/wp-content/uploads/2016/02/salestpv-video-header-poster.jpg" width="100%">
 			</div>
 			<div class="row film-desc">
 				<div class="col-md-12">
 					<div class="row">
-						<div class="col-md-4" v-if="video.poster_path">
-							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
-							<div class="film-icons-info">
-								<viewed :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></viewed>
-								<view-later :video_id="video_id" :imdb_id="imdb_id" :user_token="user_token"></view-later>
+						<div class="col-md-4">
+							<img v-if="video.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
+							<img v-else src="http://oldquarteracousticcafe.com/wp-content/uploads/2018/07/Copy-of-Event-Flyer-TEmplate-Made-with-PosterMyWall-44.jpg" width="100%">
+							<div class="film-icons-info" v-if="user_token !== 'Null'">
+								<viewed video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></viewed>
+								<view-later video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></view-later>
 							</div>
-						</div>
-						<div class="col-md-4" v-else>
-							<div class="loader mx-auto"></div>
 						</div>
 						<div class="col-md-8">
 							<h1 class="text-center">{{ video.title }}</h1>
 							<p class="desc" v-if="video.overview">{{ video.overview }}</p>
 							<p v-else>{{ video_en.overview }}</p>
 							<ul>
+								<li v-if="kodik_resp && kodik_resp[0]">
+									<h3>{{ $lang.videos.quality }}:</h3>
+									<span>{{ kodik_resp[0].quality }}</span>
+								</li>
 								<li>
 									<h3>{{ $lang.video_details.rating }}:</h3>
-									<span class="imdbRatingPlugin" data-user="ur91229543" :data-title="'' + imdb_id" data-style="p4">
-										<a :href="'https://www.imdb.com/title/' + imdb_id + '/?ref_=plg_rt_1'" target="_blank">
-											<img src="https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/images/imdb_37x18.png" alt="video.title" />
-										</a>
-									</span>
+									<span>{{ video.vote_average }}/10</span>
 								</li>
 								<li>
 									<h3>{{ $lang.video_details.release }}:</h3>
@@ -41,6 +40,14 @@
 								<li>
 									<h3>{{ $lang.video_details.genres }}:</h3>
 									<span v-for="janr in video.genres">{{ janr.name }} </span>
+								</li>
+								<!--<li v-if="video.production_companies">-->
+									<!--<h3>{{ $lang.video_details.companies }}:</h3>-->
+									<!--<span v-for="company in video.production_companies">{{ company.name }}, </span>-->
+								<!--</li>-->
+								<li v-if="video.production_countries">
+									<h3>{{ $lang.video_details.countries }}:</h3>
+									<span v-for="company in video.production_countries">{{ company.name }}, </span>
 								</li>
 							</ul>
 						</div>
@@ -55,7 +62,8 @@
 				<div class="col-md-2" v-for="(actor, index) in credits.cast" v-if="index < 6">
 					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
 					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
-					<p>{{ actor.name }}</p>
+					<h5>{{ actor.name }}</h5>
+					<h6>{{ actor.character }}</h6>
 				</div>
 			</div>
 			<div class="row film-extra">
@@ -65,8 +73,8 @@
 				<div class="col-md-2" v-for="(cast, index) in credits.crew" v-if="index < 6">
 					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
 					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
-					<h5>{{ cast.job }}</h5>
-					<p>{{ cast.name }}</p>
+					<h5>{{ cast.name }}</h5>
+					<h6>{{ cast.job }}</h6>
 				</div>
 			</div>
 			<div class="row film-watch">
@@ -86,18 +94,7 @@
 
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 								<div class="card-body">
-									<h4>{{ $lang.video_details.quality }}:</h4>
-									<button v-for="(torrent, index) in torrents" @click="send_file(torrent.url, torrent.quality)" class="btn btn-info torrent_quality" v-if="index < 3 && show_btn">{{ torrent.quality }}</button>
-									<div class="loader mx-auto" v-if="!show_btn && !video_link"></div>
-										<div v-if="video_link">
-											<vue-plyr v-if="!video_preloader">
-											<video crossorigin="anonymous" :src="'/play/videos' + video_link">
-												<track v-if="subtitle.code === short_lang" v-for="subtitle in subtitles" kind="subtitles" :label="subtitle.title" :srclang="subtitle.code" :src="'/movies/' + imdb_id + '/' + subtitle.code + '.vtt'" default>
-												<track v-else kind="subtitles" :label="subtitle.title" :srclang="subtitle.code" :src="'/movies/' + imdb_id + '/' + subtitle.code + '.vtt'">
-											</video>
-										</vue-plyr>
-										<div class="loader mx-auto" v-else></div>
-									</div>
+									<iframe v-if="kodik_resp && kodik_resp[0]" :src="kodik_resp[0].link" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
 								</div>
 							</div>
 						</div>
@@ -135,6 +132,7 @@
 		</div>
 
 
+		<a href="javascript:" id="return-to-top" @click="scrollToTop"><i class="fa fa-arrow-up"></i></a>
 
 
 	</div>
@@ -142,25 +140,9 @@
 
 
 <script>
-	import 'vue-plyr';
-	import 'vue-plyr/dist/vue-plyr.css';
-
-	(function(d, s, id) {
-		let js, stags = d.getElementsByTagName(s)[0];
-		if (d.getElementById(id)) {return;}
-		js = d.createElement(s);
-		js.id = id;
-		js.src = "https://ia.media-imdb.com/images/G/01/imdb/plugins/rating/js/rating.js";
-		stags.parentNode.insertBefore(js,stags);
-	})(document, "script", "imdb-rating-api");
-
 	export default {
 		props: {
 			imdb_id: {
-				type: String,
-				required: true
-			},
-			video_id: {
 				type: String,
 				required: true
 			},
@@ -179,14 +161,11 @@
 				trailers: {},
 				tr_length: '',
 				credits: {},
-				torrents: {},
 				lang: native_lang,
 				short_lang: short_lang,
-				server_link: "http://localhost:3000",
-				video_link: "",
-				subtitles: {},
-				show_btn: true,
-				video_preloader: true
+				kodik_api: "91cda3daa53978fdc025304879980c89",
+				kodik_url: "https://kodikapi.com/",
+				kodik_resp: {}
 			}
 		},
 
@@ -198,74 +177,104 @@
 						language: this.lang,
 					},
 				}).then(resp => {
-						this.trailers = resp.data;
-						this.tr_length = this.trailers.results.length;
-					});
+					this.trailers = resp.data;
+					this.tr_length = this.trailers.results.length;
+				});
 			},
 			getVideoInfo() {
 				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
 					params: {
 						api_key: this.api_key,
 						language: this.lang,
+						append_to_response: 'videos,credits'
 					},
 				}).then(response => {
-						this.video = response.data;
-						if (!this.video.overview) {
-							this.getVideoEnInfo();
-						}
-					});
+					this.video = response.data;
+					this.trailers = response.data.videos;
+					this.tr_length = this.trailers.results.length;
+					this.credits = response.data.credits;
+					this.getVideoPlayer();
+				});
 			},
-			getVideoEnInfo() {
+			getVideoEnInfo(total) {
 				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
 					params: {
 						api_key: this.api_key,
-						language: 'en_US',
+						language: 'en-US',
 					},
 				}).then(response => {
-						this.video_en = response.data;
-					});
-			},
-			getAllVideoDetails() {
-				axios.get('https://yts.am/api/v2/movie_details.json', {
-					params: {
-						movie_id: this.video_id,
-					},
-				})
-					.then(resp => {
-						this.torrents = resp.data.data.movie.torrents;
-					});
-			},
-			getVideoCredits() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/credits', {
-					params: {
-						api_key: this.api_key,
-						language: this.lang,
-					},
-				}).then(resp => {
-						this.credits = resp.data;
-					});
+					this.video_en = response.data;
+					if (total === 0) {
+						this.getVideoPlayerTitle(this.video_en.title);
+					}
+				});
 			},
 
-			send_file(url, quality) {
-				this.show_btn = false;
-				this.video_preloader = true;
-				axios.post(this.server_link + '/movie/' + this.imdb_id + '/' + quality, {
-					torrent_link: url,
+			getVideoPlayer() {
+				if (this.video.imdb_id) {
+					axios.get(this.kodik_url + 'search', {
+						params: {
+							token: this.kodik_api,
+							imdb_id: this.video.imdb_id,
+						},
+					}).then(resp => {
+						this.kodik_resp = resp.data.results;
+						if (!this.video.overview) {
+							this.getVideoEnInfo(resp.data.total);
+						} else {
+							if (resp.data.total === 0) {
+								if (this.short_lang === "ru") {
+									this.getVideoPlayerTitle(this.video.title);
+								} else {
+									this.getVideoPlayerTitle(this.video.original_title);
+								}
+							}
+						}
+					});
+				} else {
+					if (!this.video.overview) {
+						this.getVideoEnInfo(0);
+					} else {
+						if (this.short_lang === "ru") {
+							this.getVideoPlayerTitle(this.video.title);
+						} else {
+							this.getVideoPlayerTitle(this.video.original_title);
+						}
+					}
+				}
+			},
+
+			getVideoPlayerTitle(title) {
+				console.log(title);
+				axios.get(this.kodik_url + 'search', {
+					params: {
+						token: this.kodik_api,
+						title: title,
+						strict: true
+					},
 				}).then(resp => {
-					this.subtitles = resp.data.subtitles;
-					this.video_link = resp.data.src;
-					this.video_preloader = false;
-					this.show_btn = true;
+					console.log(title);
+					this.kodik_resp = resp.data.results;
 				});
+			},
+
+			scrollToTop() {
+				$('body,html').animate({
+					scrollTop : 0				// Scroll to top of body
+				}, 500);
 			}
 		},
 
 		mounted() {
 			this.$lang.setLang(currentLang);
 			this.getVideoInfo();
-			this.getVideoTrailers();
-			this.getAllVideoDetails();
-			this.getVideoCredits();
+			$(window).scroll(function() {
+				if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
+					$('#return-to-top').fadeIn(200);    // Fade in the arrow
+				} else {
+					$('#return-to-top').fadeOut(200);   // Else fade out the arrow
+				}
+			});
 		},
 	}
 </script>
@@ -289,5 +298,46 @@
 
 	.torrent_quality {
 		margin: 0 5px 0 0;
+	}
+
+	#return-to-top {
+		position: fixed;
+		bottom: 20px;
+		right: 20px;
+		background: rgb(0, 0, 0);
+		background: rgba(0, 0, 0, 0.7);
+		width: 50px;
+		height: 50px;
+		display: block;
+		text-decoration: none;
+		-webkit-border-radius: 35px;
+		-moz-border-radius: 35px;
+		border-radius: 35px;
+		display: none;
+		-webkit-transition: all 0.3s linear;
+		-moz-transition: all 0.3s ease;
+		-ms-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+	}
+	#return-to-top i {
+		color: #fff;
+		margin: 0;
+		position: relative;
+		left: 16px;
+		top: 13px;
+		font-size: 19px;
+		-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+		-ms-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+	}
+	#return-to-top:hover {
+		background: rgba(0, 0, 0, 0.9);
+	}
+	#return-to-top:hover i {
+		color: #fff;
+		top: 5px;
 	}
 </style>
