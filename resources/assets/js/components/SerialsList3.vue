@@ -8,8 +8,8 @@
 						<p class="year" v-if="video.first_air_date">{{ video.first_air_date }}</p>
 						<h2>{{ video.name }}</h2>
 						<div class="film-icons-info" v-if="user_token !== 'Null'">
-							<viewed video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></viewed>
-							<view-later video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></view-later>
+							<viewed video_type="serials" :imdb_id="'' + video.id" :user_token="user_token"></viewed>
+							<view-later video_type="serials" :imdb_id="'' + video.id" :user_token="user_token"></view-later>
 						</div>
 					</div>
 					<img v-if="video.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
@@ -24,7 +24,7 @@
 	export default {
 		props: {
 			imdb_id: {
-				type: Integer,
+				type: String,
 				required: true
 			},
 

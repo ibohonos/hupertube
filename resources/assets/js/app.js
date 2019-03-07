@@ -12,7 +12,7 @@ window.Vue = require('vue');
 window.Lang = require('vuejs-localization');
 window.CyrToLat = require('./plugins/CyrToLat/cyr-to-lat');
 window.currentLang = document.head.querySelector('meta[name="lang"]').content;
-window.DatePicker = require('vue-date');
+//window.DatePicker = require('vue-date');
 import VueCarousel from 'vue-carousel';
 // import DatePicker from 'vue-md-date-picker';
 // require('./plugins/pickadate/lib/');
@@ -34,6 +34,7 @@ Vue.component('comments', require('./components/Comments.vue'));
 Vue.component('viewed', require('./components/ViewedInfo.vue'));
 Vue.component('view-later', require('./components/ViewLaterInfo.vue'));
 Vue.component('video-list', require('./components/VideoList.vue'));
+Vue.component('video-list2', require('./components/VideoList2.vue'));
 Vue.component('serials-list', require('./components/SerialsList.vue'));
 Vue.component('serials-list2', require('./components/SerialsList3.vue'));
 Vue.component('all-view-later', require('./components/ViewLaterList.vue'));
@@ -50,7 +51,7 @@ Lang.requireAll(require.context('./lang', true, /\.js$/));
 Vue.use(Lang);
 Vue.use(CyrToLat, {preset: 'uk'});
 
-Vue.use(DatePicker);
+// Vue.use(DatePicker);
 
 Vue.use(VueCarousel);
 // Vue.component('date-picker', require('./../../../node_modules/vue-pick-a-date/src/DatePicker.vue'));
