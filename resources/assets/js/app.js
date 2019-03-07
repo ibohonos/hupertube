@@ -12,6 +12,12 @@ window.Vue = require('vue');
 window.Lang = require('vuejs-localization');
 window.CyrToLat = require('./plugins/CyrToLat/cyr-to-lat');
 window.currentLang = document.head.querySelector('meta[name="lang"]').content;
+window.DatePicker = require('vue-date');
+import VueCarousel from 'vue-carousel';
+// import DatePicker from 'vue-md-date-picker';
+// require('./plugins/pickadate/lib/');
+// require('./plugins/pickadate/lib/picker');
+// require('./plugins/pickadate/lib/picker.date');
 
 // import CyrillicToTranslit = require(".");
 
@@ -35,12 +41,20 @@ Vue.component('serials', require('./components/Serials.vue'));
 Vue.component('test-api', require('./components/TestAPI.vue'));
 Vue.component('video-details', require('./components/VideoDetails.vue'));
 Vue.component('serial-details', require('./components/SerialDetails.vue'));
+Vue.component('persone-details', require('./components/PersoneDetails.vue'));
 Vue.component('avatar-crope', require('./components/AvatarCrope.vue'));
 
 
 Lang.requireAll(require.context('./lang', true, /\.js$/));
 Vue.use(Lang);
 Vue.use(CyrToLat, {preset: 'uk'});
+
+Vue.use(DatePicker);
+
+Vue.use(VueCarousel);
+// Vue.component('date-picker', require('./../../../node_modules/vue-pick-a-date/src/DatePicker.vue'));
+
+// Vue.use(DatePicker);
 
 // window.VuePlyr = require('vue-plyr');
 // import VuePlyr from 'vue-plyr';

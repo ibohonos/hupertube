@@ -65,6 +65,11 @@ Route::group([
 		'as' => 'serials.show'
 	]);
 
+	Route::get('/persone/{id}', [
+		'uses' => 'VideosController@showPersone',
+		'as' => 'persone.show'
+	]);
+
 	Route::middleware('auth')->group(function () {
 		Route::get('/user/{id}', [
 			'uses' => 'ProfileController@userProfile',

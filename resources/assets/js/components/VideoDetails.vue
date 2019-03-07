@@ -59,23 +59,31 @@
 				<div class="col-md-12">
 					<h1 class="text-center">{{ $lang.video_details.actors }}</h1>
 				</div>
-				<div class="col-md-2" v-for="(actor, index) in credits.cast" v-if="index < 6">
-					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
-					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
-					<h5>{{ actor.name }}</h5>
-					<h6>{{ actor.character }}</h6>
-				</div>
+				<carousel :navigationEnabled="true" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
+					<slide v-for="(actor, index) in credits.cast" :key="index">
+						<a :href="'/persone/' + actor.id">
+							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
+							<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
+							<h5>{{ actor.name }}</h5>
+							<h6>{{ actor.character }}</h6>
+						</a>
+					</slide>
+				</carousel>
 			</div>
 			<div class="row film-extra">
 				<div class="col-md-12">
 					<h1 class="text-center">{{ $lang.video_details.cast }}</h1>
 				</div>
-				<div class="col-md-2" v-for="(cast, index) in credits.crew" v-if="index < 6">
-					<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
-					<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
-					<h5>{{ cast.name }}</h5>
-					<h6>{{ cast.job }}</h6>
-				</div>
+				<carousel :navigationEnabled="true" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
+					<slide v-for="(cast, index) in credits.crew" :key="index">
+						<a :href="'/persone/' + cast.id">
+							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
+							<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
+							<h5>{{ cast.name }}</h5>
+							<h6>{{ cast.job }}</h6>
+						</a>
+					</slide>
+				</carousel>
 			</div>
 			<div class="row film-watch">
 				<div class="col-md-12">
@@ -165,7 +173,8 @@
 				short_lang: short_lang,
 				kodik_api: "91cda3daa53978fdc025304879980c89",
 				kodik_url: "https://kodikapi.com/",
-				kodik_resp: {}
+				kodik_resp: {},
+				kodik_types: 'foreign-movie, foreign-cartoon, anime'
 			}
 		},
 
@@ -216,6 +225,7 @@
 						params: {
 							token: this.kodik_api,
 							imdb_id: this.video.imdb_id,
+							types: this.kodik_types
 						},
 					}).then(resp => {
 						this.kodik_resp = resp.data.results;
@@ -250,7 +260,8 @@
 					params: {
 						token: this.kodik_api,
 						title: title,
-						strict: true
+						strict: true,
+						types: this.kodik_types
 					},
 				}).then(resp => {
 					console.log(title);

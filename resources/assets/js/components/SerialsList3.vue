@@ -1,5 +1,5 @@
 <template>
-	<div class="col-md-4">
+	<div class="col-md-4" v-if="!loader">
 		<figure class="film-plate">
 			<a :href="'/serial/' + video.id">
 				<div class="overlay">
@@ -23,8 +23,8 @@
 <script>
 	export default {
 		props: {
-			video: {
-				type: Object,
+			imdb_id: {
+				type: Integer,
 				required: true
 			},
 
@@ -32,6 +32,33 @@
 				type: String,
 				required: true
 			}
+		},
+
+		data() {
+			return {
+				video: {},
+				api_key: 'e4649c026a8d8a3c93ed840286816339',
+				loader: true,
+				lang: native_lang,
+			}
+		},
+
+		methods: {
+			getVideoInfo() {
+				axios.get('https://api.themoviedb.org/3/tv/' + this.imdb_id, {
+					params: {
+						api_key: this.api_key,
+						language: this.lang
+					},
+				}).then(response => {
+					this.video = response.data;
+					this.loader = false;
+				});
+			},
+		},
+
+		mounted() {
+			this.getVideoInfo();
 		}
 	}
 </script>

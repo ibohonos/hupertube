@@ -140,6 +140,10 @@ a[href^="/user"] {
   }
 }
 
+.VueCarousel-slide {
+  padding: 0 10px;
+}
+
 
 @media screen and (max-width: 991px) {
   .film-desc {
