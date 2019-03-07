@@ -56,7 +56,7 @@
 					<h1 class="text-center">{{ $lang.video_details.actors }}</h1>
 				</div>
 				<carousel :navigationEnabled="true" :scrollPerPage="false" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
-					<slide v-for="(actor, index) in credits.cast" :key="actor.id">
+					<slide v-for="actor in credits.cast" :key="actor.id">
 						<a :href="'/persone/' + actor.id">
 							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
 							<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>
@@ -71,7 +71,7 @@
 					<h1 class="text-center">{{ $lang.video_details.cast }}</h1>
 				</div>
 				<carousel :navigationEnabled="true" :scrollPerPage="false" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
-					<slide v-for="(cast, index) in credits.crew" :key="cast.id" style="padding: 0 5px;">
+					<slide v-for="cast in credits.crew" :key="cast.id" style="padding: 0 5px;">
 						<a :href="'/persone/' + cast.id">
 							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
 							<img src="/storage/avatars/default_actors.jpg" width="100%" v-else>

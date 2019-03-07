@@ -35,6 +35,7 @@ Vue.component('viewed', require('./components/ViewedInfo.vue'));
 Vue.component('view-later', require('./components/ViewLaterInfo.vue'));
 Vue.component('video-list', require('./components/VideoList.vue'));
 Vue.component('serials-list', require('./components/SerialsList.vue'));
+Vue.component('serials-list2', require('./components/SerialsList3.vue'));
 Vue.component('all-view-later', require('./components/ViewLaterList.vue'));
 Vue.component('videos', require('./components/Videos.vue'));
 Vue.component('serials', require('./components/Serials.vue'));

@@ -1,7 +1,7 @@
 <template>
 	<div v-if="!loader">
 		<div class="row">
-			<serials-list v-for="serial in serials" :key="serial.id" :imdb_id="serial.imdb_id" :user_token="user_token"></serials-list>
+			<serials-list2 v-for="serial in serials" :key="serial.id" :imdb_id="serial.imdb_id" :user_token="user_token"></serials-list2>
 			<video-list v-for="video in videos" :key="video.id" :imdb_id="video.imdb_id" :user_token="user_token"></video-list>
 		</div>
 		<a href="javascript:" id="return-to-top" @click="scrollToTop"><i class="fa fa-arrow-up"></i></a>
