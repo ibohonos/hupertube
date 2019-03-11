@@ -127,6 +127,58 @@
 					</div>
 				</div>
 			</div>
+			<div class="row" v-if="similar && similar[0]">
+				<div class="col-md-12">
+					<h1 class="text-center">Подібні</h1>
+				</div>
+				<carousel :navigationEnabled="true" :perPageCustom="[[480, 2], [768, 3]]" class="col-md-12">
+					<slide v-for="(sim, index) in similar" :key="index">
+						<figure class="film-plate">
+							<a :href="'/serial/' + sim.id">
+								<div class="overlay">
+									<div class="additional-info">
+										<p class="rating" v-if="sim.vote_average">{{ sim.vote_average }}/10</p>
+										<p class="year" v-if="sim.first_air_date">{{ sim.first_air_date }}</p>
+										<h2>{{ sim.name }}</h2>
+										<div class="film-icons-info" v-if="user_token !== 'Null'">
+											<viewed video_type="serials" :imdb_id="'' + sim.id" :user_token="user_token"></viewed>
+											<view-later video_type="serials" :imdb_id="'' + sim.id" :user_token="user_token"></view-later>
+										</div>
+									</div>
+									<img v-if="sim.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + sim.poster_path" width="100%">
+									<img v-else src="http://oldquarteracousticcafe.com/wp-content/uploads/2018/07/Copy-of-Event-Flyer-TEmplate-Made-with-PosterMyWall-44.jpg" width="100%">
+								</div>
+							</a>
+						</figure>
+					</slide>
+				</carousel>
+			</div>
+			<div class="row" v-if="recommendations && recommendations[0]">
+				<div class="col-md-12">
+					<h1 class="text-center">Рекомендації</h1>
+				</div>
+				<carousel :navigationEnabled="true" :perPageCustom="[[480, 2], [768, 3]]" class="col-md-12">
+					<slide v-for="(sim, index) in recommendations" :key="index">
+						<figure class="film-plate">
+							<a :href="'/serial/' + sim.id">
+								<div class="overlay">
+									<div class="additional-info">
+										<p class="rating" v-if="sim.vote_average">{{ sim.vote_average }}/10</p>
+										<p class="year" v-if="sim.first_air_date">{{ sim.first_air_date }}</p>
+										<h2>{{ sim.name }}</h2>
+										<div class="film-icons-info" v-if="user_token !== 'Null'">
+											<viewed video_type="serials" :imdb_id="'' + sim.id" :user_token="user_token"></viewed>
+											<view-later video_type="serials" :imdb_id="'' + sim.id" :user_token="user_token"></view-later>
+										</div>
+									</div>
+									<img v-if="sim.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + sim.poster_path" width="100%">
+									<img v-else src="http://oldquarteracousticcafe.com/wp-content/uploads/2018/07/Copy-of-Event-Flyer-TEmplate-Made-with-PosterMyWall-44.jpg" width="100%">
+								</div>
+							</a>
+						</figure>
+					</slide>
+				</carousel>
+			</div>
 			<div class="row film-comments">
 				<div class="col-md-12">
 					<h1 class="text-center">{{ $lang.video_details.comments }}</h1>
@@ -170,7 +222,9 @@
 				kodik_api: "91cda3daa53978fdc025304879980c89",
 				kodik_url: "https://kodikapi.com/",
 				kodik_resp: {},
-				kodik_types: 'cartoon-serial, documentary-serial, russian-serial, foreign-serial, anime-serial, multi-part-film'
+				kodik_types: 'cartoon-serial, documentary-serial, russian-serial, foreign-serial, anime-serial, multi-part-film',
+				similar: {},
+				recommendations: {}
 			}
 		},
 
@@ -191,13 +245,15 @@
 					params: {
 						api_key: this.api_key,
 						language: this.lang,
-						append_to_response: 'videos,credits'
+						append_to_response: 'videos,credits,similar,recommendations'
 					},
 				}).then(response => {
 					this.video = response.data;
 					this.trailers = response.data.videos;
 					this.tr_length = this.trailers.results.length;
 					this.credits = response.data.credits;
+					this.similar = response.data.similar.results;
+					this.recommendations = response.data.recommendations.results;
 					this.getVideoPlayer();
 				});
 			},
