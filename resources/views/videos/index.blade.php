@@ -1,12 +1,14 @@
 @extends('layouts.app')
 
+@section('title', __('Movies'))
+
 @section('content')
 	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<span>{{ __('Videos') }}</span>
+						<span>{{ __('Movies') }}</span>
 					</div>
 					<div class="card-body">
 						@if (session('status'))

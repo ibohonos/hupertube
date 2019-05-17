@@ -1,5 +1,12 @@
 <template>
 	<div class="row film-details" v-if="video">
+		<vue-headful v-if="video.name"
+					 :title="video.name + ' - VueTube'"
+					 :description="video.overview"
+					 :keywords="keywords"
+					 :lang="lang"
+					 :image="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path"
+		/>
 		<div class="col-12">
 			<div class="overlay">
 				<img v-if="video.backdrop_path" class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
@@ -9,11 +16,11 @@
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-4">
-							<img v-if="video.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
+							<img v-if="video.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%" @click="openModal();currentSlide(1)" style="cursor: pointer;">
 							<img v-else src="http://oldquarteracousticcafe.com/wp-content/uploads/2018/07/Copy-of-Event-Flyer-TEmplate-Made-with-PosterMyWall-44.jpg" width="100%">
-							<div class="film-icons-info" v-if="user_token !== 'Null'">
-								<viewed video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></viewed>
-								<view-later video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></view-later>
+							<div class="film-icons-info" v-if="user_token !== 'Null' && video.id">
+								<viewed video_type="serials" :imdb_id="'' + video.id" :user_token="user_token"></viewed>
+								<view-later video_type="serials" :imdb_id="'' + video.id" :user_token="user_token"></view-later>
 							</div>
 						</div>
 						<div class="col-md-8">
@@ -55,7 +62,7 @@
 				<div class="col-md-12">
 					<h1 class="text-center">{{ $lang.video_details.actors }}</h1>
 				</div>
-				<carousel :navigationEnabled="true" :scrollPerPage="false" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
+				<carousel :navigationEnabled="true" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
 					<slide v-for="actor in credits.cast" :key="actor.id">
 						<a :href="'/persone/' + actor.id">
 							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + actor.profile_path" width="100%" v-if="actor.profile_path">
@@ -70,7 +77,7 @@
 				<div class="col-md-12">
 					<h1 class="text-center">{{ $lang.video_details.cast }}</h1>
 				</div>
-				<carousel :navigationEnabled="true" :scrollPerPage="false" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
+				<carousel :navigationEnabled="true" :perPageCustom="[[480, 2], [768, 3], [1080, 4]]" class="col-md-10 offset-md-1">
 					<slide v-for="cast in credits.crew" :key="cast.id" style="padding: 0 5px;">
 						<a :href="'/persone/' + cast.id">
 							<img :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + cast.profile_path" width="100%" v-if="cast.profile_path">
@@ -98,7 +105,8 @@
 
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 								<div class="card-body">
-									<iframe v-if="kodik_resp && kodik_resp[0]" :src="kodik_resp[0].link" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+									<iframe v-if="kodik_resp && kodik_resp[0]" :src="kodik_resp[0].link.replace('http:', '')" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+									<h3 class="text-center" v-else>Serial not found.</h3>
 								</div>
 							</div>
 						</div>
@@ -187,9 +195,9 @@
 			</div>
 		</div>
 
-
 		<a href="javascript:" id="return-to-top" @click="scrollToTop"><i class="fa fa-arrow-up"></i></a>
 
+		<image-lightbox v-if="images" :images="images"></image-lightbox>
 
 	</div>
 </template>
@@ -213,6 +221,7 @@
 			return {
 				video: {},
 				video_en: {},
+				moviedb_url: "https://api.themoviedb.org/3/",
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				trailers: {},
 				tr_length: '',
@@ -224,28 +233,19 @@
 				kodik_resp: {},
 				kodik_types: 'cartoon-serial, documentary-serial, russian-serial, foreign-serial, anime-serial, multi-part-film',
 				similar: {},
+				keywords: [],
+				images: [],
 				recommendations: {}
 			}
 		},
 
 		methods: {
-			getVideoTrailers() {
-				axios.get('https://api.themoviedb.org/3/tv/' + this.imdb_id + '/videos', {
-					params: {
-						api_key: this.api_key,
-						language: this.lang,
-					},
-				}).then(resp => {
-					this.trailers = resp.data;
-					this.tr_length = this.trailers.results.length;
-				});
-			},
 			getVideoInfo() {
-				axios.get('https://api.themoviedb.org/3/tv/' + this.imdb_id, {
+				axios.get(this.moviedb_url + 'tv/' + this.imdb_id, {
 					params: {
 						api_key: this.api_key,
 						language: this.lang,
-						append_to_response: 'videos,credits,similar,recommendations'
+						append_to_response: 'videos,credits,similar,recommendations,keywords'
 					},
 				}).then(response => {
 					this.video = response.data;
@@ -254,11 +254,27 @@
 					this.credits = response.data.credits;
 					this.similar = response.data.similar.results;
 					this.recommendations = response.data.recommendations.results;
+					response.data.keywords.results.forEach((resp) => {
+						this.keywords.push(resp.name);
+					});
+					this.getImages();
 					this.getVideoPlayer();
 				});
 			},
+
+			getImages() {
+				axios.get(this.moviedb_url + 'tv/' + this.imdb_id + '/images', {
+					params: {
+						api_key: this.api_key,
+						include_image_language: "en, ru, uk"
+					}
+				}).then(resp => {
+					this.images = resp.data.posters;
+				});
+			},
+
 			getVideoEnInfo(total) {
-				axios.get('https://api.themoviedb.org/3/tv/' + this.imdb_id, {
+				axios.get(this.moviedb_url + 'tv/' + this.imdb_id, {
 					params: {
 						api_key: this.api_key,
 						language: 'en-US',
@@ -266,7 +282,7 @@
 				}).then(response => {
 					this.video_en = response.data;
 					if (total === 0) {
-						this.getVideoPlayerTitle(this.video_en.name);
+						this.getVideoPlayerTitle(this.video_en.original_name);
 					}
 				});
 			},
@@ -285,11 +301,7 @@
 							this.getVideoEnInfo(resp.data.total);
 						} else {
 							if (resp.data.total === 0) {
-								if (this.short_lang === "ru") {
-									this.getVideoPlayerTitle(this.video.name);
-								} else {
-									this.getVideoPlayerTitle(this.video.original_name);
-								}
+								this.getVideoPlayerTitle(this.video.original_name);
 							}
 						}
 					});
@@ -297,11 +309,7 @@
 					if (!this.video.overview) {
 						this.getVideoEnInfo(0);
 					} else {
-						if (this.short_lang === "ru") {
-							this.getVideoPlayerTitle(this.video.name);
-						} else {
-							this.getVideoEnInfo(0);
-						}
+						this.getVideoPlayerTitle(this.video.original_name);
 					}
 				}
 			},
@@ -310,7 +318,7 @@
 				axios.get(this.kodik_url + 'search', {
 					params: {
 						title: title,
-						strict: true,
+						// strict: true,
 						types: this.kodik_types,
 						token: this.kodik_api
 					},
@@ -323,12 +331,21 @@
 				$('body,html').animate({
 					scrollTop : 0				// Scroll to top of body
 				}, 500);
+			},
+
+			openModal() {
+				this.$root.$emit('openModal');
+			},
+
+			currentSlide(res) {
+				this.$root.$emit('currentSlide', res);
 			}
 		},
 
 		mounted() {
 			this.$lang.setLang(currentLang);
 			this.getVideoInfo();
+			(adsbygoogle = window.adsbygoogle || []).push({});
 			$(window).scroll(function() {
 				if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
 					$('#return-to-top').fadeIn(200);    // Fade in the arrow

@@ -75,13 +75,17 @@ class UserController extends APIController
 		return $this->sendResponse($view, "OK");
 	}
 
-	public function allViewLater(Request $request)
+	public function allViewLaterFilms(Request $request)
 	{
-		$view = new ViewLater;
-
 		$user_id = $request->user()->id;
-		$allView = $view->allViewLater($user_id);
+		$allView = ViewLater::where('user_id', $user_id)->where('video_type', 'films')->latest()->paginate(12);
+		return $this->sendResponse($allView, "OK");
+	}
 
+	public function allViewLaterSerials(Request $request)
+	{
+		$user_id = $request->user()->id;
+		$allView = ViewLater::where('user_id', $user_id)->where('video_type', 'serials')->latest()->paginate(12);
 		return $this->sendResponse($allView, "OK");
 	}
 }

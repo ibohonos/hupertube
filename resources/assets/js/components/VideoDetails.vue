@@ -1,5 +1,13 @@
 <template>
 	<div class="row film-details" v-if="video">
+
+		<vue-headful v-if="video.title"
+					 :title="video.title + ' - VueTube'"
+					 :description="video.overview"
+					 :keywords="keywords"
+					 :image="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path"
+					 :lang="lang"
+		/>
 		<div class="col-12">
 			<div class="overlay">
 				<img v-if="video.backdrop_path" class="background-img" :src="'https://image.tmdb.org/t/p/w1400_and_h450_face/' + video.backdrop_path" width="100%">
@@ -9,9 +17,9 @@
 				<div class="col-md-12">
 					<div class="row">
 						<div class="col-md-4">
-							<img v-if="video.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%">
+							<img v-if="video.poster_path" :src="'https://image.tmdb.org/t/p/w600_and_h900_bestv2' + video.poster_path" width="100%" @click="openModal();currentSlide(1)" style="cursor: pointer;">
 							<img v-else src="http://oldquarteracousticcafe.com/wp-content/uploads/2018/07/Copy-of-Event-Flyer-TEmplate-Made-with-PosterMyWall-44.jpg" width="100%">
-							<div class="film-icons-info" v-if="user_token !== 'Null'">
+							<div class="film-icons-info" v-if="user_token !== 'Null' && video.id">
 								<viewed video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></viewed>
 								<view-later video_type="films" :imdb_id="'' + video.id" :user_token="user_token"></view-later>
 							</div>
@@ -102,7 +110,8 @@
 
 							<div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
 								<div class="card-body">
-									<iframe v-if="kodik_resp && kodik_resp[0]" :src="kodik_resp[0].link" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+									<iframe v-if="kodik_resp && kodik_resp[0]" :src="kodik_resp[0].link.replace('http:', '')" width="100%" height="480" frameborder="0" allowfullscreen></iframe>
+									<h3 class="text-center" v-else>Video not found.</h3>
 								</div>
 							</div>
 						</div>
@@ -191,15 +200,17 @@
 			</div>
 		</div>
 
-
 		<a href="javascript:" id="return-to-top" @click="scrollToTop"><i class="fa fa-arrow-up"></i></a>
 
+		<image-lightbox v-if="images" :images="images"></image-lightbox>
 
 	</div>
 </template>
 
 
 <script>
+	import Lightbox from './ImageLightbox';
+
 	export default {
 		props: {
 			imdb_id: {
@@ -213,10 +224,15 @@
 			}
 		},
 
+		comments: {
+			Lightbox
+		},
+
 		data() {
 			return {
 				video: {},
 				video_en: {},
+				moviedb_url: "https://api.themoviedb.org/3/",
 				api_key: 'e4649c026a8d8a3c93ed840286816339',
 				trailers: {},
 				tr_length: '',
@@ -228,28 +244,19 @@
 				kodik_resp: {},
 				kodik_types: 'foreign-movie, foreign-cartoon, anime',
 				similar: {},
-				recommendations: {}
+				recommendations: {},
+				keywords: [],
+				images: []
 			}
 		},
 
 		methods: {
-			getVideoTrailers() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id + '/videos', {
-					params: {
-						api_key: this.api_key,
-						language: this.lang,
-					},
-				}).then(resp => {
-					this.trailers = resp.data;
-					this.tr_length = this.trailers.results.length;
-				});
-			},
 			getVideoInfo() {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+				axios.get(this.moviedb_url + 'movie/' + this.imdb_id, {
 					params: {
 						api_key: this.api_key,
 						language: this.lang,
-						append_to_response: 'videos,credits,similar,recommendations'
+						append_to_response: 'videos,credits,similar,recommendations,keywords'
 					},
 				}).then(response => {
 					this.video = response.data;
@@ -258,11 +265,27 @@
 					this.credits = response.data.credits;
 					this.similar = response.data.similar.results;
 					this.recommendations = response.data.recommendations.results;
+					response.data.keywords.keywords.forEach((resp) => {
+						this.keywords.push(resp.name);
+					});
+					this.getImages();
 					this.getVideoPlayer();
 				});
 			},
+
+			getImages() {
+				axios.get(this.moviedb_url + 'movie/' + this.imdb_id + '/images', {
+					params: {
+						api_key: this.api_key,
+						include_image_language: "en, ru, uk"
+					}
+				}).then(resp => {
+					this.images = resp.data.posters;
+				});
+			},
+
 			getVideoEnInfo(total) {
-				axios.get('https://api.themoviedb.org/3/movie/' + this.imdb_id, {
+				axios.get(this.moviedb_url + 'movie/' + this.imdb_id, {
 					params: {
 						api_key: this.api_key,
 						language: 'en-US',
@@ -270,7 +293,7 @@
 				}).then(response => {
 					this.video_en = response.data;
 					if (total === 0) {
-						this.getVideoPlayerTitle(this.video_en.title);
+						this.getVideoPlayerTitle(this.video_en.original_title);
 					}
 				});
 			},
@@ -289,11 +312,7 @@
 							this.getVideoEnInfo(resp.data.total);
 						} else {
 							if (resp.data.total === 0) {
-								if (this.short_lang === "ru") {
-									this.getVideoPlayerTitle(this.video.title);
-								} else {
-									this.getVideoPlayerTitle(this.video.original_title);
-								}
+								this.getVideoPlayerTitle(this.video.original_title);
 							}
 						}
 					});
@@ -301,17 +320,12 @@
 					if (!this.video.overview) {
 						this.getVideoEnInfo(0);
 					} else {
-						if (this.short_lang === "ru") {
-							this.getVideoPlayerTitle(this.video.title);
-						} else {
-							this.getVideoPlayerTitle(this.video.original_title);
-						}
+						this.getVideoPlayerTitle(this.video.original_title);
 					}
 				}
 			},
 
 			getVideoPlayerTitle(title) {
-				console.log(title);
 				axios.get(this.kodik_url + 'search', {
 					params: {
 						token: this.kodik_api,
@@ -320,7 +334,6 @@
 						types: this.kodik_types
 					},
 				}).then(resp => {
-					console.log(title);
 					this.kodik_resp = resp.data.results;
 				});
 			},
@@ -329,12 +342,21 @@
 				$('body,html').animate({
 					scrollTop : 0				// Scroll to top of body
 				}, 500);
+			},
+
+			openModal() {
+				this.$root.$emit('openModal');
+			},
+
+			currentSlide(res) {
+				this.$root.$emit('currentSlide', res);
 			}
 		},
 
 		mounted() {
 			this.$lang.setLang(currentLang);
 			this.getVideoInfo();
+			(adsbygoogle = window.adsbygoogle || []).push({});
 			$(window).scroll(function() {
 				if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
 					$('#return-to-top').fadeIn(200);    // Fade in the arrow
@@ -342,7 +364,7 @@
 					$('#return-to-top').fadeOut(200);   // Else fade out the arrow
 				}
 			});
-		},
+		}
 	}
 </script>
 

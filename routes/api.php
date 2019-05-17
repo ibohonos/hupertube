@@ -37,7 +37,8 @@ Route::prefix('v2')->middleware('auth:api')->namespace('API')->group(function ()
 
 	Route::post('/view-later', 'UserController@viewLater');
 
-	Route::get('/all-view-later', 'UserController@allViewLater');
+	Route::get('/all-view-later-films', 'UserController@allViewLaterFilms');
+	Route::get('/all-view-later-serials', 'UserController@allViewLaterSerials');
 
 });
 

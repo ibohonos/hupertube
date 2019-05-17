@@ -20,8 +20,28 @@
 	<!-- CSRF Token -->
 	<meta name="csrf-token" content="{{ csrf_token() }}">
 
-	<title>{{ config('app.name', 'Laravel') }}</title>
+	<title>@yield('title') - {{ config('app.name', 'Laravel') }}</title>
+	<meta itemprop="name" content="@yield('title') - {{ config('app.name', 'Laravel') }}">
+	<meta property="og:title" content="@yield('title') - {{ config('app.name', 'Laravel') }}">
+	<meta name="twitter:title" content="@yield('title') - {{ config('app.name', 'Laravel') }}">
 
+	<meta name="description" content="@yield('description')">
+	<meta itemprop="description" content="@yield('description')">
+	<meta property="og:description" content="@yield('description')">
+	<meta name="twitter:description" content="@yield('description')">
+
+	<meta name="keywords" content="@yield('keywords')">
+
+	<meta property="og:locale" content="{{ str_replace('_', '-', app()->getLocale()) }}">
+	<meta property="og:site_name" content="{{ config('app.name', 'Laravel') }}">
+
+	<meta itemprop="image">
+	<meta property="og:image">
+	<meta name="twitter:image">
+
+	<link rel="canonical" content="{{ url()->current() }}">
+	<meta property="og:url" content="{{ url()->current() }}">
+	<meta name="twitter:url" content="{{ url()->current() }}">
 	<!-- Scripts -->
 	<script src="{{ asset('js/app.js') }}" defer></script>
 
@@ -31,6 +51,15 @@
 
 	<!-- Styles -->
 	<link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+	<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+	<script>
+		(adsbygoogle = window.adsbygoogle || []).push({
+			google_ad_client: "ca-pub-2419133990950515",
+			enable_page_level_ads: true
+		});
+	</script>
+	@yield('header_scripts')
 </head>
 <body>
 	<div id="app">
@@ -127,6 +156,7 @@
 				@yield('content')
 			</main>
 		{{--@endguest--}}
+		@yield('scripts')
 	</div>
 </body>
 </html>

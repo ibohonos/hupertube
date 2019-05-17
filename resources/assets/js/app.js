@@ -14,6 +14,9 @@ window.CyrToLat = require('./plugins/CyrToLat/cyr-to-lat');
 window.currentLang = document.head.querySelector('meta[name="lang"]').content;
 //window.DatePicker = require('vue-date');
 import VueCarousel from 'vue-carousel';
+
+import vueHeadful from 'vue-headful';
+
 // import DatePicker from 'vue-md-date-picker';
 // require('./plugins/pickadate/lib/');
 // require('./plugins/pickadate/lib/picker');
@@ -27,6 +30,8 @@ import VueCarousel from 'vue-carousel';
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
+Vue.component('vue-headful', vueHeadful);
+Vue.component('image-lightbox', require('./components/ImageLightbox'));
 // Vue.component('example-component', require('./components/ExampleComponent.vue'));
 // Vue.component('plyr-video', require('vue-plyr/dist/vue-plyr'));
 Vue.component('user-info', require('./components/UserInfo.vue'));

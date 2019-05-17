@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Profile :first_name :last_name', ['first_name' => $user->first_name, 'last_name' => $user->last_name]))
+
 @section('content')
 	<div class="container">
 		<div class="row justify-content-center">
